@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.app {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+}
+
+.sidebar__menu {
+  border: 3px solid darkcyan;
+  padding: 1rem 2rem;
+  border-radius: 2em;
+}
+
+.sidebar__item {
+  color: #000;
+  text-align: left;
+  margin: 1rem auto;
+}
+
+.state__table {
+  font-size: 0.8rem;
+}
+
+.state__item {
+  padding: 0.5rem 1rem;
+}
+
+.territory__table th {
+  font-size: 0.7rem;
+  padding: 1rem 0.5rem;
+}
+
+.settings__logs {
+  background: bisque;
+  height: 200px;
+  padding: 1rem 1rem;
+}
