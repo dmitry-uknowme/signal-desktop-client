@@ -1,0 +1,49 @@
+.btn {
+  color: #fff;
+  font-weight: 700;
+  border-radius: 5em;
+  padding: 0.5rem 1.5rem;
+  font-size: 0.7rem;
+  border: none;
+  position: relative;
+  text-transform: uppercase;
+  transition: 0.5s all;
+}
+
+.btnSuccess {
+  background: #11a8ab;
+}
+
+.btnSuccess:hover {
+  background: #0f9295;
+}
+
+.btnDanger {
+  background: #e64c65;
+}
+
+.btnDanger:hover {
+  background: #cc324b;
+}
+
+/* .btnDark {
+  color: #fff;
+  background: linear-gradient(to bottom, #bc9cff, #8ba4f9 100%) !important;
+}
+
+.btnLight {
+  color: #bc9cff;
+  background: #fff;
+}
+
+.btnLight::before {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  top: -8%;
+  left: -2%;
+  width: 104%;
+  height: 116%;
+  background: linear-gradient(to bottom, #bc9cff, #8ba4f9 100%) !important;
+  border-radius: inherit;
+} */

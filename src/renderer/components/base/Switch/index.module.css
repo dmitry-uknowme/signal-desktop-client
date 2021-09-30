@@ -1,0 +1,47 @@
+.checkbox:checked + .switchbox {
+  border: 1px solid #bc9cff;
+  background: #fff;
+}
+
+.checkbox:checked + .switchbox::after {
+  left: 63%;
+  background: #11a8ab;
+}
+
+.checkbox + .switchbox::after {
+  background: #e64c65;
+
+  border-radius: 20px;
+  content: ' ';
+  display: block;
+  height: 0.8rem;
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translate(0, -50%);
+  transition: all 0.2s linear;
+  width: 0.8rem;
+}
+
+.checkbox + .switchbox {
+  border: 1px solid #c7c7cf;
+  background: #fff;
+  border-radius: 20px;
+  cursor: pointer;
+  display: inline-block;
+  height: 1.4rem;
+  overflow: hidden;
+  position: relative;
+  width: 3rem;
+}
+
+.switch__body {
+  height: 1.4rem;
+}
+
+.switch__label {
+  font-size: 0.8rem;
+  color: #fff;
+  /* color: #1f2041; */
+  margin-left: 0.6rem;
+}

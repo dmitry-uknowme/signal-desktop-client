@@ -1,9 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import Button from './components/base/Button';
 import PanelPage from './pages/PanelPage';
 import SettingsPage from './pages/SettingsPage';
 import './styles/bootstrap.global.css';
 import './styles/App.global.css';
+import SwitchBox from './components/base/Switch';
 
 const App = () => {
   return (
@@ -11,29 +13,36 @@ const App = () => {
       <BrowserRouter>
         <div className="container-fluid h-100">
           <div className="row h-100">
-            <div className="col-md-3 d-flex justify-content-center align-items-center">
+            <div className="col-md-2 d-flex align-items-center">
               <div className="sidebar">
+                <h2 className="sidebar__title">Меню</h2>
                 <div className="sidebar__menu">
-                  <Link to="/">
+                  <Link to="/" style={{ textDecoration: 'none' }}>
                     <div className="sidebar__item">Панель управления</div>
                   </Link>
-                  <Link to="/statistics">
+                  <Link to="/statistics" style={{ textDecoration: 'none' }}>
                     <div className="sidebar__item">Статистика</div>
                   </Link>
-                  <Link to="/settings">
+                  <Link to="/settings" style={{ textDecoration: 'none' }}>
                     <div className="sidebar__item">Настройки</div>
                   </Link>
                 </div>
               </div>
             </div>
             <div
-              className="col-md-9" /* d-flex justify-content-center align-items-center */
+              className="col-md-9 d-flex
+              justify-content-center
+              align-items-center"
             >
               <div className="content">
                 <Switch>
                   <Route exact path="/settings">
                     <SettingsPage />
                   </Route>
+                  <Route exact path="/settings">
+                    <SettingsPage />
+                  </Route>
+
                   <Route path="/">
                     <PanelPage />
                   </Route>

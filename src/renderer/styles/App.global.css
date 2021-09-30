@@ -1,28 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
+
 body {
   margin: 0;
   padding: 0;
   position: relative;
+  font-family: 'Montserrat';
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: #fff;
 }
 
 .app {
+  color: #fff;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+  background: #1f253d;
+  /* background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%); */
+}
+
+.sidebar {
+  background: #394264;
 }
 
 .sidebar__menu {
-  border: 3px solid darkcyan;
-  padding: 1rem 2rem;
+  /* border: 3px solid darkcyan; */
+  /* padding: 1rem 2rem; */
   border-radius: 2em;
 }
 
+.sidebar__title {
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  padding: 1rem 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  background: #11a8ab;
+  color: #fff;
+}
+
 .sidebar__item {
-  color: #000;
-  text-align: left;
-  margin: 1rem auto;
+  text-align: center;
+  font-size: 0.8rem;
+  text-decoration: none;
+  color: #fff;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #1f253d;
+}
+
+.panel,
+.state,
+.territory {
+  background: #394264;
+  padding: 1rem 2rem;
+}
+
+.panel__title {
+  color: tomato;
+}
+
+.state__title {
+  color: blueviolet;
+}
+
+.territory__title {
+  color: blue;
 }
 
 .state__table {
@@ -34,6 +83,7 @@ body {
 }
 
 .territory__table th {
+  border: 1px solid #1f253d;
   font-size: 0.7rem;
   padding: 1rem 0.5rem;
 }
