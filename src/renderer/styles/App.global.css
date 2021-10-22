@@ -14,6 +14,18 @@ h4 {
   color: #fff;
 }
 
+input {
+  padding: 0.2rem 0.4rem;
+  border: none;
+  padding: 0.2rem 0.4rem;
+  border-radius: 1em;
+  border: none;
+}
+
+table {
+  text-align: center;
+}
+
 .app {
   color: #fff;
   position: fixed;
@@ -57,7 +69,9 @@ h4 {
 
 .panel,
 .state,
-.territory {
+.territory,
+.settings,
+.stats {
   background: #394264;
   padding: 1rem 2rem;
 }
@@ -74,6 +88,10 @@ h4 {
   color: blue;
 }
 
+.stats__title {
+  color: cornflowerblue;
+}
+
 .state__table {
   font-size: 0.8rem;
 }
@@ -88,8 +106,42 @@ h4 {
   padding: 1rem 0.5rem;
 }
 
+.settings__client-id {
+  width: 94%;
+  border: 2px solid turquoise;
+  padding: 0.2rem 0.4rem;
+}
+
 .settings__logs {
   background: bisque;
   height: 200px;
   padding: 1rem 1rem;
+}
+
+.stats__filter {
+  border-radius: 0.5em;
+  padding: 0.4rem 0.6rem;
+  background: coral;
+  color: #fff;
+}
+
+.stats__date-picker {
+  fill: coral !important;
+  margin: auto 0;
+}
+
+.stats__table td {
+  font-size: 0.85rem;
+  padding: 0.6rem 0.4rem;
+  background: darkslateblue;
+}
+
+.stats__table th {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.4rem;
+}
+
+.stats__summary {
+  font-size: 2rem;
+  color: gold;
 }

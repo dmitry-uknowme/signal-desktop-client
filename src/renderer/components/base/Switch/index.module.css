@@ -4,7 +4,7 @@
 }
 
 .checkbox:checked + .switchbox::after {
-  left: 63%;
+  left: 62%;
   background: #11a8ab;
 }
 

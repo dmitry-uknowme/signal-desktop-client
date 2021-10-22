@@ -1,18 +1,17 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
-import Button from './components/base/Button';
 import PanelPage from './pages/PanelPage';
 import SettingsPage from './pages/SettingsPage';
+import StatisticsPage from './pages/StatisticsPage';
 import './styles/bootstrap.global.css';
 import './styles/App.global.css';
-import SwitchBox from './components/base/Switch';
 
 const App = () => {
   return (
     <div className="app">
       <BrowserRouter>
         <div className="container-fluid h-100">
-          <div className="row h-100">
+          <div className="row h-100  d-flex justify-content-center align-items-center">
             <div className="col-md-2 d-flex align-items-center">
               <div className="sidebar">
                 <h2 className="sidebar__title">Меню</h2>
@@ -30,17 +29,18 @@ const App = () => {
               </div>
             </div>
             <div
-              className="col-md-9 d-flex
-              justify-content-center
-              align-items-center"
+              className="col-md-10"
+              // d-flex
+              // justify-content-center
+              // align-items-center
             >
               <div className="content">
                 <Switch>
                   <Route exact path="/settings">
                     <SettingsPage />
                   </Route>
-                  <Route exact path="/settings">
-                    <SettingsPage />
+                  <Route exact path="/statistics">
+                    <StatisticsPage />
                   </Route>
 
                   <Route path="/">

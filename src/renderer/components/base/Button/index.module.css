@@ -26,6 +26,14 @@
   background: #cc324b;
 }
 
+.btnCheck {
+  background: coral;
+}
+
+.btnCheck:hover {
+  background: tomato;
+}
+
 /* .btnDark {
   color: #fff;
   background: linear-gradient(to bottom, #bc9cff, #8ba4f9 100%) !important;

@@ -8,14 +8,10 @@ interface ButtonProps {
   attrs?: React.HTMLAttributes<HTMLButtonElement>;
 }
 
-// enum buttonClassNames {
-//   light = styles.btnLight,
-//   dark = styles.btnDark,
-// }
-
 enum buttonClassNames {
   success = styles.btnSuccess,
   danger = styles.btnDanger,
+  check = styles.btnCheck,
 }
 
 const Button: React.FC<ButtonProps> = ({ label, variant }) => {
