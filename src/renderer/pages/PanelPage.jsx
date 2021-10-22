@@ -5,12 +5,12 @@ import TerritoryTable from '../components/TerritoryTable';
 
 const PanelPage = () => (
   <>
-    <div className="row">
+    <div className="row panel__row1">
       <div className="col-md-6">
         <Panel />
       </div>
       <div className="col-md-6">
-        <div className="state">
+        <div className="state h-100">
           <div className="row align-items-center">
             <div className="col-md-10">
               <h2 className="state__title">Состояние оборудования</h2>
@@ -32,9 +32,9 @@ const PanelPage = () => (
         </div>
       </div>
     </div>
-    <div className="row mt-5">
+    <div className="row panel__row2 mt-3">
       <div className="col-md-12">
-        <div className="territory">
+        <div className="territory h-100">
           <h2 className="territory__title">На территории</h2>
           <TerritoryTable />
         </div>

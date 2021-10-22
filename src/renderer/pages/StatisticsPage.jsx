@@ -5,9 +5,9 @@ import DateRangeIcon from '@mui/icons-material/DateRange';
 const StatisticsPage = () => {
   return (
     // <div className="stats-page">
-    <div className="row">
-      <div className="col-md-12">
-        <div className="stats">
+    <div className="row h-100">
+      <div className="col-md-12 h-100">
+        <div className="stats h-100">
           {/* <div className="row"> */}
           <h2 className="stats__title p-0">Статистика</h2>
           {/* </div> */}

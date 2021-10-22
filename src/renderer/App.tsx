@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import EnterModal from './components/Modal/EnterModal';
+import ExitModal from './components/Modal/ExitModal';
 import PanelPage from './pages/PanelPage';
 import SettingsPage from './pages/SettingsPage';
 import StatisticsPage from './pages/StatisticsPage';
@@ -9,11 +11,13 @@ import './styles/App.global.css';
 const App = () => {
   return (
     <div className="app">
+      <EnterModal />
+      {/* <ExitModal /> */}
       <BrowserRouter>
         <div className="container-fluid h-100">
-          <div className="row h-100  d-flex justify-content-center align-items-center">
-            <div className="col-md-2 d-flex align-items-center">
-              <div className="sidebar">
+          <div className="row h-100">
+            <div className="col-md-2">
+              <div className="sidebar h-100">
                 <h2 className="sidebar__title">Меню</h2>
                 <div className="sidebar__menu">
                   <Link to="/" style={{ textDecoration: 'none' }}>
@@ -28,13 +32,8 @@ const App = () => {
                 </div>
               </div>
             </div>
-            <div
-              className="col-md-10"
-              // d-flex
-              // justify-content-center
-              // align-items-center
-            >
-              <div className="content">
+            <div className="col-md-10">
+              <div className="content h-100">
                 <Switch>
                   <Route exact path="/settings">
                     <SettingsPage />

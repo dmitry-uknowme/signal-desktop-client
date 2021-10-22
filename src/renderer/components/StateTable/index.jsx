@@ -2,7 +2,7 @@ import React from 'react';
 
 const StateTable = () => {
   return (
-    <div className="state__table">
+    <div className="state__table h-100">
       <div className="row">
         <div className="col-md-4 state__item">Связь с сервером</div>
         <div className="col-md-2 state__item">Online</div>

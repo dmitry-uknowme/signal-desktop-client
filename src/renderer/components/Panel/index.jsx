@@ -5,7 +5,7 @@ import RefreshIcon from '../../images/refresh-icon.svg';
 
 const Panel = () => {
   return (
-    <div className="panel">
+    <div className="panel h-100">
       <h2 className="panel__title">Панель управления</h2>
 
       <div className="panel__form">

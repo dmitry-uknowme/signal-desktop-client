@@ -3,11 +3,11 @@ import Button from 'renderer/components/base/Button';
 
 const SettingsPage = () => (
   <>
-    <div className="row">
-      <div className="col-md-12">
-        <div className="row">
-          <div className="col-md-12">
-            <div className="settings">
+    <div className="row h-100">
+      <div className="col-md-12 h-100">
+        <div className="row h-100">
+          <div className="col-md-12 h-100">
+            <div className="settings h-100">
               <div className="row align-items-center">
                 <div className="col-md-3">Адрес сервера</div>
                 <div className="col-md-4">
