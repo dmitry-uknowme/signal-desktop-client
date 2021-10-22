@@ -13,15 +13,19 @@ const SettingsPage = () => (
                 <div className="col-md-4">
                   <input className="w-100" placeholder="127.0.0.1:2211" />
                 </div>
-                <div className="col-md-5">
-                  <Button label="Проверить соединение" variant="check" />
+                <div className="col-md-3">
+                  <Button
+                    label="Проверить соединение"
+                    variant="check"
+                    className="w-100"
+                  />
                 </div>
               </div>
               <div className="row mt-5">
                 <div className="col-md-3">ID клиента</div>
-                <div className="col-md-9">
+                <div className="col-md-7">
                   <textarea
-                    className="settings__client-id"
+                    className="settings__client-id w-100"
                     rows="5"
                     value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
                   />

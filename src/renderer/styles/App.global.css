@@ -95,7 +95,9 @@ table {
 }
 
 .territory__title {
-  color: blue;
+  /* color: blue;
+   */
+  color: #fff;
 }
 
 .stats__title {

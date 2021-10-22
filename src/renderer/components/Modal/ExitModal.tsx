@@ -7,8 +7,12 @@ import { setIsModalExitOpened } from '../../store/reducers/modalReducer';
 
 const ExitModal = () => {
   const dispatch = useDispatch();
-  const isModalVisible = useSelector((store) => store.modal.modalExit);
-  const closeModal = () => dispatch(setIsModalExitOpened(false));
+  const modal = useSelector((store) => store.modal.modalExit);
+  const isModalVisible = modal.opened;
+  const modalData = modal.data;
+  const closeModal = () => dispatch(setIsModalExitOpened());
+
+  console.log('modal', modalData.autos);
 
   const animationVariants = {
     modal: {
@@ -45,7 +49,7 @@ const ExitModal = () => {
       >
         <div className="container">
           <h2 className="modal__title text-center">
-            Взвешивание нетто: 500 кг
+            Взвешивание нетто: {modalData?.weight} кг
           </h2>
           <form className="modal__form mt-5">
             <div className="row mt-4">
@@ -59,7 +63,13 @@ const ExitModal = () => {
                     name="auto_number_plate"
                     required
                   >
-                    <option value="о777oo77">о777oo77</option>
+                    {modalData?.autos?.length ? (
+                      modalData?.autos?.map(({ id, number_plate }) => (
+                        <option value={id}>{number_plate}</option>
+                      ))
+                    ) : (
+                      <option>Нет авто на территории</option>
+                    )}
                   </select>
                 </div>
               </div>
@@ -108,11 +118,16 @@ const ExitModal = () => {
               </div>
             </div>
             <div className="d-flex justify-content-between mt-5">
-              <Button label="Отклонить" variant="danger" onClick={closeModal} />
+              <Button
+                label="Отклонить"
+                variant="danger"
+                onClick={closeModal}
+                type="button"
+              />
               <Button
                 label="Разрешить въезд"
                 variant="success"
-                onClick={closeModal}
+                // onClick={closeModal}
               />
             </div>
           </form>

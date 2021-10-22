@@ -21,7 +21,12 @@ const Panel = () => {
   };
 
   const openModalExit = () => {
-    dispatch(setIsModalExitOpened(true));
+    dispatch(
+      setIsModalExitOpened({
+        weight: 700,
+        // autos: [{ id: 1, number_plate: 'о777оо77' }],
+      })
+    );
   };
 
   return (

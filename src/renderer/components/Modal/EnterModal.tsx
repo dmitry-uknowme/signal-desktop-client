@@ -55,7 +55,7 @@ const EnterModal = () => {
                 </div>
                 <div className="col-md-6">
                   <input
-                    className="form-control"
+                    className="form-control text-uppercase"
                     name="auto_number_plate"
                     placeholder="о777oo77"
                     required
@@ -74,9 +74,10 @@ const EnterModal = () => {
                     name="contractor_name"
                     required
                   >
-                    <option value="834bb845-0497-43f6-b5f7-4a53d88fbb4e">
+                    <option value="" selected disabled>
                       Название контрагента
                     </option>
+                    <option value="1">{`ООО "ДИСПЕТЧЕР-С"`}</option>
                   </select>
                 </div>
               </div>
@@ -92,9 +93,10 @@ const EnterModal = () => {
                     name="cargo_category"
                     required
                   >
-                    <option value="834bb845-0497-43f6-b5f7-4a53d88fbb4e">
+                    <option value="" selected disabled>
                       Название категории груза
                     </option>
+                    <option value="1">ТКО-4</option>
                   </select>
                 </div>
               </div>
@@ -106,9 +108,10 @@ const EnterModal = () => {
                 </div>
                 <div className="col-md-6">
                   <select className="form-control" name="cargo_type" required>
-                    <option value="834bb845-0497-43f6-b5f7-4a53d88fbb4e">
+                    <option value="" selected disabled>
                       Название вида груза
                     </option>
+                    <option value="1">Прочее</option>
                   </select>
                 </div>
               </div>
@@ -129,11 +132,16 @@ const EnterModal = () => {
               </div>
             </div>
             <div className="d-flex justify-content-between mt-5">
-              <Button label="Отклонить" variant="danger" onClick={closeModal} />
+              <Button
+                label="Отклонить"
+                variant="danger"
+                onClick={closeModal}
+                type="button"
+              />
               <Button
                 label="Разрешить въезд"
                 variant="success"
-                onClick={closeModal}
+                // onClick={closeModal}
               />
             </div>
           </form>
