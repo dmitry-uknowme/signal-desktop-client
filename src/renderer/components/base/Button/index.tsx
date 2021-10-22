@@ -6,6 +6,8 @@ interface ButtonProps {
   label: string;
   variant: string;
   attrs?: React.HTMLAttributes<HTMLButtonElement>;
+  onClick?: any;
+  disabled?: any;
 }
 
 enum buttonClassNames {
@@ -14,11 +16,22 @@ enum buttonClassNames {
   check = styles.btnCheck,
 }
 
-const Button: React.FC<ButtonProps> = ({ label, variant }) => {
+const Button: React.FC<ButtonProps> = ({
+  label,
+  variant,
+  attrs,
+  onClick,
+  disabled,
+}) => {
   return (
     <button
-      className={`${styles.btn} ${buttonClassNames[variant]}`}
+      className={`${styles.btn} ${disabled ? styles.btnDisabled : ''} ${
+        buttonClassNames[variant]
+      }`}
       type="button"
+      onClick={onClick}
+      // disabled={disabled}
+      // {...attrs}
     >
       {label}
     </button>

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import store from './store';
-import EnterModal from './components/Modal/EnterModal';
-import ExitModal from './components/Modal/ExitModal';
 import PanelPage from './pages/PanelPage';
 import SettingsPage from './pages/SettingsPage';
 import StatisticsPage from './pages/StatisticsPage';
+import EnterModal from './components/Modal/EnterModal';
+import ExitModal from './components/Modal/ExitModal';
 import './styles/bootstrap.global.css';
 import './styles/App.global.css';
 
@@ -14,6 +14,8 @@ const App = () => {
   return (
     <Provider store={store}>
       <div className="app">
+        <EnterModal />
+        <ExitModal />
         <BrowserRouter>
           <div className="container-fluid h-100">
             <div className="row h-100">

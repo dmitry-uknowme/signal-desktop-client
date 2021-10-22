@@ -11,29 +11,26 @@ const defaultState = {
 const controlsReducer = (state = defaultState, action) => {
   switch (action.type) {
     case SET_IS_DOOR1_OPENED:
-      return { ...state, door1: action.payload };
+      return { ...state, door1: !state.door1 };
     case SET_IS_DOOR2_OPENED:
-      return { ...state, door2: action.payload };
+      return { ...state, door2: !state.door2 };
     case SET_IS_MANUAL_MODE:
-      return { ...state, isManualMode: action.payload };
+      return { ...state, isManualMode: !state.isManualMode };
     default:
       return state;
   }
 };
 
-export const setIsDoor1Opened = (payload: boolean) => ({
+export const setIsDoor1Opened = () => ({
   type: SET_IS_DOOR1_OPENED,
-  payload,
 });
 
-export const setIsDoor2Opened = (payload: boolean) => ({
+export const setIsDoor2Opened = () => ({
   type: SET_IS_DOOR2_OPENED,
-  payload,
 });
 
-export const setIsManualMode = (payload: boolean) => ({
+export const setIsManualMode = () => ({
   type: SET_IS_MANUAL_MODE,
-  payload,
 });
 
 export default controlsReducer;

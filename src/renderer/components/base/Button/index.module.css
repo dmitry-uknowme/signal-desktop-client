@@ -7,6 +7,8 @@
   border: none;
   position: relative;
   text-transform: uppercase;
+  pointer-events: all;
+  opacity: 1;
   transition: 0.5s all;
 }
 
@@ -32,6 +34,11 @@
 
 .btnCheck:hover {
   background: tomato;
+}
+
+.btnDisabled {
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 /* .btnDark {

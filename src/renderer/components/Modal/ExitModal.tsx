@@ -1,24 +1,47 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '../base/Button';
+import { setIsModalExitOpened } from '../../store/reducers/modalReducer';
 
-const EnterModal = () => {
-  const [isModalVisible, setModalVisible] = useState(true);
+const ExitModal = () => {
+  const dispatch = useDispatch();
+  const isModalVisible = useSelector((store) => store.modal.modalExit);
+  const closeModal = () => dispatch(setIsModalExitOpened(false));
 
   const animationVariants = {
     modal: {
-      show: { scale: 1, x: '-50%', y: '-50%' },
-      hide: { scale: 0, x: '-50%', y: '-50%' },
+      show: { x: '-50%', y: '-50%' },
+      hide: { x: '-50%', y: '-200%' },
+    },
+    overlay: {
+      show: {
+        pointerEvents: 'all',
+        opacity: 1,
+      },
+      hide: { pointerEvents: 'none', opacity: 0 },
     },
   };
 
   return (
-    <div className="modal__wrapper">
+    <motion.div
+      className="modal__wrapper"
+      initial={{
+        opacity: 0,
+      }}
+      animate={isModalVisible ? 'show' : 'hide'}
+      variants={animationVariants.overlay}
+    >
       <motion.div
+        className="modal__window modal-exit"
+        initial={{
+          x: '-50%',
+          y: '-200%',
+        }}
+        transition={{ duration: 1 }}
         animate={isModalVisible ? 'show' : 'hide'}
         variants={animationVariants.modal}
-        className="modal__window modal-enter"
       >
         <div className="container">
           <h2 className="modal__title text-center">
@@ -85,14 +108,18 @@ const EnterModal = () => {
               </div>
             </div>
             <div className="d-flex justify-content-between mt-5">
-              <Button label="Отклонить" variant="danger" />
-              <Button label="Разрешить въезд" variant="success" />
+              <Button label="Отклонить" variant="danger" onClick={closeModal} />
+              <Button
+                label="Разрешить въезд"
+                variant="success"
+                onClick={closeModal}
+              />
             </div>
           </form>
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 
-export default EnterModal;
+export default ExitModal;

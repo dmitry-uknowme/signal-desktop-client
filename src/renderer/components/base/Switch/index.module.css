@@ -35,6 +35,18 @@
   width: 3rem;
 }
 
+.switch {
+  pointer-events: all;
+}
+
+.switchDisabled .checkbox + .switchbox::after {
+  opacity: 0.5;
+}
+
+.switchDisabled {
+  pointer-events: none;
+}
+
 .switch__body {
   height: 1.4rem;
 }
