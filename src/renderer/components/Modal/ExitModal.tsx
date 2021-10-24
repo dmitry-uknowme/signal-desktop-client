@@ -12,7 +12,7 @@ const ExitModal = () => {
   const modalData = modal.data;
   const closeModal = () => dispatch(setIsModalExitOpened());
 
-  console.log('modal', modalData.autos);
+  // console.log('modal', modalData.autos);
 
   const animationVariants = {
     modal: {
@@ -65,7 +65,9 @@ const ExitModal = () => {
                   >
                     {modalData?.autos?.length ? (
                       modalData?.autos?.map(({ id, number_plate }) => (
-                        <option value={id}>{number_plate}</option>
+                        <option key={id} value={id}>
+                          {number_plate}
+                        </option>
                       ))
                     ) : (
                       <option>Нет авто на территории</option>
