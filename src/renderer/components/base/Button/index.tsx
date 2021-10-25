@@ -5,14 +5,14 @@ import styles from './index.module.css';
 interface ButtonProps {
   label: string;
   variant: string;
-  type?: string;
+  type?: React.HTMLAttributes<HTMLButtonElement>;
   attrs?: React.HTMLAttributes<HTMLButtonElement>;
   onClick?: any;
-  disabled?: any;
-  className: string;
+  disabled?: boolean;
+  className?: string;
 }
 
-enum buttonClassNames {
+enum ButtonClassNames {
   success = styles.btnSuccess,
   danger = styles.btnDanger,
   check = styles.btnCheck,
@@ -30,7 +30,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       className={`${styles.btn} ${disabled ? styles.btnDisabled : ''} ${
-        buttonClassNames[variant]
+        ButtonClassNames[variant]
       } ${className}`}
       type={type}
       onClick={onClick}

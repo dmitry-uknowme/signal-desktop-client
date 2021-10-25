@@ -3,10 +3,15 @@
 
 import React, { useState, useEffect, Dispatch } from 'react';
 
+interface IHardwareItem {
+  name: string;
+  status: string;
+}
+
 interface HardwareTableProps {
   isRefreshing: boolean;
   distanceToNow: string;
-  data: any;
+  data: IHardwareItem[];
 }
 
 const StateTable: React.FC<HardwareTableProps> = ({

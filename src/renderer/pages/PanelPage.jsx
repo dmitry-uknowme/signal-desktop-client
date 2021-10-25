@@ -52,20 +52,22 @@ const PanelPage = () => {
   };
 
   useEffect(() => {
-    // setTimeout(() => {
     setLastRefreshDate(Date.now());
-    // }, 3000);
+
+    fetchHardwareState();
+  }, []);
+
+  useEffect(() => {
     setDistanceToNow(
       formatDistanceToNow(lastRefreshDate, { locale: ru, addSuffix: true })
     );
-    setInterval(() => {
+    let timer = setInterval(() => {
       setDistanceToNow(
         formatDistanceToNow(lastRefreshDate, { locale: ru, addSuffix: true })
       );
     }, 60000);
-
-    fetchHardwareState();
-  }, []);
+    return () => clearInterval(timer);
+  }, [lastRefreshDate]);
 
   return (
     <>
