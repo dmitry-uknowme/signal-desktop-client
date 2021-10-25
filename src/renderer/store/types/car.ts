@@ -26,6 +26,7 @@ export enum AllCarsActionTypes {
 export enum CarsOnTerritoryActionTypes {
   FETCH = 'FETCH_CARS_ON_TERRITORY',
   ADD_CAR = 'ADD_CAR_ON_TERRITORY',
+  REMOVE_CAR = 'REMOVE_CAR_FROM_TERRITORY',
 }
 
 interface FetchAllCarsAction {
@@ -48,8 +49,14 @@ interface AddCarOnTerritoryAction {
   payload: ICarEntered;
 }
 
+interface RemoveCarFromTerritoryAction {
+  type: CarsOnTerritoryActionTypes.REMOVE_CAR;
+  payload: number;
+}
+
 export type CarAction =
   | FetchAllCarsAction
   | AddCarInAllCarsAction
   | FetchCarsOnTerritoryAction
-  | AddCarOnTerritoryAction;
+  | AddCarOnTerritoryAction
+  | RemoveCarFromTerritoryAction;

@@ -31,6 +31,14 @@ const carReducer = (state = defaultState, action: CarAction) => {
         on_territory: [...state.on_territory, action.payload],
       };
 
+    case CarsOnTerritoryActionTypes.REMOVE_CAR:
+      return {
+        ...state,
+        on_territory: [
+          ...state.on_territory.filter((car) => car.id !== action.payload),
+        ],
+      };
+
     default:
       return state;
   }

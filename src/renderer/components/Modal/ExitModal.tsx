@@ -1,16 +1,16 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import useActions from 'renderer/hooks/useActions';
 import Button from '../base/Button';
 import { setIsModalExitOpened } from '../../store/reducers/modalReducer';
-import axios from 'axios';
 
 const ExitModal = () => {
   const dispatch = useDispatch();
   const modal = useSelector((store) => store.modal.modalExit);
-  const { addCarInAllCars } = useActions();
+  const { addCarInAllCars, removeCarFromTerritory } = useActions();
   const carsOnTerritory = useSelector((store) => store.cars.on_territory);
   const isModalVisible = modal.opened;
   const modalData = modal.data;
@@ -41,6 +41,8 @@ const ExitModal = () => {
       (car) => car.id === parseInt(formData.id)
     );
 
+    // console.log('brutto', selectedCar);
+
     axios.post('http://localhost:8000/all_cars', {
       ...selectedCar,
       ...formData,
@@ -48,17 +50,16 @@ const ExitModal = () => {
       weight_netto: parseInt(modalData.weight),
       result_weight:
         parseInt(selectedCar.weight_brutto) - parseInt(modalData.weight),
-
       id: null,
+      status: 'Выехал',
     });
-    // addCarInAllCars({
-    //   ...formData,
-    //   date_of_exit: Date.now(),
-    //   weight_netto: modalData.weight,
-    //   // result_weight,
-    // });
+    removeCarFromTerritory(formData.id);
     closeModal();
   };
+
+  useEffect(() => {
+    setFormData((state) => ({ ...state, id: carsOnTerritory[0]?.id }));
+  }, [carsOnTerritory]);
 
   return (
     <motion.div
@@ -108,7 +109,9 @@ const ExitModal = () => {
                         </option>
                       ))
                     ) : (
-                      <option>Нет авто на территории</option>
+                      <option value="" selected disabled>
+                        Нет авто на территории
+                      </option>
                     )}
                   </select>
                 </div>
@@ -171,7 +174,7 @@ const ExitModal = () => {
                 type="button"
               />
               <Button
-                label="Разрешить въезд"
+                label="Разрешить выезд"
                 variant="success"
                 // onClick={closeModal}
               />

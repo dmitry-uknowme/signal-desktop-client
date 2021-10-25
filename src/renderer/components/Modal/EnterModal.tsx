@@ -59,11 +59,6 @@ const EnterModal = () => {
 
   const submitHandler = (e: any) => {
     e.preventDefault();
-    axios.post('http://localhost:8000/cars_on_territory', {
-      ...formData,
-      date_of_enter: Date.now(),
-      weight_brutto: parseInt(modalData.weight),
-    });
     addCarOnTerritory({
       ...formData,
       date_of_enter: Date.now(),
