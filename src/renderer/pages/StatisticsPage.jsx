@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from 'renderer/components/base/Button';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 
 const StatisticsPage = () => {
+  const [allCars, setAllCars] = useState(null);
+  const fetchAllCars = async () => {
+    fetch('http://localhost:8000/all_cars')
+      .then((response) => response.json())
+      .then((res) => setAllCars(res))
+      .catch((e) => console.log('error', e));
+  };
+  useEffect(() => {
+    fetchAllCars();
+  }, []);
   return (
     // <div className="stats-page">
     <div className="row h-100">
@@ -50,54 +60,34 @@ const StatisticsPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>г777ос02</td>
-                    <td>Иванов И. И.</td>
-                    <td>1500</td>
-                    <td>Большая</td>
-                    <td>500</td>
-                    <td>Бытовые отходы</td>
-                    <td>Бытовые отходы</td>
-                    <td>01.01.21 00:00</td>
-                    <td>01.01.21 01:00</td>
-                    <td>На территории</td>
-                  </tr>
-                  <tr>
-                    <td>г777ос02</td>
-                    <td>Иванов И. И.</td>
-                    <td>1500</td>
-                    <td>Большая</td>
-                    <td>500</td>
-                    <td>Бытовые отходы</td>
-                    <td>Бытовые отходы</td>
-                    <td>01.01.21 00:00</td>
-                    <td>01.01.21 01:00</td>
-                    <td>На территории</td>
-                  </tr>
-                  <tr>
-                    <td>г777ос02</td>
-                    <td>Иванов И. И.</td>
-                    <td>1500</td>
-                    <td>Большая</td>
-                    <td>500</td>
-                    <td>Бытовые отходы</td>
-                    <td>Бытовые отходы</td>
-                    <td>01.01.21 00:00</td>
-                    <td>01.01.21 01:00</td>
-                    <td>На территории</td>
-                  </tr>
-                  <tr>
-                    <td>г777ос02</td>
-                    <td>Иванов И. И.</td>
-                    <td>1500</td>
-                    <td>Большая</td>
-                    <td>500</td>
-                    <td>Бытовые отходы</td>
-                    <td>Бытовые отходы</td>
-                    <td>01.01.21 00:00</td>
-                    <td>01.01.21 01:00</td>
-                    <td>На территории</td>
-                  </tr>
+                  {allCars?.map(
+                    ({
+                      id,
+                      number_plate,
+                      transporter_company,
+                      weight_brutto,
+                      result_weight,
+                      weight_netto,
+                      cargo_category,
+                      cargo_type,
+                      date_of_enter,
+                      date_of_exit,
+                      status,
+                    }) => (
+                      <tr key={id}>
+                        <td>{number_plate}</td>
+                        <td>{transporter_company}</td>
+                        <td>{weight_brutto}</td>
+                        <td>{result_weight}</td>
+                        <td>{weight_netto}</td>
+                        <td>{cargo_category}</td>
+                        <td>{cargo_type}</td>
+                        <td>{date_of_enter}</td>
+                        <td>{date_of_exit}</td>
+                        <td>{status}</td>
+                      </tr>
+                    )
+                  )}
                 </tbody>
               </table>
             </div>

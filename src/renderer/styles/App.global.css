@@ -113,9 +113,8 @@ table {
 }
 
 .territory__table th {
-  border: 1px solid #1f253d;
-  font-size: 0.7rem;
-  padding: 1rem 0.5rem;
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem;
 }
 
 .settings__client-id {
@@ -142,15 +141,21 @@ table {
   margin: auto 0;
 }
 
-.stats__table td {
+.stats__table td,
+.territory__table td {
   font-size: 0.85rem;
   padding: 0.6rem 0.4rem;
   background: darkslateblue;
 }
 
-.stats__table th {
+.stats__table th,
+.territory__table th {
   font-size: 0.8rem;
   padding: 0.2rem 0.4rem;
+}
+
+.territory__table td {
+  padding: 0.6rem 1rem;
 }
 
 .stats__summary {

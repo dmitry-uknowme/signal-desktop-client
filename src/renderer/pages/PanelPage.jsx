@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { formatDistanceToNow } from 'date-fns';
+import { formatISO, formatDistanceToNow } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import Panel from '../components/Panel';
 import StateTable from '../components/StateTable';
@@ -8,6 +8,7 @@ import TerritoryTable from '../components/TerritoryTable';
 const PanelPage = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastRefreshDate, setLastRefreshDate] = useState(Date.now());
+  // console.log('date', formatISO(lastRefreshDate, { representation: 'time' }));
   const [distanceToNow, setDistanceToNow] = useState(
     formatDistanceToNow(lastRefreshDate, { locale: ru, addSuffix: true })
   );
