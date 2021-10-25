@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import useActions from 'renderer/hooks/useActions';
 
 const TerritoryTable = () => {
-  const [carsOnTerritory, setCarsOnTerritory] = useState(null);
-  const fetchCarsOnTerritory = async () => {
-    fetch('http://localhost:8000/cars_on_territory')
-      .then((response) => response.json())
-      .then((res) => setCarsOnTerritory(res))
-      .catch((e) => console.log('error', e));
-  };
+  const { fetchCarsOnTerritory } = useActions();
+  const carsOnTerritory = useSelector((store) => store.cars.on_territory);
+
   useEffect(() => {
     fetchCarsOnTerritory();
   }, []);

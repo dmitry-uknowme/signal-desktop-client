@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Button from 'renderer/components/base/Button';
 import DateRangeIcon from '@mui/icons-material/DateRange';
+import useActions from 'renderer/hooks/useActions';
+import { useSelector } from 'react-redux';
 
 const StatisticsPage = () => {
-  const [allCars, setAllCars] = useState(null);
-  const fetchAllCars = async () => {
-    fetch('http://localhost:8000/all_cars')
-      .then((response) => response.json())
-      .then((res) => setAllCars(res))
-      .catch((e) => console.log('error', e));
-  };
+  const { fetchAllCars } = useActions();
+  const allCars = useSelector((store) => store.cars.all);
   useEffect(() => {
     fetchAllCars();
   }, []);
