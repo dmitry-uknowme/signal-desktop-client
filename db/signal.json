@@ -23,6 +23,19 @@
       "date_of_enter": "25.10.2021 10:00",
       "date_of_exit": "25.10.2021 10:30",
       "status": "Выехал"
+    },
+    {
+      "id": 3,
+      "number_plate": "О777ОО777",
+      "weight_brutto": 1500,
+      "weight_netto": 500,
+      "result_weight": 1000,
+      "transporter_company": "ООО \"ЭКОТЕХНОЛОГИИ\"",
+      "cargo_category": "ТКО-4",
+      "cargo_type": "Прочее",
+      "date_of_enter": "25.10.2021 10:00",
+      "date_of_exit": "25.10.2021 10:30",
+      "status": "Выехал"
     }
   ]
 }

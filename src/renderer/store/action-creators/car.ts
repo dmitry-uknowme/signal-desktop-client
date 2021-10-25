@@ -4,6 +4,8 @@ import {
   CarAction,
   AllCarsActionTypes,
   CarsOnTerritoryActionTypes,
+  ICarExited,
+  ICarEntered,
 } from '../types/car';
 
 export const fetchAllCars = () => {
@@ -13,9 +15,29 @@ export const fetchAllCars = () => {
   };
 };
 
-export const fetchCarsOnTerritory = () => {
+export const addCarInAllCars = (payload: ICarExited | any) => {
+  return async (dispatch: React.Dispatch<CarAction>) => {
+    const { data } = await axios.post(
+      'http://localhost:8000/all_cars',
+      payload
+    );
+    dispatch({ type: AllCarsActionTypes.FETCH, payload });
+  };
+};
+
+export const fetchCarsOnTerritory = (payload: ICarEntered | any) => {
   return async (dispatch: React.Dispatch<CarAction>) => {
     const { data } = await axios.get('http://localhost:8000/cars_on_territory');
     dispatch({ type: CarsOnTerritoryActionTypes.FETCH, payload: data });
+  };
+};
+
+export const addCarOnTerritory = (payload: ICarExited | any) => {
+  return async (dispatch: React.Dispatch<CarAction>) => {
+    const { data } = await axios.post(
+      'http://localhost:8000/all_cars',
+      payload
+    );
+    dispatch({ type: AllCarsActionTypes.ADD_CAR, payload: data });
   };
 };
