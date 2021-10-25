@@ -27,6 +27,7 @@ table {
 }
 
 .app {
+  overflow: auto;
   color: #fff;
   position: fixed;
   top: 0;
@@ -114,7 +115,7 @@ table {
 
 .territory__table th {
   font-size: 0.8rem;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem;
 }
 
 .settings__client-id {
@@ -202,3 +203,14 @@ table {
     transform: rotate(360deg);
   }
 }
+/*
+tbody,
+thead tr {
+  display: block !important;
+}
+
+tbody {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+} */

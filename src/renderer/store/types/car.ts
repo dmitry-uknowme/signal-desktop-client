@@ -4,6 +4,7 @@ export interface ICarEntered {
   id: number;
   number_plate: string;
   weight_brutto: string;
+  contractor_company: string;
   transporter_company: string;
   cargo_category: string;
   cargo_type: string;

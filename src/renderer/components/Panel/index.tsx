@@ -17,14 +17,17 @@ const Panel = () => {
   const isDoor2Opened = useSelector((store) => store.controls.door2);
 
   const openModalEnter = () => {
-    dispatch(setIsModalEnterOpened(true));
+    dispatch(
+      setIsModalEnterOpened({
+        weight: (Math.random() * (1000 - 500) + 500).toFixed(0),
+      })
+    );
   };
 
   const openModalExit = () => {
     dispatch(
       setIsModalExitOpened({
-        weight: 700,
-        // autos: [{ id: 1, number_plate: 'о777оо77' }],
+        weight: (Math.random() * (200 - 100) + 100).toFixed(0),
       })
     );
   };

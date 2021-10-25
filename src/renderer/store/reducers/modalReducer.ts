@@ -2,14 +2,17 @@ const SET_IS_MODAL_ENTER_OPENED = 'SET_IS_MODAL_ENTER_OPENED';
 const SET_IS_MODAL_EXIT_OPENED = 'SET_IS_MODAL_EXIT_OPENED';
 
 const defaultState = {
-  modalEnter: false,
+  modalEnter: { opened: false, data: {} },
   modalExit: { opened: false, data: {} },
 };
 
 const modalReducer = (state = defaultState, action) => {
   switch (action.type) {
     case SET_IS_MODAL_ENTER_OPENED:
-      return { ...state, modalEnter: action.payload };
+      return {
+        ...state,
+        modalEnter: { opened: !state.modalEnter.opened, data: action.payload },
+      };
     case SET_IS_MODAL_EXIT_OPENED:
       return {
         ...state,
@@ -20,11 +23,11 @@ const modalReducer = (state = defaultState, action) => {
   }
 };
 
-export const setIsModalEnterOpened = (payload: boolean) => ({
+export const setIsModalEnterOpened = (payload?: any) => ({
   type: SET_IS_MODAL_ENTER_OPENED,
   payload,
 });
-export const setIsModalExitOpened = (payload?: boolean) => ({
+export const setIsModalExitOpened = (payload?: any) => ({
   type: SET_IS_MODAL_EXIT_OPENED,
   payload,
 });

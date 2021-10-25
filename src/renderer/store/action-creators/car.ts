@@ -38,6 +38,6 @@ export const addCarOnTerritory = (payload: ICarExited | any) => {
       'http://localhost:8000/all_cars',
       payload
     );
-    dispatch({ type: AllCarsActionTypes.ADD_CAR, payload: data });
+    dispatch({ type: CarsOnTerritoryActionTypes.ADD_CAR, payload: data });
   };
 };
