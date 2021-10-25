@@ -10,7 +10,7 @@ import { setIsModalExitOpened } from '../../store/reducers/modalReducer';
 const ExitModal = () => {
   const dispatch = useDispatch();
   const modal = useSelector((store) => store.modal.modalExit);
-  const { addCarInAllCars, removeCarFromTerritory } = useActions();
+  const { removeCarFromTerritory } = useActions();
   const carsOnTerritory = useSelector((store) => store.cars.on_territory);
   const isModalVisible = modal.opened;
   const modalData = modal.data;
@@ -40,8 +40,6 @@ const ExitModal = () => {
     const selectedCar = carsOnTerritory.find(
       (car) => car.id === parseInt(formData.id)
     );
-
-    // console.log('brutto', selectedCar);
 
     axios.post('http://localhost:8000/all_cars', {
       ...selectedCar,
@@ -95,6 +93,7 @@ const ExitModal = () => {
                     className="form-control"
                     name="number_plate"
                     required
+                    value={formData.id}
                     onChange={(e) =>
                       setFormData((state) => ({
                         ...state,
@@ -156,6 +155,7 @@ const ExitModal = () => {
                     name="comment_on_exit"
                     rows={5}
                     placeholder="Комментарий"
+                    value={formData.comment_on_exit}
                     onChange={(e) =>
                       setFormData((state) => ({
                         ...state,

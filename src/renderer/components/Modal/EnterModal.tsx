@@ -24,7 +24,19 @@ const EnterModal = () => {
   const modal = useSelector((store) => store.modal.modalEnter);
   const isModalVisible = modal.opened;
   const modalData = modal.data;
-  const closeModal = () => dispatch(setIsModalEnterOpened(false));
+
+  const closeModal = () => {
+    setFormData({
+      number_plate: '',
+      contractor_company: '',
+      transporter_company: 'Неизвестно',
+      cargo_category: '',
+      cargo_type: '',
+      comment_on_enter: '',
+    });
+
+    dispatch(setIsModalEnterOpened(false));
+  };
 
   const animationVariants = {
     modal: {
@@ -106,12 +118,13 @@ const EnterModal = () => {
                   <input
                     className="form-control text-uppercase"
                     name="number_plate"
-                    placeholder="о777oo77"
+                    placeholder="О123ОО123"
                     required
+                    value={formData.number_plate}
                     onChange={(e) =>
                       setFormData((state) => ({
                         ...state,
-                        number_plate: e.target.value,
+                        number_plate: e.target.value.toUpperCase(),
                       }))
                     }
                   />
@@ -128,6 +141,7 @@ const EnterModal = () => {
                     className="form-control"
                     name="contractor_company"
                     required
+                    value={formData.contractor_company}
                     onChange={(e) =>
                       setFormData((state) => ({
                         ...state,
@@ -157,6 +171,7 @@ const EnterModal = () => {
                     className="form-control"
                     name="cargo_category"
                     required
+                    value={formData.cargo_category}
                     onChange={(e) =>
                       setFormData((state) => ({
                         ...state,
@@ -186,6 +201,7 @@ const EnterModal = () => {
                     className="form-control"
                     name="cargo_type"
                     required
+                    value={formData.cargo_type}
                     onChange={(e) =>
                       setFormData((state) => ({
                         ...state,
@@ -216,6 +232,7 @@ const EnterModal = () => {
                     name="comment_on_enter"
                     rows={5}
                     placeholder="Комментарий"
+                    value={formData.comment_on_enter}
                     onChange={(e) =>
                       setFormData((state) => ({
                         ...state,
