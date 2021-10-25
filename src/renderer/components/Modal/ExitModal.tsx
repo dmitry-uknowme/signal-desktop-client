@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
+import { format } from 'date-fns';
+import { ru } from 'date-fns/locale';
 import useActions from 'renderer/hooks/useActions';
 import Button from '../base/Button';
 import { setIsModalExitOpened } from '../../store/reducers/modalReducer';
@@ -44,7 +46,7 @@ const ExitModal = () => {
     axios.post('http://localhost:8000/all_cars', {
       ...selectedCar,
       ...formData,
-      date_of_exit: Date.now(),
+      date_of_exit: format(Date.now(), 'yyyy-MM-dd p', { locale: ru }),
       weight_netto: parseInt(modalData.weight),
       result_weight:
         parseInt(selectedCar.weight_brutto) - parseInt(modalData.weight),

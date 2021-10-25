@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import useActions from 'renderer/hooks/useActions';
+import { format } from 'date-fns';
+import { ru } from 'date-fns/locale';
 import Button from '../base/Button';
 import { setIsModalEnterOpened } from '../../store/reducers/modalReducer';
 
@@ -73,7 +75,7 @@ const EnterModal = () => {
     e.preventDefault();
     addCarOnTerritory({
       ...formData,
-      date_of_enter: Date.now(),
+      date_of_enter: format(Date.now(), 'yyyy-MM-dd p', { locale: ru }),
       weight_brutto: parseInt(modalData.weight),
     });
     closeModal();
