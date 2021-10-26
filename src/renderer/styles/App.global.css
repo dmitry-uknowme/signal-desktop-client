@@ -4,7 +4,7 @@ body {
   margin: 0;
   padding: 0;
   position: relative;
-  font-family: 'Montserrat';
+  font-family: 'Montserrat' !important;
 }
 
 h1,
@@ -40,6 +40,7 @@ table {
 
 .sidebar {
   background: #394264;
+  transition: all 0.5s;
 }
 
 .sidebar__menu {
@@ -57,6 +58,18 @@ table {
   text-align: center;
   background: #11a8ab;
   color: #fff;
+  position: relative;
+}
+
+.sidebar__back {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  left: 2rem;
+  color: #fff;
+  width: 16px;
+  transform: rotate(180deg) translateY(50%);
+  stroke: #fff;
 }
 
 .sidebar__item {
@@ -135,11 +148,76 @@ table {
   padding: 0.4rem 0.6rem;
   background: coral;
   color: #fff;
+  cursor: pointer;
+}
+
+.stats__filter > option {
+  color: coral;
+  background: #fff;
+}
+
+.stats__filter > option:disabled {
+  color: #8e8e8e;
+  background: #fff;
+}
+
+input.stats__filter {
+  cursor: text;
+  max-width: 110px;
+  background: #fff;
+  border: 2px solid coral;
+  color: #000;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+input.stats__filter::placeholder {
+  color: #8e8e8e;
+  background: #fff;
+}
+
+input.stats__filter:focus {
+  outline: none;
+}
+
+.stats__filter-btn-icon {
+  padding: 0.5rem 1rem !important;
+  border-radius: 50%;
+  font-size: 1rem;
 }
 
 .stats__date-picker {
+  background: none;
+  padding: 0;
+  border: 2px solid coral;
+}
+.stats__date-picker:hover {
+  border: 2px solid coral !important;
+}
+
+.stats__date-picker > .rs-picker-toggle {
+  padding-bottom: 0.4rem !important;
+  padding-top: 0.4rem !important;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+
+.stats__date-picker > .rs-picker-toggle:hover {
+  border: none !important;
+}
+
+.stats__date-picker > .rs-picker-toggle > .rs-icon {
   fill: coral !important;
-  margin: auto 0;
+  top: 50% !important;
+  transform: translateY(-50%);
+}
+
+.stats__date-picker > .rs-picker-toggle > .rs-picker-toggle-clean {
+  top: 50% !important;
+  transform: translateY(-50%);
 }
 
 .stats__table td,
@@ -214,3 +292,39 @@ tbody {
   overflow-y: auto;
   overflow-x: hidden;
 } */
+
+@media screen and (max-width: 1300px) {
+  .stats__filter-btn {
+    padding: 0.5rem;
+  }
+
+  h2 {
+    font-size: 1.5rem !important;
+  }
+
+  .state__item {
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  h2 {
+    font-size: 1.2rem !important;
+  }
+
+  .stats__filter {
+    font-size: 0.7rem;
+    padding: 0.2rem;
+  }
+
+  .stats__filter.stats__date-picker {
+    padding: 0;
+  }
+
+  .sidebar {
+    transform: translateX(-200%);
+    position: absolute;
+    z-index: 1000;
+    top: 0;
+  }
+}

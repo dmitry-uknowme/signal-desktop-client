@@ -38,7 +38,7 @@ const Panel = () => {
 
       <div className="panel__form">
         <div className="row mt-3">
-          <div className="col-md-6">
+          <div className="col-md-12">
             <SwitchBox
               name="manual_mode"
               label="Ручное управление"
@@ -48,7 +48,7 @@ const Panel = () => {
           </div>
         </div>
         <div className="row mt-5">
-          <div className="col-md-6">
+          <div className="col-md-12">
             <SwitchBox
               name="door1"
               label="Шлагбаум №1"
@@ -57,7 +57,7 @@ const Panel = () => {
           </div>
         </div>
         <div className="row mt-3">
-          <div className="col-md-6">
+          <div className="col-md-12">
             <SwitchBox
               name="door2"
               label="Шлагбаум №2"
@@ -65,8 +65,8 @@ const Panel = () => {
             />
           </div>
         </div>
-        <div className="row mt-3">
-          <div className="col-md-8">
+        <div className="row mt-4">
+          <div className="col-md-12">
             <Button
               label="Создать запись на въезд"
               variant="success"
@@ -76,7 +76,7 @@ const Panel = () => {
           </div>
         </div>
         <div className="row mt-3">
-          <div className="col-md-8">
+          <div className="col-md-12">
             <Button
               label="Создать запись на выезд"
               variant="danger"

@@ -73,16 +73,16 @@ const PanelPage = () => {
   return (
     <>
       <div className="row panel__row1">
-        <div className="col-md-6">
+        <div className="col-xl-5 col-lg-5">
           <Panel />
         </div>
-        <div className="col-md-6">
+        <div className="col-xl-7 col-lg-7">
           <div className="state h-100">
             <div className="row align-items-center">
-              <div className="col-md-10">
+              <div className="col-xl-9 col-md-9">
                 <h2 className="state__title">Состояние оборудования</h2>
               </div>
-              <div className="col-md-2">
+              <div className="col-xl-2 col-md-1">
                 <svg
                   className="state__refresh"
                   fill="#e67e22"

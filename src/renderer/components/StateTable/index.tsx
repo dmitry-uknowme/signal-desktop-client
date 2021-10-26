@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
 
-import React, { useState, useEffect, Dispatch } from 'react';
+import React from 'react';
 
 interface IHardwareItem {
   name: string;

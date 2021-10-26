@@ -136,7 +136,7 @@ const EnterModal = () => {
             <div className="row mt-4">
               <div className="form-group row align-items-center">
                 <div className="col-md-4">
-                  <label htmlFor="contractor_name">Контрагент</label>
+                  <label htmlFor="contractor_company">Контрагент</label>
                 </div>
                 <div className="col-md-6">
                   <select

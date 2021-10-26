@@ -275,12 +275,14 @@
     "json-server": "^0.17.0",
     "postinstall": "^0.7.3",
     "react": "^17.0.2",
+    "react-date-range": "^1.4.0",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.5",
     "react-router-dom": "^5.2.0",
     "redux": "^4.1.1",
     "redux-thunk": "^2.3.0",
-    "regenerator-runtime": "^0.13.5"
+    "regenerator-runtime": "^0.13.5",
+    "rsuite": "^5.0.3"
   },
   "devEngines": {
     "node": ">=10.x",
