@@ -91,7 +91,7 @@ const StatisticsPage = () => {
                   <DateRangePicker
                     className="stats__filter stats__date-picker d-xl-block"
                     size="sm"
-                    placeholder="Период дат"
+                    // placeholder="Период дат"
                     showOneCalendar
                     placement="bottomEnd"
                     onChange={(e) => console.log('date', e)}
@@ -100,29 +100,29 @@ const StatisticsPage = () => {
                 <Button
                   variant="success"
                   label="Применить"
-                  className="stats__filter-btn stats__filter-apply d-xl-block d-lg-none d-md-none"
+                  className="stats__filter-btn stats__filter-apply d-xl-block d-lg-none d-1300-none d-md-none d-900-none d-sm-none"
                 />
                 <Button
                   variant="success"
                   label="✓"
-                  className="stats__filter-btn stats__filter-btn-icon stats__filter-apply d-xl-none d-lg-block d-md-none d-sm-none"
+                  className="stats__filter-btn stats__filter-btn-icon stats__filter-apply d-xl-none d-lg-block d-1300-block d-md-none d-sm-none"
                 />
                 <Button
                   variant="danger"
                   label="↻"
-                  className="stats__filter-btn stats__filter-btn-icon stats__filter-apply d-xl-none d-lg-block d-md-none d-sm-none"
+                  className="stats__filter-btn stats__filter-btn-icon stats__filter-refresh d-xl-none d-lg-block d-1300-block d-md-none d-sm-none"
                 />
                 <Button
                   variant="danger"
                   label="Сбросить"
-                  className="stats__filter-btn stats__filter-refresh d-xl-block d-lg-none d-md-none"
+                  className="stats__filter-btn stats__filter-refresh d-xl-block d-lg-none d-1300-none d-md-none d-900-none d-sm-none"
                 />
               </div>
-              {/* <div className="row d-xl-none d-lg-flex d-md-flex mt-4">
-                <div className="col-md-2">
+              <div className="row d-xl-none d-lg-flex d-md-flex mt-4">
+                {/* <div className="col-md-2">
                   <input className="stats__filter" placeholder="Гос. номер" />
-                </div>
-                <div className="col-md-4">
+                </div> */}
+                {/* <div className="col-md-4">
                   <CustomProvider locale={ruRu}>
                     <DateRangePicker
                       className="stats__filter stats__date-picker"
@@ -133,22 +133,22 @@ const StatisticsPage = () => {
                       onChange={(e) => console.log('date', e)}
                     />
                   </CustomProvider>
-                </div>
+                </div> */}
                 <div className="col-md-2">
                   <Button
                     variant="success"
                     label="Применить"
-                    className="stats__filter-btn stats__filter-apply d-xl-none d-lg-block w-100"
+                    className="stats__filter-btn stats__filter-apply d-xl-none d-lg-none d-md-none d-900-block w-100"
                   />
                 </div>
                 <div className="col-md-2">
                   <Button
                     variant="danger"
                     label="Сбросить"
-                    className="stats__filter-btn stats__filter-refresh d-xl-none d-lg-block w-100"
+                    className="stats__filter-btn stats__filter-refresh d-xl-none d-lg-none d-md-none d-900-block w-100"
                   />
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
           <div className="row mt-4">
