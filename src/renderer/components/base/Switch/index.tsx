@@ -8,6 +8,7 @@ interface SwitchBoxProps {
   name: string;
   label: string;
   disabled?: boolean;
+  className: string;
   isChecked: boolean;
   setChecked: React.Dispatch<SetStateAction<boolean>>;
 }
@@ -16,6 +17,7 @@ const SwitchBox: React.FC<SwitchBoxProps> = ({
   name,
   label,
   disabled,
+  className,
   isChecked,
   setChecked,
 }) => {
@@ -23,7 +25,7 @@ const SwitchBox: React.FC<SwitchBoxProps> = ({
     <div
       className={`${styles.switch} ${
         disabled ? styles.switchDisabled : ''
-      } d-flex align-items-center`}
+      } d-flex align-items-center ${className}`}
     >
       <div className={styles.switch__body}>
         <input

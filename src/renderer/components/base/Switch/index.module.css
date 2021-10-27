@@ -30,6 +30,7 @@
   cursor: pointer;
   display: inline-block;
   height: 1.4rem;
+  height: inherit;
   overflow: hidden;
   position: relative;
   width: 3rem;
@@ -37,6 +38,7 @@
 
 .switch {
   pointer-events: all;
+  height: 1.4rem;
 }
 
 .switchDisabled .checkbox + .switchbox::after {
@@ -49,10 +51,12 @@
 
 .switch__body {
   height: 1.4rem;
+  height: inherit;
 }
 
 .switch__label {
   font-size: 0.8rem;
+  font-size: inherit;
   color: #fff;
   /* color: #1f2041; */
   margin-left: 0.6rem;

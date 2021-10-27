@@ -73,10 +73,10 @@ const PanelPage = () => {
   return (
     <>
       <div className="row panel__row1">
-        <div className="col-xl-5 col-lg-5">
+        <div className="col-xl-5 col-lg-5 col-md-4">
           <Panel />
         </div>
-        <div className="col-xl-7 col-lg-7">
+        <div className="col-xl-7 col-lg-7 col-md-8">
           <div className="state h-100">
             <div className="row align-items-center">
               <div className="col-xl-9 col-md-9">

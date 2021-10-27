@@ -103,6 +103,11 @@ table {
   height: 55%;
 }
 
+.panel__form-field {
+  font-size: 0.7rem;
+  height: 1.2rem;
+}
+
 .state__title {
   /* color: blueviolet; */
   color: #fff;
@@ -339,6 +344,15 @@ tbody {
   .stats__date-picker > .rs-picker-toggle > .rs-picker-toggle-value {
     font-size: 0.7rem;
   }
+
+  .state,
+  .panel {
+    padding: 1rem 0.5rem;
+  }
+
+  .panel__btn {
+    font-size: 0.6rem;
+  }
 }
 
 @media screen and (max-width: 1000px) {
@@ -375,9 +389,30 @@ tbody {
     z-index: 1000;
     top: 0;
   }
+
+  .panel__btn {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .territory__table th {
+    font-size: 0.7rem;
+    padding: 0.2rem;
+  }
+
+  .territory__table td {
+    padding: 0.6rem 0.4rem;
+  }
 }
 
 @media screen and (max-width: 900px) {
+  h2 {
+    font-size: 1.1rem !important;
+  }
+  .state__item {
+    letter-spacing: -0.05rem;
+  }
+
   .stats__filter-apply {
     font-size: 0.65rem;
     display: block !important;
@@ -399,6 +434,11 @@ tbody {
 
   .stats__table th {
     font-size: 0.65rem;
+  }
+
+  .territory__table td {
+    padding: 0.6rem 0.2rem;
+    font-size: 0.7rem;
   }
 
   .d-900-none {

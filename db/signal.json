@@ -64,6 +64,22 @@
       "weight_netto": 163,
       "result_weight": 577,
       "status": "Выехал"
+    },
+    {
+      "number_plate": "О111ОО111",
+      "contractor_company": "ООО \"ДИСПЕТЧЕР-Б\"",
+      "transporter_company": "Неизвестно",
+      "cargo_category": "ТКО-3",
+      "cargo_type": "Прочее1",
+      "comment_on_enter": "",
+      "date_of_enter": "2021-10-27 16:57",
+      "weight_brutto": 659,
+      "id": 16,
+      "comment_on_exit": "",
+      "date_of_exit": "2021-10-27 17:17",
+      "weight_netto": 179,
+      "result_weight": 480,
+      "status": "Выехал"
     }
   ],
   "contractors": [

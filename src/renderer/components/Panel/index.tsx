@@ -42,6 +42,7 @@ const Panel = () => {
             <SwitchBox
               name="manual_mode"
               label="Ручное управление"
+              className="panel__form-field"
               isChecked={isManualMode}
               setChecked={() => dispatch(setIsManualMode())}
             />
@@ -52,6 +53,7 @@ const Panel = () => {
             <SwitchBox
               name="door1"
               label="Шлагбаум №1"
+              className="panel__form-field"
               disabled={!isManualMode}
             />
           </div>
@@ -61,6 +63,7 @@ const Panel = () => {
             <SwitchBox
               name="door2"
               label="Шлагбаум №2"
+              className="panel__form-field"
               disabled={!isManualMode}
             />
           </div>
@@ -70,6 +73,7 @@ const Panel = () => {
             <Button
               label="Создать запись на въезд"
               variant="success"
+              className="panel__btn"
               disabled={!isManualMode}
               onClick={openModalEnter}
             />
@@ -80,6 +84,7 @@ const Panel = () => {
             <Button
               label="Создать запись на выезд"
               variant="danger"
+              className="panel__btn"
               disabled={!isManualMode}
               onClick={openModalExit}
             />
