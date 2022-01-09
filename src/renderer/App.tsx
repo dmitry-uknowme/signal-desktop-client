@@ -54,7 +54,7 @@ const App = () => {
                   variants={animationVariants.menu}
                 >
                   <h2 className="sidebar__title">
-                    Меню
+                    Scale Manager
                     <svg
                       enableBackground="new 0 0 32 32"
                       id="Слой_1"
@@ -88,7 +88,7 @@ const App = () => {
                   </div>
                 </motion.div>
                 <div className="sidebar h-100 d-xl-block d-lg-block d-md-none">
-                  <h2 className="sidebar__title">Меню</h2>
+                  <h2 className="sidebar__title">Scale Manager</h2>
                   <div className="sidebar__menu">
                     <Link to="/" style={{ textDecoration: 'none' }}>
                       <div className="sidebar__item">Панель управления</div>

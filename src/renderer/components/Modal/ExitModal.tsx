@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +16,9 @@ const ExitModal = () => {
   const carsOnTerritory = useSelector((store) => store.cars.on_territory);
   const isModalVisible = modal.opened;
   const modalData = modal.data;
+  const [terminalWeight, setTerminalWeight] = useState();
+  const [isUpdating, setIsUpdating] = useState(false);
+  const timerRef = useRef(null);
   const closeModal = () => dispatch(setIsModalExitOpened());
 
   const [formData, setFormData] = useState({
@@ -37,29 +40,81 @@ const ExitModal = () => {
     },
   };
 
-  const submitHandler = (e: any) => {
+  // const submitHandler = (e: any) => {
+  //   e.preventDefault();
+  //   const selectedCar = carsOnTerritory.find(
+  //     (car) => car.id === parseInt(formData.id)
+  //   );
+
+  //   axios.post('http://localhost:8000/all_cars', {
+  //     ...selectedCar,
+  //     ...formData,
+  //     date_of_exit: format(Date.now(), 'yyyy-MM-dd p', { locale: ru }),
+  //     weight_netto: parseInt(modalData.weight),
+  //     result_weight:
+  //       parseInt(selectedCar.weight_brutto) - parseInt(modalData.weight),
+  //     id: null,
+  //     status: 'Выехал',
+  //   });
+  //   removeCarFromTerritory(formData.id);
+  //   closeModal();
+  // };
+
+  const submitHandler = async (e: any) => {
     e.preventDefault();
     const selectedCar = carsOnTerritory.find(
       (car) => car.id === parseInt(formData.id)
     );
-
-    axios.post('http://localhost:8000/all_cars', {
+    await axios.post('http://localhost:8000/getAllTransportations', {
       ...selectedCar,
-      ...formData,
-      date_of_exit: format(Date.now(), 'yyyy-MM-dd p', { locale: ru }),
-      weight_netto: parseInt(modalData.weight),
-      result_weight:
-        parseInt(selectedCar.weight_brutto) - parseInt(modalData.weight),
+      commentOnExit: formData.comment_on_exit,
+      dateOfExit: format(Date.now(), 'yyyy-MM-dd p', { locale: ru }),
+      weightNetto: terminalWeight,
+      resultWeight:
+        parseInt(selectedCar.weightBrutto) - parseInt(terminalWeight),
       id: null,
       status: 'Выехал',
     });
-    removeCarFromTerritory(formData.id);
+    await axios.post('http://localhost:8000/createCheckOut', {
+      commentOnExit: formData.comment_on_exit,
+      dateOfExit: format(Date.now(), 'yyyy-MM-dd p', { locale: ru }),
+      weightNetto: terminalWeight,
+      resultWeight:
+        parseInt(selectedCar.weightBrutto) - parseInt(terminalWeight),
+      id: null,
+      status: 'Выехал',
+    });
+    removeCarFromTerritory(parseInt(formData.id));
     closeModal();
   };
 
+  const updateWeight = async () => {
+    setIsUpdating(true);
+    const weightResponse = await axios.get('http://localhost:8000/getScale');
+    setTimeout(() => {
+      setTerminalWeight(weightResponse.data.weight);
+      setIsUpdating(false);
+    }, 500);
+  };
+
   useEffect(() => {
-    setFormData((state) => ({ ...state, id: carsOnTerritory[0]?.id }));
+    if (isModalVisible && carsOnTerritory?.length) {
+      setFormData((state) => ({ ...state, id: carsOnTerritory[0]?.id }));
+    }
   }, [carsOnTerritory]);
+
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      if (isModalVisible) {
+        updateWeight();
+      } else {
+        return clearInterval(timerRef.current);
+      }
+    }, 3000);
+    if (!isModalVisible) {
+      return clearInterval(timerRef.current);
+    }
+  }, [isModalVisible]);
 
   return (
     <motion.div
@@ -81,9 +136,26 @@ const ExitModal = () => {
         variants={animationVariants.modal}
       >
         <div className="container">
-          <h2 className="modal__title text-center">
-            Взвешивание нетто: {modalData?.weight} кг
-          </h2>
+          <div className="modal__header d-flex justify-content-center">
+            <h2 className="modal__title text-center">
+              Взвешивание нетто:{' '}
+              <span style={{ opacity: isUpdating ? '0' : '1' }}>
+                {terminalWeight} &nbsp;кг
+              </span>
+            </h2>
+            <svg
+              className={`state__loader ${isUpdating && 'rotate'}`}
+              fill="#e67e22"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 30 30"
+              width="2rem"
+              height="2rem"
+              style={{ cursor: 'pointer', marginLeft: '2rem' }}
+              onClick={() => updateWeight()}
+            >
+              <path d="M 15 3 C 12.031398 3 9.3028202 4.0834384 7.2070312 5.875 A 1.0001 1.0001 0 1 0 8.5058594 7.3945312 C 10.25407 5.9000929 12.516602 5 15 5 C 20.19656 5 24.450989 8.9379267 24.951172 14 L 22 14 L 26 20 L 30 14 L 26.949219 14 C 26.437925 7.8516588 21.277839 3 15 3 z M 4 10 L 0 16 L 3.0507812 16 C 3.562075 22.148341 8.7221607 27 15 27 C 17.968602 27 20.69718 25.916562 22.792969 24.125 A 1.0001 1.0001 0 1 0 21.494141 22.605469 C 19.74593 24.099907 17.483398 25 15 25 C 9.80344 25 5.5490109 21.062074 5.0488281 16 L 8 16 L 4 10 z" />
+            </svg>
+          </div>
           <form className="modal__form mt-5" onSubmit={submitHandler}>
             <div className="row mt-4">
               <div className="form-group row align-items-center">
@@ -103,10 +175,21 @@ const ExitModal = () => {
                       }))
                     }
                   >
-                    {carsOnTerritory?.length ? (
+                    {/* {carsOnTerritory?.length ? (
                       carsOnTerritory?.map(({ id, number_plate }) => (
                         <option key={id} value={id}>
                           {number_plate}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="" selected disabled>
+                        Нет авто на территории
+                      </option>
+                    )} */}
+                    {carsOnTerritory?.length ? (
+                      carsOnTerritory?.map(({ id, number }) => (
+                        <option key={id} value={id}>
+                          {number}
                         </option>
                       ))
                     ) : (
@@ -178,6 +261,7 @@ const ExitModal = () => {
               <Button
                 label="Разрешить выезд"
                 variant="success"
+                disabled={isUpdating}
                 // onClick={closeModal}
               />
             </div>

@@ -5,24 +5,25 @@ import useActions from 'renderer/hooks/useActions';
 const TerritoryTable = () => {
   const { fetchCarsOnTerritory } = useActions();
   const carsOnTerritory = useSelector((store) => store.cars.on_territory);
+
   useEffect(() => {
     fetchCarsOnTerritory();
   }, []);
-  return (
+  return carsOnTerritory?.length ? (
     <table className="territory__table">
       {/* <thead> */}
       <tr>
         <th>Гос. номер</th>
-        <th>Контрагент</th>
+        {/* <th>Контрагент</th> */}
         <th>Перевозчик</th>
-        <th>Брутто</th>
+        <th>Брутто (г)</th>
         <th>Категория</th>
         <th>Вид груза</th>
         <th>Дата и время въезда</th>
       </tr>
       {/* </thead> */}
       {/* <tbody> */}
-      {carsOnTerritory?.map(
+      {/* {carsOnTerritory?.map(
         ({
           id,
           number_plate,
@@ -43,9 +44,31 @@ const TerritoryTable = () => {
             <td>{date_of_enter}</td>
           </tr>
         )
+      )} */}
+      {carsOnTerritory?.map(
+        ({
+          id,
+          number,
+          organizationShortName,
+          weightBrutto,
+          cargoCategoryTitle,
+          cargoTypeTitle,
+          dateOfEnter,
+        }) => (
+          <tr key={id}>
+            <td>{number}</td>
+            <td>{organizationShortName || 'Не определено'}</td>
+            <td>{weightBrutto}</td>
+            <td>{cargoCategoryTitle || 'Не определено'}</td>
+            <td>{cargoTypeTitle || 'Не определено'}</td>
+            <td>{dateOfEnter || 'Не определено'}</td>
+          </tr>
+        )
       )}
       {/* </tbody> */}
     </table>
+  ) : (
+    ''
   );
 };
 

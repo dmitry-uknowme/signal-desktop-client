@@ -19,25 +19,44 @@ const StatisticsPage = () => {
   //   console.log('calendar', e);
   // };
 
+  // const fetchDropdownFields = async () => {
+  //   const contractorResponse = await axios.get(
+  //     'http://localhost:8000/contractors'
+  //   );
+  //   setContractors(contractorResponse.data);
+
+  //   const cargoCategoriesResponse = await axios.get(
+  //     'http://localhost:8000/cargo_categories'
+  //   );
+  //   setCargoCategories(cargoCategoriesResponse.data);
+
+  //   const cargoTypesResponse = await axios.get(
+  //     'http://localhost:8000/cargo_types'
+  //   );
+  //   setCargoTypes(cargoTypesResponse.data);
+  // };
   const fetchDropdownFields = async () => {
     const contractorResponse = await axios.get(
-      'http://localhost:8000/contractors'
+      'http://localhost:8000/getOrganizations'
     );
-    setContractors(contractorResponse.data);
+    setContractors(contractorResponse.data.items);
 
     const cargoCategoriesResponse = await axios.get(
-      'http://localhost:8000/cargo_categories'
+      'http://localhost:8000/getCargoCategories'
     );
-    setCargoCategories(cargoCategoriesResponse.data);
+    setCargoCategories(cargoCategoriesResponse.data.items);
 
     const cargoTypesResponse = await axios.get(
-      'http://localhost:8000/cargo_types'
+      'http://localhost:8000/getCargoTypes'
     );
-    setCargoTypes(cargoTypesResponse.data);
+    setCargoTypes(cargoTypesResponse.data.items);
   };
+  console.log('carssssss', allCars);
 
   useEffect(() => {
-    setTotalWeight(allCars.reduce((sum, car) => sum + car.weight_netto, 0));
+    setTotalWeight(
+      allCars.reduce((sum, car) => sum + parseInt(car.weightNetto), 0)
+    );
   }, [allCars]);
 
   useEffect(() => {
@@ -57,9 +76,9 @@ const StatisticsPage = () => {
                   <option value="" disabled>
                     Категория груза
                   </option>
-                  {cargoCategories?.map(({ id, name }) => (
-                    <option key={id} value={name}>
-                      {name}
+                  {cargoCategories?.map(({ id, title }) => (
+                    <option key={id} value={id}>
+                      {title}
                     </option>
                   ))}
                 </select>
@@ -67,9 +86,9 @@ const StatisticsPage = () => {
                   <option value="" disabled>
                     Вид груза
                   </option>
-                  {cargoTypes?.map(({ id, name }) => (
-                    <option key={id} value={name}>
-                      {name}
+                  {cargoTypes?.map(({ id, title }) => (
+                    <option key={id} value={id}>
+                      {title}
                     </option>
                   ))}
                 </select>
@@ -77,9 +96,9 @@ const StatisticsPage = () => {
                   <option value="" disabled>
                     Контрагент
                   </option>
-                  {contractors?.map(({ id, name }) => (
-                    <option key={id} value={name}>
-                      {name}
+                  {contractors?.map(({ id, title }) => (
+                    <option key={id} value={id}>
+                      {title}
                     </option>
                   ))}
                 </select>
@@ -158,9 +177,9 @@ const StatisticsPage = () => {
                   <tr>
                     <th>Гос. номер</th>
                     <th>Перевозчик</th>
-                    <th>Брутто</th>
-                    <th>Тара</th>
-                    <th>Нетто</th>
+                    <th>Брутто (г)</th>
+                    <th>Тара (г)</th>
+                    <th>Нетто (г)</th>
                     <th>Категория</th>
                     <th>Вид груза</th>
                     <th>Дата и время въезда</th>
@@ -171,28 +190,39 @@ const StatisticsPage = () => {
                 <tbody>
                   {allCars?.map(
                     ({
+                      // id,
+                      // number_plate,
+                      // transporter_company,
+                      // weight_brutto,
+                      // result_weight,
+                      // weight_netto,
+                      // cargo_category,
+                      // cargo_type,
+                      // date_of_enter,
+                      // date_of_exit,
+                      // status,
                       id,
-                      number_plate,
-                      transporter_company,
-                      weight_brutto,
-                      result_weight,
-                      weight_netto,
-                      cargo_category,
-                      cargo_type,
-                      date_of_enter,
-                      date_of_exit,
+                      number,
+                      organizationShortName,
+                      weightBrutto,
+                      weightNetto,
+                      resultWeight,
+                      cargoCategoryTitle,
+                      cargoTypeTitle,
+                      dateOfEnter,
+                      dateOfExit,
                       status,
                     }) => (
                       <tr key={id}>
-                        <td>{number_plate}</td>
-                        <td>{transporter_company}</td>
-                        <td>{weight_brutto}</td>
-                        <td>{result_weight}</td>
-                        <td>{weight_netto}</td>
-                        <td>{cargo_category}</td>
-                        <td>{cargo_type}</td>
-                        <td>{date_of_enter}</td>
-                        <td>{date_of_exit}</td>
+                        <td>{number}</td>
+                        <td>{organizationShortName || 'Не определено'}</td>
+                        <td>{weightBrutto}</td>
+                        <td>{resultWeight}</td>
+                        <td>{weightNetto}</td>
+                        <td>{cargoCategoryTitle || 'Не определено'}</td>
+                        <td>{cargoTypeTitle || 'Не определено'}</td>
+                        <td>{dateOfEnter || 'Не определено'}</td>
+                        <td>{dateOfExit || 'Не определено'}</td>
                         <td>{status}</td>
                       </tr>
                     )
