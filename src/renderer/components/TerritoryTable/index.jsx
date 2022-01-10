@@ -4,8 +4,7 @@ import useActions from 'renderer/hooks/useActions';
 
 const TerritoryTable = () => {
   const { fetchCarsOnTerritory } = useActions();
-  const carsOnTerritory = useSelector((store) => store.cars.on_territory);
-
+  const carsOnTerritory = useSelector((store) => store.cars.on_territory.items);
   useEffect(() => {
     fetchCarsOnTerritory();
   }, []);
@@ -48,20 +47,20 @@ const TerritoryTable = () => {
       {carsOnTerritory?.map(
         ({
           id,
-          number,
-          organizationShortName,
-          weightBrutto,
-          cargoCategoryTitle,
-          cargoTypeTitle,
-          dateOfEnter,
+          truck_number,
+          contractor_full_name,
+          weight_gross,
+          category_title,
+          type_title,
+          entry_date_time,
         }) => (
           <tr key={id}>
-            <td>{number}</td>
-            <td>{organizationShortName || 'Не определено'}</td>
-            <td>{weightBrutto}</td>
-            <td>{cargoCategoryTitle || 'Не определено'}</td>
-            <td>{cargoTypeTitle || 'Не определено'}</td>
-            <td>{dateOfEnter || 'Не определено'}</td>
+            <td>{truck_number || 'Не определено'}</td>
+            <td>{contractor_full_name || 'Не определено'}</td>
+            <td>{weight_gross || 'Не определено'}</td>
+            <td>{category_title || 'Не определено'}</td>
+            <td>{type_title || 'Не определено'}</td>
+            <td>{entry_date_time || 'Не определено'}</td>
           </tr>
         )
       )}

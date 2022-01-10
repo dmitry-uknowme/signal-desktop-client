@@ -11,7 +11,7 @@ import {
 export const fetchAllCars = () => {
   return async (dispatch: React.Dispatch<CarAction>) => {
     const { data } = await axios.get(
-      'http://localhost:8000/getAllTransportations'
+      `${process.env.API_URL}/getActs?status=STATUS_COMPLETED`
     );
     dispatch({ type: AllCarsActionTypes.FETCH, payload: data });
   };
@@ -30,7 +30,7 @@ export const fetchAllCars = () => {
 export const fetchCarsOnTerritory = (payload: ICarEntered | any) => {
   return async (dispatch: React.Dispatch<CarAction>) => {
     const { data } = await axios.get(
-      'http://localhost:8000/getTransportationsOnTerritory'
+      `${process.env.API_URL}/getActs?status=STATUS_ON_TERRITORY`
     );
     dispatch({ type: CarsOnTerritoryActionTypes.FETCH, payload: data });
   };
@@ -45,16 +45,20 @@ export const fetchCarsOnTerritory = (payload: ICarEntered | any) => {
 export const addCarOnTerritory = (payload: ICarExited | any) => {
   return async (dispatch: React.Dispatch<CarAction>) => {
     const { data } = await axios.post(
-      'http://localhost:8000/createEntry',
+      `${process.env.API_URL}/createEntry`,
       payload
     );
-    await axios.post('http://localhost:8000/getTransportationsOnTerritory', {
-      ...payload,
-      organizationShortName: null,
-      cargoTypeTitle: null,
-      cargoCategoryTitle: null,
+    // console.log('resssss', data);
+    // await axios.post(`${process.env.API_URL}/getTransportationsOnTerritory`, {
+    //   ...payload,
+    //   organizationShortName: null,
+    //   cargoTypeTitle: null,
+    //   cargoCategoryTitle: null,
+    // });
+    dispatch({
+      type: CarsOnTerritoryActionTypes.ADD_CAR,
+      payload: data.response,
     });
-    dispatch({ type: CarsOnTerritoryActionTypes.ADD_CAR, payload: data });
   };
 };
 // export const addCarOnTerritory = (payload: ICarExited | any) => {
@@ -69,10 +73,10 @@ export const addCarOnTerritory = (payload: ICarExited | any) => {
 
 export const removeCarFromTerritory = (payload: number) => {
   return async (dispatch: React.Dispatch<CarAction>) => {
-    await axios.delete(`http://localhost:8000/createEntry/${payload}`);
-    await axios.delete(
-      `http://localhost:8000/getTransportationsOnTerritory/${payload}`
-    );
+    // await axios.delete(`${process.env.API_URL}/createEntry/${payload}`);
+    // await axios.delete(
+    //   `${process.env.API_URL}/getTransportationsOnTerritory/${payload}`
+    // );
     dispatch({ type: CarsOnTerritoryActionTypes.REMOVE_CAR, payload });
   };
 };

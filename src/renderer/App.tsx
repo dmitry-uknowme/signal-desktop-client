@@ -20,6 +20,7 @@ const App = () => {
     },
   };
   const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false);
+
   return (
     <Provider store={store}>
       <div className="app">

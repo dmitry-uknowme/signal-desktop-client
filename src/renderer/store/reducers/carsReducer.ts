@@ -28,15 +28,26 @@ const carReducer = (state = defaultState, action: CarAction) => {
     case CarsOnTerritoryActionTypes.ADD_CAR:
       return {
         ...state,
-        on_territory: [...state.on_territory, action.payload],
+        on_territory: {
+          ...state.on_territory,
+          items: [action.payload, ...state.on_territory.items],
+        },
       };
 
     case CarsOnTerritoryActionTypes.REMOVE_CAR:
       return {
         ...state,
-        on_territory: [
-          ...state.on_territory.filter((car) => car.id !== action.payload),
-        ],
+        on_territory: {
+          ...state.on_territory,
+          items: [
+            ...state.on_territory.items.filter(
+              (car) => car.id !== action.payload
+            ),
+          ],
+        },
+        // on_territory: [
+        //   ...state.on_territory.filter((car) => car.id !== action.payload),
+        // ],
       };
 
     default:

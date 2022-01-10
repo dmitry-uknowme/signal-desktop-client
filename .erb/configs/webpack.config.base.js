@@ -46,8 +46,11 @@ export default {
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
     }),
+    // new Dotenv({
+    //   path: '../../.env',
+    // }),
     new Dotenv({
-      path: '../../.env',
+      path: '.env',
     }),
   ],
 };

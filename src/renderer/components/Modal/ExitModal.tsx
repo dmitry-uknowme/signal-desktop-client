@@ -13,14 +13,14 @@ const ExitModal = () => {
   const dispatch = useDispatch();
   const modal = useSelector((store) => store.modal.modalExit);
   const { removeCarFromTerritory } = useActions();
-  const carsOnTerritory = useSelector((store) => store.cars.on_territory);
+  const carsOnTerritory = useSelector((store) => store.cars.on_territory.items);
   const isModalVisible = modal.opened;
   const modalData = modal.data;
   const [terminalWeight, setTerminalWeight] = useState();
   const [isUpdating, setIsUpdating] = useState(false);
   const timerRef = useRef(null);
   const closeModal = () => dispatch(setIsModalExitOpened());
-
+  // console.log('');
   const [formData, setFormData] = useState({
     id: '',
     comment_on_exit: '',
@@ -58,6 +58,7 @@ const ExitModal = () => {
   //   });
   //   removeCarFromTerritory(formData.id);
   //   closeModal();
+
   // };
 
   const submitHandler = async (e: any) => {
@@ -65,24 +66,21 @@ const ExitModal = () => {
     const selectedCar = carsOnTerritory.find(
       (car) => car.id === parseInt(formData.id)
     );
-    await axios.post('http://localhost:8000/getAllTransportations', {
-      ...selectedCar,
-      commentOnExit: formData.comment_on_exit,
-      dateOfExit: format(Date.now(), 'yyyy-MM-dd p', { locale: ru }),
-      weightNetto: terminalWeight,
-      resultWeight:
-        parseInt(selectedCar.weightBrutto) - parseInt(terminalWeight),
-      id: null,
-      status: 'Выехал',
-    });
-    await axios.post('http://localhost:8000/createCheckOut', {
-      commentOnExit: formData.comment_on_exit,
-      dateOfExit: format(Date.now(), 'yyyy-MM-dd p', { locale: ru }),
-      weightNetto: terminalWeight,
-      resultWeight:
-        parseInt(selectedCar.weightBrutto) - parseInt(terminalWeight),
-      id: null,
-      status: 'Выехал',
+    // await axios.post(`${process.env.API_URL}/getAllTransportations`, {
+    //   ...selectedCar,
+    //   commentOnExit: formData.comment_on_exit,
+    //   dateOfExit: format(Date.now(), 'yyyy-MM-dd p', { locale: ru }),
+    //   weightNetto: terminalWeight,
+    //   resultWeight:
+    //     parseInt(selectedCar.weightBrutto) - parseInt(terminalWeight),
+    //   id: null,
+    //   status: 'Выехал',
+    // });
+
+    await axios.post(`${process.env.API_URL}/createCheckOut`, {
+      actId: formData.id,
+      weight: terminalWeight,
+      commentCheckOut: formData.comment_on_exit,
     });
     removeCarFromTerritory(parseInt(formData.id));
     closeModal();
@@ -90,7 +88,7 @@ const ExitModal = () => {
 
   const updateWeight = async () => {
     setIsUpdating(true);
-    const weightResponse = await axios.get('http://localhost:8000/getScale');
+    const weightResponse = await axios.get(`${process.env.API_URL}/getScale`);
     setTimeout(() => {
       setTerminalWeight(weightResponse.data.weight);
       setIsUpdating(false);
@@ -163,7 +161,7 @@ const ExitModal = () => {
                   <label htmlFor="number_plate">Гос. номер авто</label>
                 </div>
                 <div className="col-md-6">
-                  <select
+                  {/* <select
                     className="form-control"
                     name="number_plate"
                     required
@@ -186,10 +184,35 @@ const ExitModal = () => {
                         Нет авто на территории
                       </option>
                     )} */}
+                  {/* {carsOnTerritory?.length ? (
+                    carsOnTerritory?.map(({ id, truck_number }) => (
+                      <option key={id} value={id}>
+                        {truck_number}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="" selected disabled>
+                      Нет авто на территории
+                    </option>
+                  )} */}
+                  {/* </select> */}
+                  <select
+                    className="form-control"
+                    name="contractor_company"
+                    required
+                    value={formData.id}
+                    onChange={(e) =>
+                      setFormData((state) => ({
+                        ...state,
+                        id: e.target.value,
+                      }))
+                    }
+                  >
+                    <option value="0">Не определен</option>
                     {carsOnTerritory?.length ? (
-                      carsOnTerritory?.map(({ id, number }) => (
+                      carsOnTerritory?.map(({ id, truck_number }) => (
                         <option key={id} value={id}>
-                          {number}
+                          {truck_number}
                         </option>
                       ))
                     ) : (

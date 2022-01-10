@@ -82,24 +82,24 @@ const EnterModal = () => {
 
   const fetchDropdownFields = async () => {
     const contractorResponse = await axios.get(
-      'http://localhost:8000/getOrganizations'
+      `${process.env.API_URL}/getOrganizations?role=ROLE_TRANSPORTER`
     );
     setContractors(contractorResponse.data.items);
 
     const cargoCategoriesResponse = await axios.get(
-      'http://localhost:8000/getCargoCategories'
+      `${process.env.API_URL}/getCargoCategories`
     );
     setCargoCategories(cargoCategoriesResponse.data.items);
 
     const cargoTypesResponse = await axios.get(
-      'http://localhost:8000/getCargoTypes'
+      `${process.env.API_URL}/getCargoTypes`
     );
     setCargoTypes(cargoTypesResponse.data.items);
   };
 
   const updateWeight = async () => {
     setIsUpdating(true);
-    const weightResponse = await axios.get('http://localhost:8000/getScale');
+    const weightResponse = await axios.get(`${process.env.API_URL}/getScale`);
     setTimeout(() => {
       setTerminalWeight(weightResponse.data.weight);
       setIsUpdating(false);
@@ -116,15 +116,25 @@ const EnterModal = () => {
   // };
   const submitHandler = (e: any) => {
     e.preventDefault();
+    // addCarOnTerritory({
+    //   number: formData.number_plate,
+    //   organizationId: formData.contractor_company,
+    //   cargoTypeId: formData.cargo_type,
+    //   cargoCategoryId: formData.cargo_category,
+    //   commentOnEnter: formData.comment_on_enter,
+    //   weightBrutto: terminalWeight,
+    //   dateOfEnter: format(Date.now(), 'yyyy-MM-dd p', { locale: ru }),
+    // });
+
     addCarOnTerritory({
-      number: formData.number_plate,
-      organizationId: formData.contractor_company,
-      cargoTypeId: formData.cargo_type,
-      cargoCategoryId: formData.cargo_category,
-      commentOnEnter: formData.comment_on_enter,
-      weightBrutto: terminalWeight,
-      dateOfEnter: format(Date.now(), 'yyyy-MM-dd p', { locale: ru }),
+      truckNumber: formData.number_plate,
+      contractorId: formData.contractor_company,
+      cargoType: formData.cargo_type,
+      cargoCategory: formData.cargo_category,
+      commentEntry: formData.comment_on_enter,
+      weight: terminalWeight,
     });
+
     closeModal();
   };
 

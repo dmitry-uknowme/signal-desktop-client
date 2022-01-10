@@ -13,7 +13,7 @@ const StatisticsPage = () => {
   const [cargoTypes, setCargoTypes] = useState();
   const [totalWeight, setTotalWeight] = useState();
   const { fetchAllCars } = useActions();
-  const allCars = useSelector((store) => store.cars.all);
+  const allCars = useSelector((store) => store.cars.all.items);
 
   // const changeDateHandler = (e) => {
   //   console.log('calendar', e);
@@ -37,26 +37,29 @@ const StatisticsPage = () => {
   // };
   const fetchDropdownFields = async () => {
     const contractorResponse = await axios.get(
-      'http://localhost:8000/getOrganizations'
+      `${process.env.API_URL}/getOrganizations`
     );
     setContractors(contractorResponse.data.items);
 
     const cargoCategoriesResponse = await axios.get(
-      'http://localhost:8000/getCargoCategories'
+      `${process.env.API_URL}/getCargoCategories`
     );
     setCargoCategories(cargoCategoriesResponse.data.items);
 
     const cargoTypesResponse = await axios.get(
-      'http://localhost:8000/getCargoTypes'
+      `${process.env.API_URL}/getCargoTypes`
     );
     setCargoTypes(cargoTypesResponse.data.items);
   };
-  console.log('carssssss', allCars);
 
   useEffect(() => {
-    setTotalWeight(
-      allCars.reduce((sum, car) => sum + parseInt(car.weightNetto), 0)
-    );
+    if (allCars?.length) {
+      setTotalWeight(
+        allCars.reduce((sum, car) => sum + parseInt(car.weightNetto), 0)
+      );
+    } else {
+      setTotalWeight(0);
+    }
   }, [allCars]);
 
   useEffect(() => {
@@ -96,9 +99,9 @@ const StatisticsPage = () => {
                   <option value="" disabled>
                     Контрагент
                   </option>
-                  {contractors?.map(({ id, title }) => (
+                  {contractors?.map(({ id, full_name }) => (
                     <option key={id} value={id}>
-                      {title}
+                      {full_name}
                     </option>
                   ))}
                 </select>
@@ -170,80 +173,86 @@ const StatisticsPage = () => {
               </div>
             </div>
           </div>
-          <div className="row mt-4">
-            <div className="container">
-              <table className="stats__table">
-                <thead>
-                  <tr>
-                    <th>Гос. номер</th>
-                    <th>Перевозчик</th>
-                    <th>Брутто (г)</th>
-                    <th>Тара (г)</th>
-                    <th>Нетто (г)</th>
-                    <th>Категория</th>
-                    <th>Вид груза</th>
-                    <th>Дата и время въезда</th>
-                    <th>Дата и время выезда</th>
-                    <th>Статус</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {allCars?.map(
-                    ({
-                      // id,
-                      // number_plate,
-                      // transporter_company,
-                      // weight_brutto,
-                      // result_weight,
-                      // weight_netto,
-                      // cargo_category,
-                      // cargo_type,
-                      // date_of_enter,
-                      // date_of_exit,
-                      // status,
-                      id,
-                      number,
-                      organizationShortName,
-                      weightBrutto,
-                      weightNetto,
-                      resultWeight,
-                      cargoCategoryTitle,
-                      cargoTypeTitle,
-                      dateOfEnter,
-                      dateOfExit,
-                      status,
-                    }) => (
-                      <tr key={id}>
-                        <td>{number}</td>
-                        <td>{organizationShortName || 'Не определено'}</td>
-                        <td>{weightBrutto}</td>
-                        <td>{resultWeight}</td>
-                        <td>{weightNetto}</td>
-                        <td>{cargoCategoryTitle || 'Не определено'}</td>
-                        <td>{cargoTypeTitle || 'Не определено'}</td>
-                        <td>{dateOfEnter || 'Не определено'}</td>
-                        <td>{dateOfExit || 'Не определено'}</td>
-                        <td>{status}</td>
+          {allCars?.length ? (
+            <>
+              {' '}
+              <div className="row mt-4">
+                <div className="container">
+                  <table className="stats__table">
+                    <thead>
+                      <tr>
+                        <th>Гос. номер</th>
+                        <th>Перевозчик</th>
+                        <th>Брутто (г)</th>
+                        <th>Тара (г)</th>
+                        <th>Нетто (г)</th>
+                        <th>Категория</th>
+                        <th>Вид груза</th>
+                        <th>Дата и время въезда</th>
+                        <th>Дата и время выезда</th>
+                        <th>Статус</th>
                       </tr>
-                    )
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className="row mt-5">
-            <div className="stats__summary text-uppercase font-bold">
-              Итого: {totalWeight} кг ( {allCars.length}{' '}
-              {allCars.length === 1
-                ? 'взвешивание'
-                : allCars.length % 2 === 0 ||
-                  allCars.length % 3 === 0 ||
-                  allCars.length % 4 === 0
-                ? 'взвешивания'
-                : 'взвешиваний'}{' '}
-              )
-            </div>
-          </div>
+                    </thead>
+                    <tbody>
+                      {allCars?.map(
+                        ({
+                          // id,
+                          // number_plate,
+                          // transporter_company,
+                          // weight_brutto,
+                          // result_weight,
+                          // weight_netto,
+                          // cargo_category,
+                          // cargo_type,
+                          // date_of_enter,
+                          // date_of_exit,
+                          // status,
+                          id,
+                          truck_number,
+                          contractor_full_name,
+                          weight_gross,
+                          weight_container,
+                          category_title,
+                          type_title,
+                          entry_date_time,
+                          check_out_date_time,
+                          status,
+                        }) => (
+                          <tr key={id}>
+                            <td>{truck_number}</td>
+                            <td>{contractor_full_name || 'Не определено'}</td>
+                            <td>{weight_gross}</td>
+                            <td>{weight_container}</td>
+                            <td></td>
+                            <td>{category_title || 'Не определено'}</td>
+                            <td>{type_title || 'Не определено'}</td>
+                            <td>{entry_date_time || 'Не определено'}</td>
+                            <td>{check_out_date_time || 'Не определено'}</td>
+                            <td>{status}</td>
+                          </tr>
+                        )
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="row mt-5">
+                <div className="stats__summary text-uppercase font-bold">
+                  Итого: {totalWeight} кг ( {allCars?.length}{' '}
+                  {allCars?.length === 1
+                    ? 'взвешивание'
+                    : allCars?.length % 2 === 0 ||
+                      allCars?.length % 3 === 0 ||
+                      allCars?.length % 4 === 0
+                    ? 'взвешивания'
+                    : 'взвешиваний'}{' '}
+                  )
+                </div>
+              </div>
+            </>
+          ) : (
+            ''
+          )}
         </div>
       </div>
     </div>
