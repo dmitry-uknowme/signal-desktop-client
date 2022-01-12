@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import Button from 'renderer/components/base/Button';
@@ -6,19 +8,32 @@ import useActions from 'renderer/hooks/useActions';
 import { useSelector } from 'react-redux';
 import { DateRangePicker, CustomProvider } from 'rsuite';
 import axios from 'axios';
+import getTotalPages from 'renderer/utils/getTotalPages';
+import localizeCount from 'renderer/utils/localizeCount';
+
+const PAGE_LIMIT = 2;
 
 const StatisticsPage = () => {
   const [contractors, setContractors] = useState();
   const [cargoCategories, setCargoCategories] = useState();
   const [cargoTypes, setCargoTypes] = useState();
-  const [totalWeight, setTotalWeight] = useState();
   const { fetchAllCars } = useActions();
   const allCars = useSelector((store) => store.cars.all.items);
+  const totalWeight = useSelector((store) => store.cars.all.totalWeight);
+  const countOfCars = useSelector((store) => store.cars.all.totalItemCount);
+  const [countOfPages, setCountOfPages] = useState(
+    getTotalPages(countOfCars, PAGE_LIMIT)
+  );
+  const [currentPage, setCurrentPage] = useState(1);
 
   // const changeDateHandler = (e) => {
   //   console.log('calendar', e);
-  // };
 
+  // };
+  // console.log(
+  //   'storeee',
+  //   useSelector((store) => store.cars.all)
+  // );
   // const fetchDropdownFields = async () => {
   //   const contractorResponse = await axios.get(
   //     'http://localhost:8000/contractors'
@@ -53,17 +68,16 @@ const StatisticsPage = () => {
   };
 
   useEffect(() => {
-    if (allCars?.length) {
-      setTotalWeight(
-        allCars.reduce((sum, car) => sum + parseInt(car.weightNetto), 0)
-      );
-    } else {
-      setTotalWeight(0);
-    }
-  }, [allCars]);
+    fetchAllCars(currentPage, PAGE_LIMIT);
+  }, [currentPage]);
 
   useEffect(() => {
-    fetchAllCars();
+    setCountOfPages(getTotalPages(countOfCars, PAGE_LIMIT));
+  }, [allCars, countOfCars]);
+
+  useEffect(() => {
+    fetchAllCars(currentPage, PAGE_LIMIT);
+    setCountOfPages(getTotalPages(countOfCars, 2));
     fetchDropdownFields();
   }, []);
   return (
@@ -183,9 +197,9 @@ const StatisticsPage = () => {
                       <tr>
                         <th>Гос. номер</th>
                         <th>Перевозчик</th>
-                        <th>Брутто (г)</th>
-                        <th>Тара (г)</th>
-                        <th>Нетто (г)</th>
+                        <th>Брутто (кг)</th>
+                        <th>Тара (кг)</th>
+                        <th>Нетто (кг)</th>
                         <th>Категория</th>
                         <th>Вид груза</th>
                         <th>Дата и время въезда</th>
@@ -212,6 +226,7 @@ const StatisticsPage = () => {
                           contractor_full_name,
                           weight_gross,
                           weight_container,
+                          weight_net,
                           category_title,
                           type_title,
                           entry_date_time,
@@ -223,30 +238,125 @@ const StatisticsPage = () => {
                             <td>{contractor_full_name || 'Не определено'}</td>
                             <td>{weight_gross}</td>
                             <td>{weight_container}</td>
-                            <td></td>
+                            <td>{weight_net}</td>
                             <td>{category_title || 'Не определено'}</td>
                             <td>{type_title || 'Не определено'}</td>
                             <td>{entry_date_time || 'Не определено'}</td>
                             <td>{check_out_date_time || 'Не определено'}</td>
-                            <td>{status}</td>
+                            <td>
+                              {status === 'STATUS_ANNULLED'
+                                ? 'Аннулирован'
+                                : status === 'STATUS_ON_PLATFORM'
+                                ? 'На платформе'
+                                : status === 'STATUS_ON_TERRITORY'
+                                ? 'На территории'
+                                : status === 'STATUS_COMPLETED'
+                                ? 'Завершен'
+                                : ''}
+                            </td>
                           </tr>
                         )
                       )}
                     </tbody>
                   </table>
+                  <div className="pagination mt-4">
+                    <div className="col-md-6 offset-md-3">
+                      <div className="pagination__items d-flex justify-content-center w-100">
+                        {currentPage > 1 && (
+                          <div
+                            className="pagination__item"
+                            style={{
+                              fontSize: '1.4rem',
+                            }}
+                            onClick={() => setCurrentPage((state) => state - 1)}
+                          >
+                            ‹
+                          </div>
+                        )}
+                        {countOfPages > 5 && currentPage > 2 && (
+                          <div
+                            className="pagination__item"
+                            onClick={() => setCurrentPage(1)}
+                          >
+                            1
+                          </div>
+                        )}
+                        {countOfPages > 5 && currentPage >= 4 && (
+                          <div className="pagination__item">...</div>
+                        )}
+                        {currentPage > 1 && (
+                          <div
+                            className="pagination__item"
+                            onClick={() => setCurrentPage((state) => state - 1)}
+                          >
+                            {currentPage - 1}
+                          </div>
+                        )}
+                        <div className="pagination__item _active">
+                          {currentPage}
+                        </div>
+                        {currentPage + 1 < countOfPages && (
+                          <div
+                            className="pagination__item"
+                            onClick={() => setCurrentPage(currentPage + 1)}
+                          >
+                            {currentPage + 1}
+                          </div>
+                        )}
+                        {currentPage + 2 < countOfPages && (
+                          <div
+                            className="pagination__item"
+                            onClick={() => setCurrentPage(currentPage + 2)}
+                          >
+                            {currentPage + 2}
+                          </div>
+                        )}
+                        {currentPage + 3 < countOfPages && (
+                          <div
+                            className="pagination__item"
+                            onClick={() => setCurrentPage(currentPage + 3)}
+                          >
+                            {currentPage + 3}
+                          </div>
+                        )}
+                        {countOfPages > 5 &&
+                          currentPage < countOfPages - 1 &&
+                          currentPage < countOfPages - 4 && (
+                            <div className="pagination__item">...</div>
+                          )}
+                        {currentPage < countOfPages && (
+                          <div
+                            className="pagination__item"
+                            onClick={() => setCurrentPage(countOfPages)}
+                          >
+                            {countOfPages}
+                          </div>
+                        )}
+                        {currentPage < countOfPages && (
+                          <div
+                            className="pagination__item"
+                            style={{
+                              fontSize: '1.4rem',
+                              transform: 'rotate(-180deg)',
+                            }}
+                            onClick={() =>
+                              setCurrentPage((state) =>
+                                state < countOfPages ? state + 1 : state
+                              )
+                            }
+                          >
+                            ‹
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="row mt-5">
                 <div className="stats__summary text-uppercase font-bold">
-                  Итого: {totalWeight} кг ( {allCars?.length}{' '}
-                  {allCars?.length === 1
-                    ? 'взвешивание'
-                    : allCars?.length % 2 === 0 ||
-                      allCars?.length % 3 === 0 ||
-                      allCars?.length % 4 === 0
-                    ? 'взвешивания'
-                    : 'взвешиваний'}{' '}
-                  )
+                  Итого: {totalWeight} кг ( {countOfCars}{' '}
+                  {localizeCount('взвешиван', countOfCars, ['ие', 'ия', 'ий'])}
                 </div>
               </div>
             </>

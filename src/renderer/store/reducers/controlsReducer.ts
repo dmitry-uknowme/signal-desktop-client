@@ -5,7 +5,7 @@ const SET_IS_MANUAL_MODE = 'SET_IS_MANUAL_MODE';
 const defaultState = {
   door1: false,
   door2: false,
-  isManualMode: false,
+  isManualMode: true,
 };
 
 const controlsReducer = (state = defaultState, action) => {

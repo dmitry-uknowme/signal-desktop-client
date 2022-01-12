@@ -8,10 +8,12 @@ import {
   ICarEntered,
 } from '../types/car';
 
-export const fetchAllCars = () => {
+export const fetchAllCars = (page: number, limit: number) => {
   return async (dispatch: React.Dispatch<CarAction>) => {
     const { data } = await axios.get(
-      `${process.env.API_URL}/getActs?status=STATUS_COMPLETED`
+      `${process.env.API_URL}/getActs?status=STATUS_COMPLETED${
+        page ? `&page=${page}` : ''
+      } ${limit ? `&limit=${limit}` : ''}`
     );
     dispatch({ type: AllCarsActionTypes.FETCH, payload: data });
   };
@@ -27,10 +29,12 @@ export const fetchAllCars = () => {
 //   };
 // };
 
-export const fetchCarsOnTerritory = (payload: ICarEntered | any) => {
+export const fetchCarsOnTerritory = (page: number, limit: number) => {
   return async (dispatch: React.Dispatch<CarAction>) => {
     const { data } = await axios.get(
-      `${process.env.API_URL}/getActs?status=STATUS_ON_TERRITORY`
+      `${process.env.API_URL}/getActs?status=STATUS_ON_TERRITORY${
+        page ? `&page=${page}` : ''
+      } ${limit ? `&limit=${limit}` : ''}`
     );
     dispatch({ type: CarsOnTerritoryActionTypes.FETCH, payload: data });
   };

@@ -3,13 +3,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
-import useActions from 'renderer/hooks/useActions';
-import { format } from 'date-fns';
-import { ru } from 'date-fns/locale';
+import useActions from '../../hooks/useActions';
 import Button from '../base/Button';
 
 import { setIsModalEnterOpened } from '../../store/reducers/modalReducer';
+import centrifuge from '../../utils/centrifuge';
 
 const EnterModal = () => {
   const dispatch = useDispatch();
@@ -98,12 +96,19 @@ const EnterModal = () => {
   };
 
   const updateWeight = async () => {
-    setIsUpdating(true);
-    const weightResponse = await axios.get(`${process.env.API_URL}/getScale`);
-    setTimeout(() => {
-      setTerminalWeight(weightResponse.data.weight);
-      setIsUpdating(false);
-    }, 500);
+    centrifuge.on('connect', function (ctx) {
+      console.log('connected', ctx);
+    });
+
+    centrifuge.on('disconnect', function (ctx) {
+      console.log('disconnected', ctx);
+    });
+
+    centrifuge.subscribe('channel', function (ctx) {
+      console.log('weight received', ctx);
+      setTerminalWeight(ctx.data.value);
+    });
+    centrifuge.connect();
   };
   // const submitHandler = (e: any) => {
   //   e.preventDefault();
@@ -144,19 +149,19 @@ const EnterModal = () => {
     }
   }, [isModalVisible]);
 
-  useEffect(() => {
-    timerRef.current = setInterval(() => {
-      if (isModalVisible) {
-        // console.log('timer');
-        updateWeight();
-      } else {
-        return clearInterval(timerRef.current);
-      }
-    }, 3000);
-    if (!isModalVisible) {
-      return clearInterval(timerRef.current);
-    }
-  }, [isModalVisible]);
+  // useEffect(() => {
+  //   timerRef.current = setInterval(() => {
+  //     if (isModalVisible) {
+  //       // console.log('timer');
+  //       updateWeight();
+  //     } else {
+  //       return clearInterval(timerRef.current);
+  //     }
+  //   }, 3000);
+  //   if (!isModalVisible) {
+  //     return clearInterval(timerRef.current);
+  //   }
+  // }, [isModalVisible]);
 
   useEffect(() => {
     updateWeight();

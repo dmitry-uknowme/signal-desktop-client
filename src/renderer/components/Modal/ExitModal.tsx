@@ -3,11 +3,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { format } from 'date-fns';
-import { ru } from 'date-fns/locale';
 import useActions from 'renderer/hooks/useActions';
 import Button from '../base/Button';
 import { setIsModalExitOpened } from '../../store/reducers/modalReducer';
+import centrifuge from '../../utils/centrifuge';
 
 const ExitModal = () => {
   const dispatch = useDispatch();
@@ -20,7 +19,7 @@ const ExitModal = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const timerRef = useRef(null);
   const closeModal = () => dispatch(setIsModalExitOpened());
-  // console.log('');
+
   const [formData, setFormData] = useState({
     id: '',
     comment_on_exit: '',
@@ -63,9 +62,7 @@ const ExitModal = () => {
 
   const submitHandler = async (e: any) => {
     e.preventDefault();
-    const selectedCar = carsOnTerritory.find(
-      (car) => car.id === parseInt(formData.id)
-    );
+
     // await axios.post(`${process.env.API_URL}/getAllTransportations`, {
     //   ...selectedCar,
     //   commentOnExit: formData.comment_on_exit,
@@ -82,37 +79,35 @@ const ExitModal = () => {
       weight: terminalWeight,
       commentCheckOut: formData.comment_on_exit,
     });
-    removeCarFromTerritory(parseInt(formData.id));
+    removeCarFromTerritory(formData.id);
     closeModal();
   };
 
   const updateWeight = async () => {
-    setIsUpdating(true);
-    const weightResponse = await axios.get(`${process.env.API_URL}/getScale`);
-    setTimeout(() => {
-      setTerminalWeight(weightResponse.data.weight);
-      setIsUpdating(false);
-    }, 500);
+    centrifuge.on('connect', function (ctx) {
+      console.log('connected', ctx);
+    });
+
+    centrifuge.on('disconnect', function (ctx) {
+      console.log('disconnected', ctx);
+    });
+
+    centrifuge.subscribe('channel', function (ctx) {
+      console.log('weight received', ctx);
+      setTerminalWeight(ctx.data.value);
+    });
+    centrifuge.connect();
   };
 
   useEffect(() => {
     if (isModalVisible && carsOnTerritory?.length) {
-      setFormData((state) => ({ ...state, id: carsOnTerritory[0]?.id }));
+      updateWeight();
+      setFormData((state) => ({
+        ...state,
+        id: modalData.selectedCar || carsOnTerritory[0]?.id,
+      }));
     }
-  }, [carsOnTerritory]);
-
-  useEffect(() => {
-    timerRef.current = setInterval(() => {
-      if (isModalVisible) {
-        updateWeight();
-      } else {
-        return clearInterval(timerRef.current);
-      }
-    }, 3000);
-    if (!isModalVisible) {
-      return clearInterval(timerRef.current);
-    }
-  }, [isModalVisible]);
+  }, [isModalVisible, carsOnTerritory]);
 
   return (
     <motion.div
@@ -208,7 +203,7 @@ const ExitModal = () => {
                       }))
                     }
                   >
-                    <option value="0">Не определен</option>
+                    {/* <option value="0">Не определен</option> */}
                     {carsOnTerritory?.length ? (
                       carsOnTerritory?.map(({ id, truck_number }) => (
                         <option key={id} value={id}>

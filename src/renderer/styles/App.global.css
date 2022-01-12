@@ -136,6 +136,31 @@ table {
   padding: 0.6rem;
 }
 
+.territory__table td {
+  background: transparent;
+}
+
+.territory__table > .table__row {
+  background: darkslateblue;
+  transition: 0.3s all;
+  cursor: pointer;
+  opacity: 0.7;
+  border-bottom: 1px solid transparent;
+}
+.territory__table > .table__row:hover {
+  /* background: red; */
+  /* box-shadow: 0px 7px 8px 0px rgba(34, 60, 80, 0.2); */
+  border-color: white;
+  background: rgba(72, 61, 139, 0.6);
+  opacity: 1;
+  transform: scaleX(1.01);
+  transform-origin: center;
+}
+
+.territory__table > .table__head {
+  background: transparent;
+}
+
 .settings__client-id {
   width: 94%;
   border: 2px solid turquoise;
@@ -238,6 +263,10 @@ input.stats__filter:focus {
   font-size: 0.85rem;
   padding: 0.6rem 0.4rem;
   background: darkslateblue;
+}
+
+.territory__table td {
+  background: transparent;
 }
 
 .stats__table th,
@@ -448,4 +477,29 @@ tbody {
   .d-900-block {
     display: block !important;
   }
+}
+
+.pagination__item {
+  /* background: blanchedalmond; */
+  /* padding: 0.5rem; */
+  font-size: 1.1rem;
+  background: coral;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  color: crimson;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: beige;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: all 0.5s;
+}
+
+.pagination__item._active {
+  background: white;
+  color: coral;
+  border: coral 1px solid;
 }
