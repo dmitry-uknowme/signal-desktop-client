@@ -7,7 +7,7 @@ import Button from '../base/Button';
 import { setIsModalExitOpened } from '../../store/reducers/modalReducer';
 import getTotalPages from '../../utils/getTotalPages';
 
-const PAGE_LIMIT = 1;
+const PAGE_LIMIT = 10;
 
 const TerritoryTable = () => {
   const dispatch = useDispatch();
@@ -114,96 +114,108 @@ const TerritoryTable = () => {
         )}
         {/* </tbody> */}
       </table>
-      <div className="pagination mt-4">
-        <div className="col-md-6 offset-md-3">
-          <div className="pagination__items d-flex justify-content-center w-100">
-            {currentPage > 1 && (
-              <div
-                className="pagination__item"
-                style={{
-                  fontSize: '1.4rem',
-                }}
-                onClick={() => setCurrentPage((state) => state - 1)}
-              >
-                ‹
-              </div>
-            )}
-            {countOfPages > 5 && currentPage > 2 && (
-              <div
-                className="pagination__item"
-                onClick={() => setCurrentPage(1)}
-              >
-                1
-              </div>
-            )}
-            {countOfPages > 5 && currentPage >= 4 && (
-              <div className="pagination__item">...</div>
-            )}
-            {currentPage > 1 && (
-              <div
-                className="pagination__item"
-                onClick={() => setCurrentPage((state) => state - 1)}
-              >
-                {currentPage - 1}
-              </div>
-            )}
-            <div className="pagination__item _active">{currentPage}</div>
-            {currentPage + 1 < countOfPages && (
-              <div
-                className="pagination__item"
-                onClick={() => setCurrentPage(currentPage + 1)}
-              >
-                {currentPage + 1}
-              </div>
-            )}
-            {currentPage + 2 < countOfPages && (
-              <div
-                className="pagination__item"
-                onClick={() => setCurrentPage(currentPage + 2)}
-              >
-                {currentPage + 2}
-              </div>
-            )}
-            {currentPage + 3 < countOfPages && (
-              <div
-                className="pagination__item"
-                onClick={() => setCurrentPage(currentPage + 3)}
-              >
-                {currentPage + 3}
-              </div>
-            )}
-            {countOfPages > 5 &&
-              currentPage < countOfPages - 1 &&
-              currentPage < countOfPages - 4 && (
-                <div className="pagination__item">...</div>
+      {countOfPages > 1 && (
+        <div className="pagination mt-4">
+          <div className="col-md-6 offset-md-3">
+            <div className="pagination__items d-flex justify-content-center w-100">
+              {currentPage > 1 && (
+                <div
+                  className="pagination__item"
+                  style={{
+                    fontSize: '1.4rem',
+                  }}
+                  onClick={() => setCurrentPage((state) => state - 1)}
+                >
+                  ‹
+                </div>
               )}
-            {currentPage < countOfPages && (
-              <div
-                className="pagination__item"
-                onClick={() => setCurrentPage(countOfPages)}
-              >
-                {countOfPages}
-              </div>
-            )}
-            {currentPage < countOfPages && (
-              <div
-                className="pagination__item"
-                style={{
-                  fontSize: '1.4rem',
-                  transform: 'rotate(-180deg)',
-                }}
-                onClick={() =>
-                  setCurrentPage((state) =>
-                    state < countOfPages ? state + 1 : state
-                  )
-                }
-              >
-                ‹
-              </div>
-            )}
+              {countOfPages > 5 && currentPage > 2 && (
+                <div
+                  className="pagination__item"
+                  onClick={() => setCurrentPage(1)}
+                >
+                  1
+                </div>
+              )}
+              {countOfPages > 5 && currentPage >= 4 && (
+                <div
+                  className="pagination__item"
+                  style={{ cursor: 'default', background: 'coral' }}
+                >
+                  ...
+                </div>
+              )}
+              {currentPage > 1 && (
+                <div
+                  className="pagination__item"
+                  onClick={() => setCurrentPage((state) => state - 1)}
+                >
+                  {currentPage - 1}
+                </div>
+              )}
+              <div className="pagination__item _active">{currentPage}</div>
+              {currentPage + 1 < countOfPages && (
+                <div
+                  className="pagination__item"
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                >
+                  {currentPage + 1}
+                </div>
+              )}
+              {currentPage + 2 < countOfPages && (
+                <div
+                  className="pagination__item"
+                  onClick={() => setCurrentPage(currentPage + 2)}
+                >
+                  {currentPage + 2}
+                </div>
+              )}
+              {currentPage + 3 < countOfPages && (
+                <div
+                  className="pagination__item"
+                  onClick={() => setCurrentPage(currentPage + 3)}
+                >
+                  {currentPage + 3}
+                </div>
+              )}
+              {countOfPages > 5 &&
+                currentPage < countOfPages - 1 &&
+                currentPage < countOfPages - 4 && (
+                  <div
+                    className="pagination__item"
+                    style={{ cursor: 'default', background: 'coral' }}
+                  >
+                    ...
+                  </div>
+                )}
+              {currentPage < countOfPages && (
+                <div
+                  className="pagination__item"
+                  onClick={() => setCurrentPage(countOfPages)}
+                >
+                  {countOfPages}
+                </div>
+              )}
+              {currentPage < countOfPages && (
+                <div
+                  className="pagination__item"
+                  style={{
+                    fontSize: '1.4rem',
+                    transform: 'rotate(-180deg)',
+                  }}
+                  onClick={() =>
+                    setCurrentPage((state) =>
+                      state < countOfPages ? state + 1 : state
+                    )
+                  }
+                >
+                  ‹
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   ) : (
     ''

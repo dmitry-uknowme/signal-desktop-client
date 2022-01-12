@@ -498,6 +498,10 @@ tbody {
   transition: all 0.5s;
 }
 
+.pagination__item:hover {
+  background: rgba(255, 127, 80, 0.7);
+}
+
 .pagination__item._active {
   background: white;
   color: coral;

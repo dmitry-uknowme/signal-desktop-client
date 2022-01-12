@@ -24,15 +24,15 @@ const PanelPage = () => {
         },
         {
           name: 'Шлагбаум №1',
-          status: 'online',
+          status: 'offline',
         },
         {
           name: 'Шлагбаум №2',
-          status: 'online',
+          status: 'offline',
         },
         {
           name: 'Камера №1',
-          status: 'online',
+          status: 'offline',
         },
         {
           name: 'Камера №2',
