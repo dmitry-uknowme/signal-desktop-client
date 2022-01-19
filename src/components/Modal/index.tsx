@@ -1,22 +1,25 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ButtonProps } from 'rsuite';
-import Button from '../base/Button';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { ButtonProps } from 'rsuite'
+import Button from '../base/Button'
 
 interface ModalProps {
-  isVisible: boolean;
-  headerText: string;
-  bodyText: string;
-  btns?: ButtonProps[];
+  isVisible: boolean
+  headerText: string
+  bodyText?: string
+  body?: React.ReactNode
+  btns?: ButtonProps[]
 }
 
 const Modal: React.FC<ModalProps> = ({
   isVisible,
   headerText,
   bodyText,
+  body,
   btns,
 }) => {
+  const Body = body
   const animationVariants = {
     modal: {
       show: { x: '-50%', y: '-50%' },
@@ -29,7 +32,7 @@ const Modal: React.FC<ModalProps> = ({
       },
       hide: { pointerEvents: 'none', opacity: 0 },
     },
-  };
+  }
   return (
     <motion.div
       className="modal__wrapper"
@@ -54,11 +57,11 @@ const Modal: React.FC<ModalProps> = ({
             <h2 className="modal__title text-center">{headerText}</h2>
           </div>
           <div className="modal__body">
-            <p className="text-center">{bodyText}</p>
+            <p className="text-center">{bodyText || Body}</p>
           </div>
           {btns?.length ? (
             <div className="modal__footer">
-              {btns.map((btn) => (
+              {btns.map(btn => (
                 <div className="col-md-8">
                   <Button {...btn} />
                 </div>
@@ -70,7 +73,7 @@ const Modal: React.FC<ModalProps> = ({
         </div>
       </motion.div>
     </motion.div>
-  );
-};
+  )
+}
 
-export default Modal;
+export default Modal

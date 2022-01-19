@@ -121,11 +121,13 @@ const StatisticsPage = () => {
                   className="stats__filter d-xl-block"
                   placeholder="Гос. номер"
                 />
+                <br />
                 <CustomProvider locale={ruRu}>
                   <DateRangePicker
                     className="stats__filter stats__date-picker d-xl-block"
                     size="sm"
-                    // placeholder="Период дат"
+                    format="dd.MM.yy"
+                    placeholder="дд.мм.гг-дд.мм.гг"
                     showOneCalendar
                     placement="bottomEnd"
                     onChange={e => console.log('date', e)}
@@ -368,8 +370,8 @@ const StatisticsPage = () => {
               </div>
               <div className="row mt-5">
                 <div className="stats__summary text-uppercase font-bold">
-                  Итого: {totalWeight} кг ( {countOfCars}{' '}
-                  {localizeCount('взвешиван', countOfCars, ['ие', 'ия', 'ий'])}
+                  Итого: {totalWeight} кг ({countOfCars}{' '}
+                  {localizeCount('взвешиван', countOfCars, ['ие', 'ия', 'ий'])})
                 </div>
               </div>
             </>

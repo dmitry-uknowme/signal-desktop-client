@@ -29,7 +29,10 @@ const App = () => {
         <BrowserRouter>
           <div className="container-fluid h-100">
             <div className="row h-100">
-              <div className="col-xl-2 col-lg-2 col-md-1">
+              <div
+                className="col-xl-2 col-lg-2 col-md-1"
+                style={{ paddingLeft: '0' }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 30 30"

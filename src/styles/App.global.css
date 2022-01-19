@@ -27,7 +27,7 @@ table {
 }
 
 .app {
-  overflow: auto;
+  overflow-x: hidden;
   color: #fff;
   position: fixed;
   top: 0;
@@ -65,7 +65,7 @@ table {
   cursor: pointer;
   position: absolute;
   top: 50%;
-  left: 2rem;
+  left: 0.8rem;
   color: #fff;
   width: 16px;
   transform: rotate(180deg) translateY(50%);
@@ -101,6 +101,15 @@ table {
 
 .panel__row2 {
   height: 55%;
+}
+
+@media screen and (max-width: 900px) {
+  .panel__row1 {
+    height: auto;
+  }
+  .panel__row2 {
+    height: auto;
+  }
 }
 
 .panel__form-field {
@@ -375,7 +384,10 @@ tbody {
   }
 
   .state,
-  .panel {
+  .panel,
+  .stats,
+  .settings,
+  .territory {
     padding: 1rem 0.5rem;
   }
 

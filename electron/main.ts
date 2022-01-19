@@ -17,11 +17,16 @@ function createWindow() {
     height: 700,
     // backgroundColor: '#fff',
     webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+      webSecurity: false,
     },
+    minWidth: 800,
+    minHeight: 600,
+    show: false,
   })
+
+  mainWindow.maximize()
+  mainWindow.show()
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
@@ -49,6 +54,17 @@ app
   .then(registerListeners)
   .catch(e => console.error(e))
 
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       scriptSrc: ["'self'", 'example.com'],
+//       objectSrc: ["'none'"],
+//       upgradeInsecureRequests: [],
+//     },
+//   })
+// )
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
@@ -60,3 +76,16 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+// app.
+
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       scriptSrc: ["'self'", 'example.com'],
+//       objectSrc: ["'none'"],
+//       upgradeInsecureRequests: [],
+//     },
+//   })
+// )

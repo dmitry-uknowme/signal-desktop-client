@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Button from '../components/base/Button'
 import Modal from '../components/Modal'
+import StateTable from '../components/StateTable'
 
 const SettingsPage = () => {
   const savedSettingsRef = useRef(null)
@@ -12,7 +13,7 @@ const SettingsPage = () => {
   // })
   const [settings, setSettings] = useState({
     serverURL: '62.109.23.190:44',
-    polygonName: 'ООО Спецэкотранс',
+    polygonName: 'ООО "Спецэкотранс"',
     clientId:
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
   })
@@ -22,26 +23,61 @@ const SettingsPage = () => {
     bodyText: '',
   })
 
-  // const checkServerConnection = () => {
-  //   setModal((state) => ({
-  //     ...state,
-  //     isVisible: true,
-  //     headerText: 'Проверка соединения с сервером',
-  //   }));
-  //   setTimeout(
-  //     () =>
-  //       setModal((state) => ({
-  //         ...state,
-  //         bodyText:
-  //           'Соединение с сервером на полигоне ОК\n Соединение с центральным сервером ОК\n Соединение с весовым терминалом ОК',
-  //       })),
-  //     500
-  //   );
-  //   setTimeout(
-  //     () => setModal((state) => ({ ...state, isVisible: false })),
-  //     5000
-  //   );
-  // };
+  const checkServerConnection = () => {
+    setModal(state => ({
+      ...state,
+      isVisible: true,
+      headerText: 'Проверка соединения с сервером',
+    }))
+    setTimeout(
+      () =>
+        setModal(state => ({
+          ...state,
+          body: (
+            <StateTable
+              distanceToNow="aaaa"
+              isRefreshing={false}
+              isNotShowDate={true}
+              data={[
+                {
+                  name: 'Связь с сервером',
+                  status: 'online',
+                },
+                {
+                  name: 'Шлагбаум №1',
+                  status: 'offline',
+                },
+                {
+                  name: 'Шлагбаум №2',
+                  status: 'offline',
+                },
+                {
+                  name: 'Камера №1',
+                  status: 'offline',
+                },
+                {
+                  name: 'Камера №2',
+                  status: 'offline',
+                },
+                {
+                  name: 'Весовой терминал',
+                  status: 'online',
+                },
+                {
+                  name: 'RFID',
+                  status: 'error',
+                },
+              ]}
+            />
+          ),
+
+          // bodyText:
+          //   'Соединение с сервером на полигоне ОК\n Соединение с центральным сервером ОК\n Соединение с весовым терминалом ОК',
+        })),
+      500
+    )
+    setTimeout(() => setModal(state => ({ ...state, isVisible: false })), 5000)
+  }
 
   const saveSettings = () => {
     localStorage.setItem('settings', JSON.stringify(settings))
@@ -63,7 +99,12 @@ const SettingsPage = () => {
         <div className="row h-100">
           <div className="col-md-12 h-100">
             <div className="settings h-100">
-              <div className="row align-items-center">
+              <div className="row">
+                <div className="col-xl-9 col-md-9">
+                  <h2 className="state__title">Настройки приложения</h2>
+                </div>
+              </div>
+              <div className="row align-items-center mt-4">
                 <div className="col-md-3">Адрес сервера</div>
                 <div className="col-md-4">
                   <input
@@ -84,9 +125,9 @@ const SettingsPage = () => {
                     label="Проверить соединение"
                     variant="check"
                     className="w-100"
-                    // onClick={() => {
-                    //   checkServerConnection()
-                    // }}
+                    onClick={() => {
+                      checkServerConnection()
+                    }}
                   />
                 </div>
               </div>

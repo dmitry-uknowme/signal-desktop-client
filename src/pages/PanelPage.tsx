@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { formatISO, formatDistanceToNow } from 'date-fns';
-import { ru } from 'date-fns/locale';
-import Panel from '../components/Panel';
-import StateTable from '../components/StateTable';
-import TerritoryTable from '../components/TerritoryTable';
+import React, { useState, useEffect } from 'react'
+import { formatISO, formatDistanceToNow } from 'date-fns'
+import { ru } from 'date-fns/locale'
+import Panel from '../components/Panel'
+import StateTable from '../components/StateTable'
+import TerritoryTable from '../components/TerritoryTable'
 
 const PanelPage = () => {
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [lastRefreshDate, setLastRefreshDate] = useState(Date.now());
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [lastRefreshDate, setLastRefreshDate] = useState(Date.now())
   // console.log('date', formatISO(lastRefreshDate, { representation: 'time' }));
   const [distanceToNow, setDistanceToNow] = useState(
     formatDistanceToNow(lastRefreshDate, { locale: ru, addSuffix: true })
-  );
-  const [hardwareState, setHardwareState] = useState();
+  )
+  const [hardwareState, setHardwareState] = useState()
 
   const fetchHardwareState = async () => {
-    setIsRefreshing(true);
+    setIsRefreshing(true)
     setTimeout(() => {
       setHardwareState([
         {
@@ -46,29 +46,29 @@ const PanelPage = () => {
           name: 'RFID',
           status: 'error',
         },
-      ]);
-      setIsRefreshing(false);
-      setLastRefreshDate(Date.now());
-    }, 500);
-  };
+      ])
+      setIsRefreshing(false)
+      setLastRefreshDate(Date.now())
+    }, 500)
+  }
 
   useEffect(() => {
-    setLastRefreshDate(Date.now());
+    setLastRefreshDate(Date.now())
 
-    fetchHardwareState();
-  }, []);
+    fetchHardwareState()
+  }, [])
 
   useEffect(() => {
     setDistanceToNow(
       formatDistanceToNow(lastRefreshDate, { locale: ru, addSuffix: true })
-    );
+    )
     let timer = setInterval(() => {
       setDistanceToNow(
         formatDistanceToNow(lastRefreshDate, { locale: ru, addSuffix: true })
-      );
-    }, 60000);
-    return () => clearInterval(timer);
-  }, [lastRefreshDate]);
+      )
+    }, 60000)
+    return () => clearInterval(timer)
+  }, [lastRefreshDate])
 
   return (
     <>
@@ -76,7 +76,10 @@ const PanelPage = () => {
         <div className="col-xl-5 col-lg-5 col-md-4">
           <Panel />
         </div>
-        <div className="col-xl-7 col-lg-7 col-md-8">
+        <div
+          className="col-xl-7 col-lg-7 col-md-8"
+          style={{ paddingRight: '0' }}
+        >
           <div className="state h-100">
             <div className="row align-items-center">
               <div className="col-xl-9 col-md-9">
@@ -101,12 +104,13 @@ const PanelPage = () => {
               isRefreshing={isRefreshing}
               distanceToNow={distanceToNow}
               data={hardwareState}
+              isNotShowDate={false}
             />
           </div>
         </div>
       </div>
-      <div className="row panel__row2 mt-3">
-        <div className="col-md-12">
+      <div className="row panel__row2 mt-4">
+        <div className="col-md-12" style={{ paddingRight: '0' }}>
           <div className="territory h-100">
             <h2 className="territory__title">На территории</h2>
             <TerritoryTable />
@@ -114,7 +118,7 @@ const PanelPage = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default PanelPage;
+export default PanelPage

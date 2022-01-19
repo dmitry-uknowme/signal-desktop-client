@@ -1,28 +1,30 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
 
-import React from 'react';
+import React from 'react'
 
 interface IHardwareItem {
-  name: string;
-  status: string;
+  name: string
+  status: string
 }
 
 interface HardwareTableProps {
-  isRefreshing: boolean;
-  distanceToNow: string;
-  data: IHardwareItem[];
+  isRefreshing: boolean
+  distanceToNow: string
+  data: IHardwareItem[]
+  isNotShowDate: boolean
 }
 
 const StateTable: React.FC<HardwareTableProps> = ({
   isRefreshing,
   distanceToNow,
   data,
+  isNotShowDate,
 }) => {
   return (
     <div className="state__table h-100">
       <div className="row align-items-center">
-        <div className="col-md-4">
+        <div className={isNotShowDate ? 'col-md-6 offset-md-1' : 'col-md-4'}>
           <div className="row flex-column">
             {data?.map(({ name }) => (
               <div className="col-md-12 state__item" key={name}>
@@ -47,7 +49,7 @@ const StateTable: React.FC<HardwareTableProps> = ({
           </div>
         ) : (
           <>
-            <div className="col-md-2">
+            <div className={isNotShowDate ? 'col-md-4' : 'col-md-2'}>
               <div className="row flex-column">
                 {data?.map(({ name, status }) => (
                   <div className="col-md-12 state__item" key={name}>
@@ -77,20 +79,22 @@ const StateTable: React.FC<HardwareTableProps> = ({
                 ))}
               </div>
             </div>
-            <div className="col-md-6">
-              <div className="row flex-column">
-                {data?.map(({ name, status }) => (
-                  <div className="col-md-12 state__item" key={name}>
-                    Обновлено: &nbsp; {distanceToNow}
-                  </div>
-                ))}
+            {!isNotShowDate && (
+              <div className="col-md-6">
+                <div className="row flex-column">
+                  {data?.map(({ name, status }) => (
+                    <div className="col-md-12 state__item" key={name}>
+                      Обновлено: &nbsp; {distanceToNow}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </>
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default StateTable;
+export default StateTable
