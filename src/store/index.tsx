@@ -1,15 +1,15 @@
-import { combineReducers, createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import controlsReducer from './reducers/controlsReducer';
-import modalReducer from './reducers/modalReducer';
-import carsReducer from './reducers/carsReducer';
+import { combineReducers, createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+import gateReducer from './reducers/gateReducer'
+import modalReducer from './reducers/modalReducer'
+import carsReducer from './reducers/carsReducer'
 
 const rootReducer = combineReducers({
-  controls: controlsReducer,
+  gate: gateReducer,
   modal: modalReducer,
   cars: carsReducer,
-});
+})
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, applyMiddleware(thunk))
 
-export default store;
+export default store

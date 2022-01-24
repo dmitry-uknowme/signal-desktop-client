@@ -519,3 +519,50 @@ tbody {
   color: coral;
   border: coral 1px solid;
 }
+
+/* .panel__alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+} */
+
+.panel__alert-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 50;
+  opacity: 0;
+  transition: all 0.3s;
+  pointer-events: none;
+}
+
+.panel__alert-overlay._active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.panel__alert-window {
+  width: 40%;
+  padding: 1rem 2rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: #fff;
+  transition: all 0.5s;
+  z-index: 100;
+  color: #000;
+}
+
+.panel__alert-window._active {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.panel__alert-title {
+  color: #fff;
+}
