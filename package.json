@@ -147,7 +147,8 @@
               "owner": "dmitry-uknowme",
               "name": "signal-desktop-client"
             },
-            "authToken": "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"
+            "authToken": "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",
+            "draft": true
           }
         }
       ]
