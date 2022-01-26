@@ -7,9 +7,11 @@ import {
   IGateModes,
 } from '../types/gate'
 
+const API_URL = 'http://127.0.0.1:81/v1'
+
 export const fetchGateStatus = () => {
   return async (dispatch: React.Dispatch<GateAction>) => {
-    const { data } = await axios.get(`http://62.109.23.190:44/v1/getGateStatus`)
+    const { data } = await axios.get(`${API_URL}/getGateStatus`)
     if (data.status === 'success') {
       dispatch({ type: GateActionTypes.FETCH_GATES, payload: data })
     }
@@ -18,10 +20,9 @@ export const fetchGateStatus = () => {
 
 export const openGate = (id: GatesIds) => {
   return async (dispatch: React.Dispatch<GateAction>) => {
-    const { data } = await axios.post(
-      `http://62.109.23.190:44/v1/unlockedGate`,
-      { gate: id }
-    )
+    const { data } = await axios.post(`${API_URL}/unlockedGate`, {
+      gate: id,
+    })
     if (data.status === 'success' && data.allow === true) {
       dispatch({ type: GateActionTypes.OPEN_GATE, payload: id })
     }
@@ -31,7 +32,7 @@ export const openGate = (id: GatesIds) => {
 export const closeGate = (id: GatesIds) => {
   return async (dispatch: React.Dispatch<GateAction>) => {
     axios
-      .post(`http://62.109.23.190:44/v1/lockedGatedad`, {
+      .post(`${API_URL}/lockedGate`, {
         gate: id,
       })
       .then(response => {
@@ -83,7 +84,7 @@ export const closeGate = (id: GatesIds) => {
 export const switchGateMode = (mode: IGateModes) => {
   return async (dispatch: React.Dispatch<GateAction>) => {
     axios
-      .post(`http://62.109.23.190:44/v1/switchMode  `, { command: mode })
+      .post(`${API_URL}/switchMode  `, { command: mode })
       .then(response => {
         const data = response.data
         if (data.status === 'success') {

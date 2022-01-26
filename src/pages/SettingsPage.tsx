@@ -6,17 +6,17 @@ import StateTable from '../components/StateTable'
 
 const SettingsPage = () => {
   const savedSettingsRef = useRef(null)
-  // const [settings, setSettings] = useState({
-  //   serverURL: process.env.API_URL.split('/')[2],
-  //   polygonName: process.env.POLYGON_NAME,
-  //   clientId: process.env.CLIENT_ID,
-  // })
   const [settings, setSettings] = useState({
-    serverURL: '62.109.23.190:44',
-    polygonName: 'ООО "Спецэкотранс"',
-    clientId:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+    serverURL: (process.env.API_URL as string)?.split('/')[2],
+    polygonName: process.env.POLYGON_NAME,
+    clientId: process.env.CLIENT_ID,
   })
+  // const [settings, setSettings] = useState({
+  //   serverURL: '127.0.0.1:81',
+  //   polygonName: 'ООО "Спецэкотранс"',
+  //   clientId:
+  //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+  // })
   const [modal, setModal] = useState({
     isVisible: false,
     headerText: '',
@@ -45,11 +45,11 @@ const SettingsPage = () => {
                 },
                 {
                   name: 'Шлагбаум №1',
-                  status: 'offline',
+                  status: 'online',
                 },
                 {
                   name: 'Шлагбаум №2',
-                  status: 'offline',
+                  status: 'online',
                 },
                 {
                   name: 'Камера №1',
@@ -87,10 +87,14 @@ const SettingsPage = () => {
     savedSettingsRef.current = localStorage.getItem('settings')
       ? JSON.parse(localStorage.getItem('settings'))
       : null
-    if (savedSettingsRef.current) {
+    if (savedSettingsRef?.current) {
       setSettings(savedSettingsRef.current)
     }
   }, [])
+
+  // useEffect(() => {
+  //   saveSettings()
+  // }, [settings])
 
   return (
     <div className="row h-100">
@@ -173,12 +177,28 @@ const SettingsPage = () => {
                 </div>
               </div>
               <div className="row mt-5">
-                <div className="col-md-3">
+                <div className="col-md-3 offset-md-3">
                   <Button
                     label="Сохранить всё"
                     variant="success"
                     className="panel__btn"
                     onClick={() => saveSettings()}
+                  />
+                </div>
+                <div className="col-md-3 offset-md-1">
+                  <Button
+                    label="Настройки по умолчанию"
+                    variant="danger"
+                    className="panel__btn"
+                    onClick={() =>
+                      setSettings({
+                        serverURL: (process.env.API_URL as string)?.split(
+                          '/'
+                        )[2],
+                        polygonName: process.env.POLYGON_NAME,
+                        clientId: process.env.CLIENT_ID,
+                      })
+                    }
                   />
                 </div>
               </div>

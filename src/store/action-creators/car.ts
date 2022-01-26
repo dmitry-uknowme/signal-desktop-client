@@ -1,16 +1,24 @@
 import axios from 'axios'
+import React from 'react'
 import {
   CarAction,
   AllCarsActionTypes,
   CarsOnTerritoryActionTypes,
   ICarExited,
-  ICarEntered,
 } from '../types/car'
+
+// const API_URL =
+//   'http://' + JSON.parse(localStorage.getItem('settings'))?.serverURL ||
+//   process.env.API_URL + '/api'
+
+const API_URL = 'http://127.0.0.1:81/v1'
+
+// console.log('urllalala', API_URL)
 
 export const fetchAllCars = (page: number, limit: number) => {
   return async (dispatch: React.Dispatch<CarAction>) => {
     const { data } = await axios.get(
-      `http://62.109.23.190:44/v1/getActs?status=STATUS_COMPLETED${
+      `${API_URL}/getActs?status=STATUS_COMPLETED${
         page ? `&page=${page}` : ''
       } ${limit ? `&limit=${limit}` : ''}`
     )
@@ -31,7 +39,7 @@ export const fetchAllCars = (page: number, limit: number) => {
 export const fetchCarsOnTerritory = (page: number, limit: number) => {
   return async (dispatch: React.Dispatch<CarAction>) => {
     const { data } = await axios.get(
-      `http://62.109.23.190:44/v1/getActs?status=STATUS_ON_TERRITORY${
+      `${API_URL}/getActs?status=STATUS_ON_TERRITORY${
         page ? `&page=${page}` : ''
       } ${limit ? `&limit=${limit}` : ''}`
     )
@@ -47,10 +55,7 @@ export const fetchCarsOnTerritory = (page: number, limit: number) => {
 
 export const addCarOnTerritory = (payload: ICarExited | any) => {
   return async (dispatch: React.Dispatch<CarAction>) => {
-    const { data } = await axios.post(
-      `http://62.109.23.190:44/v1/createEntry`,
-      payload
-    )
+    const { data } = await axios.post(`${API_URL}/createEntry`, payload)
     // console.log('resssss', data);
     // await axios.post(`${process.env.API_URL}/getTransportationsOnTerritory`, {
     //   ...payload,

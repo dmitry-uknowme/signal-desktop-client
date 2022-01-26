@@ -10,7 +10,7 @@ import getTotalPages from '../utils/getTotalPages'
 import localizeCount from '../utils/localizeCount'
 
 const PAGE_LIMIT = 10
-
+const API_URL = 'http://127.0.0.1:81/v1'
 const StatisticsPage = () => {
   const [contractors, setContractors] = useState()
   const [cargoCategories, setCargoCategories] = useState()
@@ -50,18 +50,16 @@ const StatisticsPage = () => {
   // };
   const fetchDropdownFields = async () => {
     const contractorResponse = await axios.get(
-      `http://62.109.23.190:44/v1/getOrganizations?role=ROLE_TRANSPORTER`
+      `${API_URL}/getOrganizations?role=ROLE_TRANSPORTER`
     )
     setContractors(contractorResponse.data.items)
 
     const cargoCategoriesResponse = await axios.get(
-      `http://62.109.23.190:44/v1/getCargoCategories`
+      `${API_URL}/getCargoCategories`
     )
     setCargoCategories(cargoCategoriesResponse.data.items)
 
-    const cargoTypesResponse = await axios.get(
-      `http://62.109.23.190:44/v1/getCargoTypes`
-    )
+    const cargoTypesResponse = await axios.get(`${API_URL}/getCargoTypes`)
     setCargoTypes(cargoTypesResponse.data.items)
   }
 
