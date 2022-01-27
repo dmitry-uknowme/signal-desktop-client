@@ -20,6 +20,8 @@ function createWindow() {
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       webSecurity: false,
+      nodeIntegration: true,
+      contextIsolation: false,
     },
     minWidth: 800,
     minHeight: 600,
