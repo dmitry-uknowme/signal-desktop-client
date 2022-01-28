@@ -57,7 +57,7 @@ const EnterModal = () => {
       hide: { pointerEvents: 'none', opacity: '0' },
     },
   }
-
+  console.log('contr', contractors)
   const fetchDropdownFields = async () => {
     const contractorResponse = await axios.get(
       `${API_URL}/getOrganizations?role=ROLE_TRANSPORTER`
@@ -110,7 +110,7 @@ const EnterModal = () => {
     e.preventDefault()
     addCarOnTerritory({
       truckNumber: formData.number_plate,
-      contractorId: formData.contractor_company.id,
+      contractorId: formData.contractor_company,
       cargoType: formData.cargo_type,
       cargoCategory: formData.cargo_category,
       commentEntry: formData.comment_on_enter,
