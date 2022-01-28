@@ -6,8 +6,8 @@ import useActions from '../../hooks/useActions'
 import Button from '../base/Button'
 import { setIsModalExitOpened } from '../../store/reducers/modalReducer'
 import centrifuge from '../../utils/centrifuge'
-const API_URL = 'http://127.0.0.1:81/v1'
-// const API_URL = 'http://62.109.23.190:44/v1'
+// const API_URL = 'http://127.0.0.1:81/v1'
+const API_URL = 'http://62.109.23.190:44/v1'
 
 const ExitModal = () => {
   const dispatch = useDispatch()
@@ -39,6 +39,32 @@ const ExitModal = () => {
       hide: { pointerEvents: 'none', opacity: 0 },
     },
   }
+
+  // const fetchCameraDetect = async () => {
+  //   axios
+  //     .get(`http://localhost:81/v1/getDetectState`)
+  //     .then(response => {
+  //       // console.log('resssss', response)
+  //       if (response.data.status === 'success') {
+  //         // if (response?.data?.contractor !== null) {
+  //         // }
+  //         // console.log('resssss', response)
+  //         setFormData(state => ({
+  //           ...state,
+  //           number_plate: response.data.response.truckNumber,
+  //           ...(response?.data?.contractor !== null && {
+  //             contractor_company: {
+  //               id: response.data.response.contractor.id,
+  //               full_name: response.data.response.contractor.title,
+  //             },
+  //           }),
+  //         }))
+  //       } else {
+  //         console.log('camera error', response)
+  //       }
+  //     })
+  //     .catch(e => console.log('camera error catch', e))
+  // }
 
   const submitHandler = async (e: any) => {
     e.preventDefault()

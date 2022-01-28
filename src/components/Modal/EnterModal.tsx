@@ -8,8 +8,8 @@ import Button from '../base/Button'
 import { setIsModalEnterOpened } from '../../store/reducers/modalReducer'
 import centrifuge from '../../utils/centrifuge'
 
-const API_URL = 'http://127.0.0.1:81/v1'
-// const API_URL = 'http://62.109.23.190:44/v1'
+// const API_URL = 'http://127.0.0.1:81/v1'
+const API_URL = 'http://62.109.23.190:44/v1'
 
 const EnterModal = () => {
   const dispatch = useDispatch()
@@ -21,9 +21,9 @@ const EnterModal = () => {
     cargo_type: '',
     comment_on_enter: '',
   })
-  const [contractors, setContractors] = useState()
-  const [cargoCategories, setCargoCategories] = useState()
-  const [cargoTypes, setCargoTypes] = useState()
+  const [contractors, setContractors] = useState([])
+  const [cargoCategories, setCargoCategories] = useState([])
+  const [cargoTypes, setCargoTypes] = useState([])
   const [terminalWeight, setTerminalWeight] = useState()
   const [isUpdating, setIsUpdating] = useState(false)
   const { addCarOnTerritory } = useActions()
@@ -62,7 +62,9 @@ const EnterModal = () => {
     const contractorResponse = await axios.get(
       `${API_URL}/getOrganizations?role=ROLE_TRANSPORTER`
     )
-    setContractors(contractorResponse.data.items)
+    // console.log()
+    setContractors(state => [...state, ...contractorResponse.data.items])
+    // setContractors(contractorResponse.data.items)
 
     const cargoCategoriesResponse = await axios.get(
       `${API_URL}/getCargoCategories`
@@ -72,17 +74,29 @@ const EnterModal = () => {
     const cargoTypesResponse = await axios.get(`${API_URL}/getCargoTypes`)
     setCargoTypes(cargoTypesResponse.data.items)
   }
-
+  // console.log('contractdwadwada', contractors)
+  console.log('datatata', formData)
   const fetchCameraDetect = async () => {
     axios
-      .get(`${API_URL}/getDetectState`)
+      .get(`http://localhost:81/v1/getDetectState`)
       .then(response => {
-        if (response.data.success === 'success') {
-          console.log('camera response', response)
+        if (response.data.status === 'success') {
+          if (response?.data?.response?.contractor !== null) {
+            setContractors(state => [
+              ...state,
+              {
+                id: response.data.response.contractor.id,
+                full_name: response.data.response.contractor.title,
+              },
+            ])
+          }
+          // console.log('resssss', response)
           setFormData(state => ({
             ...state,
             number_plate: response.data.response.truckNumber,
-            contractor_company: response.data.response.contractorId,
+            ...(response?.data?.response?.contractor !== null && {
+              contractor_company: response.data.response.contractor.id,
+            }),
           }))
         } else {
           console.log('camera error', response)
@@ -96,7 +110,7 @@ const EnterModal = () => {
     e.preventDefault()
     addCarOnTerritory({
       truckNumber: formData.number_plate,
-      contractorId: formData.contractor_company,
+      contractorId: formData.contractor_company.id,
       cargoType: formData.cargo_type,
       cargoCategory: formData.cargo_category,
       commentEntry: formData.comment_on_enter,
@@ -105,16 +119,16 @@ const EnterModal = () => {
     closeModal()
   }
 
-  const arr = [
-    // 'WEIGHT:RECIEVE',
-    'WEIGHT:RECIEVED',
-    // 'CAMERA:NUMBER_IDENTIFY',
-    'CAMERA:NUMBER_IDENTIFIED',
-    // 'TRUCK:ENTER',
-    'TRUCK:ENTERED',
-    // 'TRUCK:EXIT',
-    'TRUCK:EXITED',
-  ]
+  // const socketEvents = [
+  //   // 'WEIGHT:RECIEVE',
+  //   'WEIGHT:RECIEVED',
+  //   // 'CAMERA:NUMBER_IDENTIFY',
+  //   'CAMERA:NUMBER_IDENTIFIED',
+  //   // 'TRUCK:ENTER',
+  //   'TRUCK:ENTERED',
+  //   // 'TRUCK:EXIT',
+  //   'TRUCK:EXITED',
+  // ]
 
   useEffect(() => {
     fetchDropdownFields()
@@ -129,13 +143,13 @@ const EnterModal = () => {
     })
 
     const channel = centrifuge.subscribe('channel', function (ctx) {
-      // console.log('weight received', ctx)
+      console.log('weight received', ctx)
       setTerminalWeight(ctx.data.value)
     })
     centrifuge.connect()
     return () => channel.unsubscribe()
   }, [])
-  console.log('form state', formData)
+  // console.log('form state', formData)
   // console.log('modal', isModalVisible)
 
   return (
@@ -214,7 +228,7 @@ const EnterModal = () => {
                     className="form-control"
                     name="contractor_company"
                     required
-                    value={formData.contractor_company.id}
+                    value={formData.contractor_company}
                     onChange={e =>
                       setFormData(state => ({
                         ...state,

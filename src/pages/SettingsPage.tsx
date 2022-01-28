@@ -46,11 +46,11 @@ const SettingsPage = () => {
                 },
                 {
                   name: 'Шлагбаум №1',
-                  status: 'offline',
+                  status: 'online',
                 },
                 {
                   name: 'Шлагбаум №2',
-                  status: 'offline',
+                  status: 'online',
                 },
                 {
                   name: 'Камера №1',

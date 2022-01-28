@@ -7,8 +7,8 @@ import {
   IGateModes,
 } from '../types/gate'
 
-const API_URL = 'http://127.0.0.1:81/v1'
-// const API_URL = 'http://62.109.23.190:44/v1'
+// const API_URL = 'http://127.0.0.1:81/v1'
+const API_URL = 'http://62.109.23.190:44/v1'
 
 export const fetchGateStatus = () => {
   return async (dispatch: React.Dispatch<GateAction>) => {
