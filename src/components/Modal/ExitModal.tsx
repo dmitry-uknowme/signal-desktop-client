@@ -40,41 +40,8 @@ const ExitModal = () => {
     },
   }
 
-  // const submitHandler = (e: any) => {
-  //   e.preventDefault();
-  //   const selectedCar = carsOnTerritory.find(
-  //     (car) => car.id === parseInt(formData.id)
-  //   );
-
-  //   axios.post('http://localhost:8000/all_cars', {
-  //     ...selectedCar,
-  //     ...formData,
-  //     date_of_exit: format(Date.now(), 'yyyy-MM-dd p', { locale: ru }),
-  //     weight_netto: parseInt(modalData.weight),
-  //     result_weight:
-  //       parseInt(selectedCar.weight_brutto) - parseInt(modalData.weight),
-  //     id: null,
-  //     status: 'Выехал',
-  //   });
-  //   removeCarFromTerritory(formData.id);
-  //   closeModal();
-
-  // };
-
   const submitHandler = async (e: any) => {
     e.preventDefault()
-
-    // await axios.post(`${process.env.API_URL}/getAllTransportations`, {
-    //   ...selectedCar,
-    //   commentOnExit: formData.comment_on_exit,
-    //   dateOfExit: format(Date.now(), 'yyyy-MM-dd p', { locale: ru }),
-    //   weightNetto: terminalWeight,
-    //   resultWeight:
-    //     parseInt(selectedCar.weightBrutto) - parseInt(terminalWeight),
-    //   id: null,
-    //   status: 'Выехал',
-    // });
-
     await axios.post(`${API_URL}/createCheckOut`, {
       actId: formData.id,
       weight: terminalWeight,

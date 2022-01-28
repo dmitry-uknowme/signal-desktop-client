@@ -1,6 +1,5 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect, useRef } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import useActions from '../../hooks/useActions'
@@ -42,7 +41,6 @@ const EnterModal = () => {
         cargo_type: '',
         comment_on_enter: '',
       })
-      // console.log('closseee time');dd
     }, 5000)
   }
 
@@ -75,7 +73,52 @@ const EnterModal = () => {
     setCargoTypes(cargoTypesResponse.data.items)
   }
 
-  const updateWeight = async () => {
+  const fetchCameraDetect = async () => {
+    axios
+      .get(`${API_URL}/getDetectState`)
+      .then(response => {
+        if (response.data.success === 'success') {
+          console.log('camera response', response)
+          setFormData(state => ({
+            ...state,
+            number_plate: response.data.response.truckNumber,
+            contractor_company: response.data.response.contractorId,
+          }))
+        } else {
+          console.log('camera error', response)
+        }
+      })
+      .catch(e => console.log('camera error catch', e))
+  }
+
+  const submitHandler = (e: any) => {
+    e.preventDefault()
+    addCarOnTerritory({
+      truckNumber: formData.number_plate,
+      contractorId: formData.contractor_company,
+      cargoType: formData.cargo_type,
+      cargoCategory: formData.cargo_category,
+      commentEntry: formData.comment_on_enter,
+      weight: terminalWeight,
+    })
+    closeModal()
+  }
+
+  const arr = [
+    // 'WEIGHT:RECIEVE',
+    'WEIGHT:RECIEVED',
+    // 'CAMERA:NUMBER_IDENTIFY',
+    'CAMERA:NUMBER_IDENTIFIED',
+    // 'TRUCK:ENTER',
+    'TRUCK:ENTERED',
+    // 'TRUCK:EXIT',
+    'TRUCK:EXITED',
+  ]
+
+  useEffect(() => {
+    fetchDropdownFields()
+    fetchCameraDetect()
+    // updateWeight()
     centrifuge.on('connect', function (ctx) {
       console.log('connected', ctx)
     })
@@ -90,60 +133,9 @@ const EnterModal = () => {
     })
     centrifuge.connect()
     return () => channel.unsubscribe()
-  }
-  // const submitHandler = (e: any) => {
-  //   e.preventDefault();
-  //   addCarOnTerritory({
-  //     ...formData,
-  //     date_of_enter: format(Date.now(), 'yyyy-MM-dd p', { locale: ru }),
-  //     weight_brutto: parseInt(modalData.weight),
-  //   });
-  //   closeModal();
-  // };
-  const submitHandler = (e: any) => {
-    e.preventDefault()
-    // addCarOnTerritory({
-    //   number: formData.number_plate,
-    //   organizationId: formData.contractor_company,
-    //   cargoTypeId: formData.cargo_type,
-    //   cargoCategoryId: formData.cargo_category,
-    //   commentOnEnter: formData.comment_on_enter,
-    //   weightBrutto: terminalWeight,
-    //   dateOfEnter: format(Date.now(), 'yyyy-MM-dd p', { locale: ru }),
-    // });
-
-    addCarOnTerritory({
-      truckNumber: formData.number_plate,
-      contractorId: formData.contractor_company,
-      cargoType: formData.cargo_type,
-      cargoCategory: formData.cargo_category,
-      commentEntry: formData.comment_on_enter,
-      weight: terminalWeight,
-    })
-
-    closeModal()
-  }
-
-  useEffect(() => {
-    fetchDropdownFields()
-    // updateWeight()
-    // centrifuge.on('connect', function (ctx) {
-    //   console.log('connected', ctx)
-    // })
-
-    // centrifuge.on('disconnect', function (ctx) {
-    //   console.log('disconnected', ctx)
-    // })
-
-    // const channel = centrifuge.subscribe('channel', function (ctx) {
-    //   console.log('weight received', ctx)
-    //   setTerminalWeight(ctx.data.value)
-    // })
-    // centrifuge.connect()
-    // return () => channel.unsubscribe()
   }, [])
 
-  console.log('modal', isModalVisible)
+  // console.log('modal', isModalVisible)
 
   return (
     <motion.div
@@ -171,7 +163,7 @@ const EnterModal = () => {
             <h2 className="modal__title text-center">
               Взвешивание брутто:{' '}
               <span style={{ opacity: isUpdating ? '0' : '1' }}>
-                {terminalWeight} &nbsp;кг
+                {terminalWeight} кг
               </span>
             </h2>
             <svg
@@ -182,7 +174,7 @@ const EnterModal = () => {
               width="2rem"
               height="2rem"
               style={{ cursor: 'pointer', marginLeft: '2rem' }}
-              onClick={() => updateWeight()}
+              // onClick={() => updateWeight()}
             >
               <path d="M 15 3 C 12.031398 3 9.3028202 4.0834384 7.2070312 5.875 A 1.0001 1.0001 0 1 0 8.5058594 7.3945312 C 10.25407 5.9000929 12.516602 5 15 5 C 20.19656 5 24.450989 8.9379267 24.951172 14 L 22 14 L 26 20 L 30 14 L 26.949219 14 C 26.437925 7.8516588 21.277839 3 15 3 z M 4 10 L 0 16 L 3.0507812 16 C 3.562075 22.148341 8.7221607 27 15 27 C 17.968602 27 20.69718 25.916562 22.792969 24.125 A 1.0001 1.0001 0 1 0 21.494141 22.605469 C 19.74593 24.099907 17.483398 25 15 25 C 9.80344 25 5.5490109 21.062074 5.0488281 16 L 8 16 L 4 10 z" />
             </svg>
@@ -250,7 +242,6 @@ const EnterModal = () => {
                   <select
                     className="form-control"
                     name="cargo_category"
-                    required
                     value={formData.cargo_category.id}
                     onChange={e =>
                       setFormData(state => ({
@@ -301,7 +292,6 @@ const EnterModal = () => {
                   <select
                     className="form-control"
                     name="cargo_type"
-                    required
                     value={formData.cargo_type.id}
                     onChange={e =>
                       setFormData(state => ({

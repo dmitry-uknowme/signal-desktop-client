@@ -74,7 +74,7 @@ const StatisticsPage = () => {
 
   useEffect(() => {
     fetchAllCars(currentPage, PAGE_LIMIT)
-    setCountOfPages(getTotalPages(countOfCars, 2))
+    setCountOfPages(getTotalPages(countOfCars, PAGE_LIMIT))
     fetchDropdownFields()
   }, [])
   return (
@@ -277,9 +277,7 @@ const StatisticsPage = () => {
                             <div
                               className="pagination__item"
                               onClick={() => setCurrentPage(1)}
-                            >
-                              1
-                            </div>
+                            ></div>
                           )}
                           {countOfPages > 5 && currentPage >= 4 && (
                             <div
