@@ -113,7 +113,7 @@ const SettingsPage = () => {
                 <div className="col-md-4">
                   <input
                     className="w-100"
-                    placeholder="127.0.0.1:2211"
+                    placeholder={settings.serverURL}
                     value={settings.serverURL}
                     style={{ color: 'black', textAlign: 'center' }}
                     onChange={e =>
@@ -140,7 +140,7 @@ const SettingsPage = () => {
                 <div className="col-md-7">
                   <input
                     className="w-100"
-                    placeholder="127.0.0.1:2211"
+                    placeholder={settings.polygonName}
                     value={settings.polygonName}
                     style={{ color: 'black', textAlign: 'center' }}
                     onChange={e =>

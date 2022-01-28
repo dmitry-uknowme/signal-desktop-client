@@ -27,6 +27,7 @@ function createWindow() {
     minHeight: 600,
     show: false,
   })
+  mainWindow.setMenuBarVisibility(false)
 
   mainWindow.maximize()
   mainWindow.show()

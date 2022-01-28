@@ -11,7 +11,8 @@ import {
 //   'http://' + JSON.parse(localStorage.getItem('settings'))?.serverURL ||
 //   process.env.API_URL + '/api'
 
-const API_URL = 'http://127.0.0.1:81/v1'
+// const API_URL = 'http://127.0.0.1:81/v1'
+const API_URL = 'http://62.109.23.190:44/v1'
 
 // console.log('urllalala', API_URL)
 

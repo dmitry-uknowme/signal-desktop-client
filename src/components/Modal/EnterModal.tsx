@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import useActions from '../../hooks/useActions'
@@ -9,7 +9,8 @@ import Button from '../base/Button'
 import { setIsModalEnterOpened } from '../../store/reducers/modalReducer'
 import centrifuge from '../../utils/centrifuge'
 
-const API_URL = 'http://127.0.0.1:81/v1'
+// const API_URL = 'http://127.0.0.1:81/v1'
+const API_URL = 'http://62.109.23.190:44/v1'
 
 const EnterModal = () => {
   const dispatch = useDispatch()
@@ -29,10 +30,6 @@ const EnterModal = () => {
   const { addCarOnTerritory } = useActions()
   const modal = useSelector(store => store.modal.modalEnter)
   const isModalVisible = modal.opened
-  const modalData = modal.data
-  const timerRef = useRef(null)
-
-  // console.log('visib', isModalVisible);
 
   const closeModal = () => {
     dispatch(setIsModalEnterOpened(false))
@@ -57,28 +54,11 @@ const EnterModal = () => {
     overlay: {
       show: {
         pointerEvents: 'all',
-        opacity: 1,
+        opacity: '1',
       },
-      hide: { pointerEvents: 'none', opacity: 0 },
+      hide: { pointerEvents: 'none', opacity: '0' },
     },
   }
-
-  // const fetchDropdownFields = async () => {
-  //   const contractorResponse = await axios.get(
-  //     'http://localhost:8000/contractors'
-  //   );
-  //   setContractors(contractorResponse.data);
-
-  //   const cargoCategoriesResponse = await axios.get(
-  //     'http://localhost:8000/cargo_categories'
-  //   );
-  //   setCargoCategories(cargoCategoriesResponse.data);
-
-  //   const cargoTypesResponse = await axios.get(
-  //     'http://localhost:8000/cargo_types'
-  //   );
-  //   setCargoTypes(cargoTypesResponse.data);
-  // };
 
   const fetchDropdownFields = async () => {
     const contractorResponse = await axios.get(
@@ -104,11 +84,12 @@ const EnterModal = () => {
       console.log('disconnected', ctx)
     })
 
-    centrifuge.subscribe('channel', function (ctx) {
+    const channel = centrifuge.subscribe('channel', function (ctx) {
       console.log('weight received', ctx)
       setTerminalWeight(ctx.data.value)
     })
     centrifuge.connect()
+    return () => channel.unsubscribe()
   }
   // const submitHandler = (e: any) => {
   //   e.preventDefault();
@@ -144,28 +125,25 @@ const EnterModal = () => {
   }
 
   useEffect(() => {
-    if (isModalVisible) {
-      fetchDropdownFields()
-    }
-  }, [isModalVisible])
+    fetchDropdownFields()
+    // updateWeight()
+    // centrifuge.on('connect', function (ctx) {
+    //   console.log('connected', ctx)
+    // })
 
-  // useEffect(() => {
-  //   timerRef.current = setInterval(() => {
-  //     if (isModalVisible) {
-  //       // console.log('timer');
-  //       updateWeight();
-  //     } else {
-  //       return clearInterval(timerRef.current);
-  //     }
-  //   }, 3000);
-  //   if (!isModalVisible) {
-  //     return clearInterval(timerRef.current);
-  //   }
-  // }, [isModalVisible]);
+    // centrifuge.on('disconnect', function (ctx) {
+    //   console.log('disconnected', ctx)
+    // })
 
-  useEffect(() => {
-    updateWeight()
+    // const channel = centrifuge.subscribe('channel', function (ctx) {
+    //   console.log('weight received', ctx)
+    //   setTerminalWeight(ctx.data.value)
+    // })
+    // centrifuge.connect()
+    // return () => channel.unsubscribe()
   }, [])
+
+  console.log('modal', isModalVisible)
 
   return (
     <motion.div
@@ -173,8 +151,9 @@ const EnterModal = () => {
       initial={{
         opacity: 0,
       }}
-      animate={isModalVisible ? 'show' : 'hide'}
-      variants={animationVariants.overlay}
+      animate={animationVariants.overlay.show}
+      exit={animationVariants.overlay.hide}
+      // variants={animationVariants.overlay}
     >
       <motion.div
         className="modal__window modal-enter"
@@ -183,8 +162,9 @@ const EnterModal = () => {
           y: '-200%',
         }}
         transition={{ duration: 1 }}
-        animate={isModalVisible ? 'show' : 'hide'}
-        variants={animationVariants.modal}
+        animate={animationVariants.modal.show}
+        exit={animationVariants.modal.hide}
+        // variants={animationVariants.modal}
       >
         <div className="container">
           <div className="modal__header d-flex justify-content-center">
