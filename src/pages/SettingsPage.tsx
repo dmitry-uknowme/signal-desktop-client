@@ -7,9 +7,10 @@ import StateTable from '../components/StateTable'
 const SettingsPage = () => {
   const savedSettingsRef = useRef(null)
   const [settings, setSettings] = useState({
-    serverURL: (process.env.API_URL as string)?.split('/')[2],
-    polygonName: process.env.POLYGON_NAME,
-    clientId: process.env.CLIENT_ID,
+    serverURL: '127.0.0.1:81',
+    polygonName: 'ООО "Спецэкотранс"',
+    clientId:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
   })
   // const [settings, setSettings] = useState({
   //   serverURL: '127.0.0.1:81',
@@ -45,11 +46,11 @@ const SettingsPage = () => {
                 },
                 {
                   name: 'Шлагбаум №1',
-                  status: 'online',
+                  status: 'offline',
                 },
                 {
                   name: 'Шлагбаум №2',
-                  status: 'online',
+                  status: 'offline',
                 },
                 {
                   name: 'Камера №1',

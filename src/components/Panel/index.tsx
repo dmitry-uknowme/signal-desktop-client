@@ -45,7 +45,7 @@ const Panel = () => {
       })
     )
   }
-  console.log('gateerr', gateStore)
+  // console.log('gateerr', gateStore)
   // console.log('stat', manualModeError)
   // console.log('gate from ser', gate, gate.inputGateStatus)
 
