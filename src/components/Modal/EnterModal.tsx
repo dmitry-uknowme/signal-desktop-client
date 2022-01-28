@@ -93,7 +93,9 @@ const EnterModal = () => {
           // console.log('resssss', response)
           setFormData(state => ({
             ...state,
-            number_plate: response.data.response.truckNumber,
+            ...(response?.data?.response?.truckNumber !== null && {
+              number_plate: response.data.response.truckNumber,
+            }),
             ...(response?.data?.response?.contractor !== null && {
               contractor_company: response.data.response.contractor.id,
             }),
