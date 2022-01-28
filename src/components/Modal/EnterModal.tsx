@@ -92,6 +92,7 @@ const EnterModal = () => {
   }
 
   const submitHandler = (e: any) => {
+    console.log('submit', formData)
     e.preventDefault()
     addCarOnTerritory({
       truckNumber: formData.number_plate,
@@ -134,7 +135,7 @@ const EnterModal = () => {
     centrifuge.connect()
     return () => channel.unsubscribe()
   }, [])
-
+  console.log('form state', formData)
   // console.log('modal', isModalVisible)
 
   return (
