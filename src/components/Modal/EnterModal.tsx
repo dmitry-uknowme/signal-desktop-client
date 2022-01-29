@@ -57,7 +57,7 @@ const EnterModal = () => {
       hide: { pointerEvents: 'none', opacity: '0' },
     },
   }
-  console.log('contr', contractors)
+  // console.log('contr', contractors)
   const fetchDropdownFields = async () => {
     const contractorResponse = await axios.get(
       `${API_URL}/getOrganizations?role=ROLE_TRANSPORTER`
@@ -68,7 +68,7 @@ const EnterModal = () => {
     const cargoCategoriesResponse = await axios.get(
       `${API_URL}/getCargoCategories`
     )
-    console.log('car', JSON.stringify(cargoCategoriesResponse.data.items))
+    // console.log('car', JSON.stringify(cargoCategoriesResponse.data.items))
     setCargoCategories(state => [
       ...state,
       ...cargoCategoriesResponse.data.items,
@@ -78,20 +78,20 @@ const EnterModal = () => {
     setCargoTypes(state => [...state, ...cargoTypesResponse.data.items])
   }
   // console.log('contractdwadwada', contractors)
-  console.log('datatata', formData)
+
   const fetchCameraDetect = async () => {
     axios
       .get(`${API_URL}/getDetectState`)
       .then(response => {
         if (response.data.status === 'success') {
           if (response?.data?.response?.contractor !== null) {
-            setContractors(state => [
-              ...state,
-              {
-                id: response.data.response.contractor.id,
-                full_name: response.data.response.contractor.title,
-              },
-            ])
+            // setContractors(state => [
+            //   ...state,
+            //   {
+            //     id: response.data.response.contractor.id,
+            //     full_name: response.data.response.contractor.title,
+            //   },
+            // ])
           }
           console.log('camera response', response)
           setFormData(state => ({
@@ -185,7 +185,9 @@ const EnterModal = () => {
   }, [contractors, cargoCategories, cargoTypes, isModalVisible])
   // console.log('form state', formData)
   // console.log('modal', isModalVisible)
-
+  useEffect(() => {
+    console.log('form data', formData)
+  }, [formData])
   return (
     <motion.div
       className="modal__wrapper"
@@ -241,7 +243,7 @@ const EnterModal = () => {
                     name="number_plate"
                     placeholder={
                       formData.number_plate === 'UNKNOWN'
-                        ? 'Не определен'
+                        ? 'Не определено'
                         : 'О123ОО123'
                     }
                     required
