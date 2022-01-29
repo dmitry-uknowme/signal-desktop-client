@@ -15,11 +15,14 @@ module.exports = {
     rules: require('./rules.webpack'),
   },
   plugins: [
-    new DotenvPlugin({
-      path: '.env',
-    }),
-    new webpack.EnvironmentPlugin({
-      NODE_ENV: 'production',
+    // new DotenvPlugin({
+    //   path: '.env',
+    // }),
+    // new webpack.EnvironmentPlugin({
+    //   NODE_ENV: 'production',
+    // }),
+    new webpack.DefinePlugin({
+      'process.env.API_URL': process.env.API_URL,
     }),
     // new webpack.DefinePlugin({
     //   'process.env': JSON.stringify(process.env),

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
 import { Provider, useSelector } from 'react-redux'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -8,11 +8,14 @@ import SettingsPage from './pages/SettingsPage'
 import StatisticsPage from './pages/StatisticsPage'
 import EnterModal from './components/Modal/EnterModal'
 import ExitModal from './components/Modal/ExitModal'
+import centrifuge from './utils/centrifuge'
 import './styles/rsuite.global.css'
 import './styles/bootstrap.global.css'
 import './styles/App.global.css'
+import useActions from './hooks/useActions'
 
 const App = () => {
+  const { addCarOnTerritory, removeCarFromTerritory } = useActions()
   const animationVariants = {
     menu: {
       show: { x: '-5%' },
@@ -22,6 +25,28 @@ const App = () => {
   const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false)
   const modal = useSelector(store => store.modal.modalEnter)
   const isModalVisible = modal.opened
+  useEffect(() => {
+    centrifuge.on('connect', function (ctx) {
+      console.log('connected', ctx)
+    })
+
+    centrifuge.on('disconnect', function (ctx) {
+      console.log('disconnected', ctx)
+    })
+
+    const TRUCK_ENTERED_CHANNEL = centrifuge.subscribe('TRUCK:ENTERED', ctx =>
+      addCarOnTerritory(ctx.payload, true)
+    )
+    const TRUCK_EXITED_CHANNEL = centrifuge.subscribe('TRUCK:EXITED', ctx =>
+      removeCarFromTerritory(ctx.payload, true)
+    )
+    centrifuge.connect()
+    return () => {
+      TRUCK_ENTERED_CHANNEL.unsubscribe()
+      TRUCK_EXITED_CHANNEL.unsubscribe()
+      centrifuge.disconnect()
+    }
+  }, [])
   return (
     <div className="app">
       {/*  <AnimatePresence> */}

@@ -54,38 +54,31 @@ export const fetchCarsOnTerritory = (page: number, limit: number) => {
 //   };
 // };
 
-export const addCarOnTerritory = (payload: ICarExited | any) => {
+export const addCarOnTerritory = (
+  payload: ICarExited | any,
+  emmitedBySocket: boolean = false
+) => {
   return async (dispatch: React.Dispatch<CarAction>) => {
-    const { data } = await axios.post(`${API_URL}/createEntry`, payload)
-    // console.log('resssss', data);
-    // await axios.post(`${process.env.API_URL}/getTransportationsOnTerritory`, {
-    //   ...payload,
-    //   organizationShortName: null,
-    //   cargoTypeTitle: null,
-    //   cargoCategoryTitle: null,
-    // });
-    dispatch({
-      type: CarsOnTerritoryActionTypes.ADD_CAR,
-      payload: data.response,
-    })
+    if (emmitedBySocket) {
+      dispatch({
+        type: CarsOnTerritoryActionTypes.ADD_CAR,
+        payload,
+      })
+    } else {
+      const { data } = await axios.post(`${API_URL}/createEntry`, payload)
+      dispatch({
+        type: CarsOnTerritoryActionTypes.ADD_CAR,
+        payload: data.response,
+      })
+    }
   }
 }
-// export const addCarOnTerritory = (payload: ICarExited | any) => {
-//   return async (dispatch: React.Dispatch<CarAction>) => {
-//     const { data } = await axios.post(
-//       'http://localhost:8000/cars_on_territory',
-//       payload
-//     );
-//     dispatch({ type: CarsOnTerritoryActionTypes.ADD_CAR, payload: data });
-//   };
-// };
 
-export const removeCarFromTerritory = (payload: number) => {
+export const removeCarFromTerritory = (
+  payload: number,
+  emmitedBySocket: boolean = false
+) => {
   return async (dispatch: React.Dispatch<CarAction>) => {
-    // await axios.delete(`${process.env.API_URL}/createEntry/${payload}`);
-    // await axios.delete(
-    //   `${process.env.API_URL}/getTransportationsOnTerritory/${payload}`
-    // );
     dispatch({ type: CarsOnTerritoryActionTypes.REMOVE_CAR, payload })
   }
 }

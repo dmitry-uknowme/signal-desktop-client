@@ -64,21 +64,24 @@ const EnterModal = () => {
     )
     // console.log()
     setContractors(state => [...state, ...contractorResponse.data.items])
-    // setContractors(contractorResponse.data.items)
 
     const cargoCategoriesResponse = await axios.get(
       `${API_URL}/getCargoCategories`
     )
-    setCargoCategories(cargoCategoriesResponse.data.items)
+    console.log('car', JSON.stringify(cargoCategoriesResponse.data.items))
+    setCargoCategories(state => [
+      ...state,
+      ...cargoCategoriesResponse.data.items,
+    ])
 
     const cargoTypesResponse = await axios.get(`${API_URL}/getCargoTypes`)
-    setCargoTypes(cargoTypesResponse.data.items)
+    setCargoTypes(state => [...state, ...cargoTypesResponse.data.items])
   }
   // console.log('contractdwadwada', contractors)
   console.log('datatata', formData)
   const fetchCameraDetect = async () => {
     axios
-      .get(`http://localhost:81/v1/getDetectState`)
+      .get(`${API_URL}/get`)
       .then(response => {
         if (response.data.status === 'success') {
           if (response?.data?.response?.contractor !== null) {
@@ -90,25 +93,32 @@ const EnterModal = () => {
               },
             ])
           }
-          // console.log('resssss', response)
+          console.log('camera response', response)
           setFormData(state => ({
             ...state,
-            ...(response?.data?.response?.truckNumber !== null && {
-              number_plate: response.data.response.truckNumber,
-            }),
+            ...(response?.data?.response?.truckNumber &&
+            response?.data?.response?.truckNumber !== ''
+              ? {
+                  number_plate: response.data.response.truckNumber,
+                }
+              : { number_plate: 'UNKNOWN' }),
             ...(response?.data?.response?.contractor !== null && {
               contractor_company: response.data.response.contractor.id,
             }),
           }))
         } else {
           console.log('camera error', response)
+          setFormData(state => ({ ...state, number_plate: 'UNKNOWN' }))
         }
       })
-      .catch(e => console.log('camera error catch', e))
+      .catch(e => {
+        console.log('camera error catch', e)
+        setFormData(state => ({ ...state, number_plate: 'UNKNOWN' }))
+      })
   }
 
   const submitHandler = (e: any) => {
-    console.log('submit', formData)
+    // console.log('submit', formData)
     e.preventDefault()
     addCarOnTerritory({
       truckNumber: formData.number_plate,
@@ -135,6 +145,7 @@ const EnterModal = () => {
   useEffect(() => {
     fetchDropdownFields()
     fetchCameraDetect()
+
     // updateWeight()
     centrifuge.on('connect', function (ctx) {
       console.log('connected', ctx)
@@ -151,6 +162,27 @@ const EnterModal = () => {
     centrifuge.connect()
     return () => channel.unsubscribe()
   }, [])
+
+  useEffect(() => {
+    if (contractors?.length) {
+      setFormData(state => ({
+        ...state,
+        contractor_company: contractors[0].id,
+      }))
+    }
+    if (cargoCategories?.length) {
+      setFormData(state => ({
+        ...state,
+        cargo_category: cargoCategories[0].id,
+      }))
+    }
+    if (cargoTypes?.length) {
+      setFormData(state => ({
+        ...state,
+        cargo_type: cargoTypes[0].id,
+      }))
+    }
+  }, [contractors, cargoCategories, cargoTypes, isModalVisible])
   // console.log('form state', formData)
   // console.log('modal', isModalVisible)
 
@@ -207,9 +239,17 @@ const EnterModal = () => {
                   <input
                     className="form-control text-uppercase"
                     name="number_plate"
-                    placeholder="О123ОО123"
+                    placeholder={
+                      formData.number_plate === 'UNKNOWN'
+                        ? 'Не определен'
+                        : 'О123ОО123'
+                    }
                     required
-                    value={formData.number_plate}
+                    value={
+                      formData.number_plate === 'UNKNOWN'
+                        ? ''
+                        : formData.number_plate
+                    }
                     onChange={e =>
                       setFormData(state => ({
                         ...state,
@@ -238,9 +278,9 @@ const EnterModal = () => {
                       }))
                     }
                   >
-                    <option value="" selected disabled>
+                    {/* <option value="" selected disabled>
                       Название контрагента
-                    </option>
+                    </option> */}
                     {contractors?.map(({ id, full_name }) => (
                       <option key={id} value={id}>
                         {full_name}
@@ -267,9 +307,9 @@ const EnterModal = () => {
                       }))
                     }
                   >
-                    <option value="" selected disabled>
+                    {/* <option value="" selected disabled>
                       Название категории груза
-                    </option>
+                    </option> */}
                     {cargoCategories?.map(({ id, title }) => (
                       <option key={id} value={id}>
                         {title}
@@ -317,9 +357,9 @@ const EnterModal = () => {
                       }))
                     }
                   >
-                    <option value="" selected disabled>
+                    {/* <option value="" selected disabled>
                       Название вида груза
-                    </option>
+                    </option> */}
                     {cargoTypes?.map(({ id, title }) => (
                       <option key={id} value={id}>
                         {title}

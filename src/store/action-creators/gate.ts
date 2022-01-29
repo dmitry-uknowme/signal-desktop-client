@@ -19,31 +19,53 @@ export const fetchGateStatus = () => {
   }
 }
 
-export const openGate = (id: GatesIds) => {
+export const openGate = (id: GatesIds, emmitedBySocket: boolean = false) => {
   return async (dispatch: React.Dispatch<GateAction>) => {
-    const { data } = await axios.post(`${API_URL}/unlockedGate`, {
-      gate: id,
-    })
-    if (data.status === 'success' && data.allow === true) {
+    if (emmitedBySocket) {
       dispatch({ type: GateActionTypes.OPEN_GATE, payload: id })
+    } else {
+      const { data } = await axios.post(`${API_URL}/unlockedGate`, {
+        gate: id,
+      })
+      if (data.status === 'success' && data.allow === true) {
+        dispatch({ type: GateActionTypes.OPEN_GATE, payload: id })
+      }
     }
   }
 }
 
-export const closeGate = (id: GatesIds) => {
+export const closeGate = (id: GatesIds, emmitedBySocket: boolean = false) => {
   return async (dispatch: React.Dispatch<GateAction>) => {
-    axios
-      .post(`${API_URL}/lockedGate`, {
-        gate: id,
+    if (emmitedBySocket) {
+      dispatch({
+        type: GateActionTypes.CLOSE_GATE,
+        payload: id,
       })
-      .then(response => {
-        const data = response.data
-        if (data.status === 'success' && data.allow === true) {
-          dispatch({
-            type: GateActionTypes.CLOSE_GATE,
-            payload: id,
-          })
-        } else {
+    } else {
+      axios
+        .post(`${API_URL}/lockedGate`, {
+          gate: id,
+        })
+        .then(response => {
+          const data = response.data
+          if (data.status === 'success' && data.allow === true) {
+            dispatch({
+              type: GateActionTypes.CLOSE_GATE,
+              payload: id,
+            })
+          } else {
+            dispatch({
+              type: GateActionTypes.CLOSE_GATE,
+              payload: {
+                error: true,
+                message: `Ошибка при открытии шлагбаума для ${
+                  id === GatesIds.INPUT ? 'въезда' : 'выезда'
+                }`,
+              },
+            })
+          }
+        })
+        .catch(() => {
           dispatch({
             type: GateActionTypes.CLOSE_GATE,
             payload: {
@@ -53,34 +75,10 @@ export const closeGate = (id: GatesIds) => {
               }`,
             },
           })
-        }
-      })
-      .catch(() => {
-        dispatch({
-          type: GateActionTypes.CLOSE_GATE,
-          payload: {
-            error: true,
-            message: `Ошибка при открытии шлагбаума для ${
-              id === GatesIds.INPUT ? 'въезда' : 'выезда'
-            }`,
-          },
         })
-      })
-    // if (data.status === 'success' && data.allow === true) {
-    //   dispatch({ type: GateActionTypes.CLOSE_GATE, payload: id })
-    // }
+    }
   }
 }
-// export const closeGate = (id: GatesIds) => {
-//   return async (dispatch: React.Dispatch<GateAction>) => {
-//     const { data } = await axios.post(`http://62.109.23.190:44/v1/lockedGate`, {
-//       gate: id,
-//     })
-//     if (data.status === 'success' && data.allow === true) {
-//       dispatch({ type: GateActionTypes.CLOSE_GATE, payload: id })
-//     }
-//   }
-// }
 
 export const switchGateMode = (mode: IGateModes) => {
   return async (dispatch: React.Dispatch<GateAction>) => {
