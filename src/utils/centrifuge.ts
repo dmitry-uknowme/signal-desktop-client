@@ -1,5 +1,6 @@
 import Centrifuge from 'centrifuge'
+import settings from '../../settings.json'
 
-// export default new Centrifuge(process.env.WEBSOCKET_URL);
-export default new Centrifuge('ws://127.0.0.1:8877/connection/websocket')
-// export default new Centrifuge('ws://62.109.23.190:8877/connection/websocket')
+const WEBSOCKET_URL = settings.WEBSOCKET_URL
+
+export default new Centrifuge(WEBSOCKET_URL)

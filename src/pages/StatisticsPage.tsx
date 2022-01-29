@@ -8,10 +8,12 @@ import { DateRangePicker, CustomProvider } from 'rsuite'
 import axios from 'axios'
 import getTotalPages from '../utils/getTotalPages'
 import localizeCount from '../utils/localizeCount'
+import settings from '../../settings.json'
+
+const API_URL = settings.API_URL
 
 const PAGE_LIMIT = 10
-const API_URL = 'http://127.0.0.1:81/v1'
-// const API_URL = 'http://62.109.23.190:44/v1'
+
 const StatisticsPage = () => {
   const [contractors, setContractors] = useState()
   const [cargoCategories, setCargoCategories] = useState()

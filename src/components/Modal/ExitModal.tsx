@@ -6,8 +6,9 @@ import useActions from '../../hooks/useActions'
 import Button from '../base/Button'
 import { setIsModalExitOpened } from '../../store/reducers/modalReducer'
 import centrifuge from '../../utils/centrifuge'
-const API_URL = 'http://127.0.0.1:81/v1'
-// const API_URL = 'http://62.109.23.190:44/v1'
+import settings from '../../../settings.json'
+
+const API_URL = settings.API_URL
 
 const ExitModal = () => {
   const dispatch = useDispatch()
