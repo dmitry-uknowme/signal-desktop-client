@@ -7,7 +7,7 @@ import StateTable from '../components/StateTable'
 const SettingsPage = () => {
   const savedSettingsRef = useRef(null)
   const [settings, setSettings] = useState({
-    serverURL: process.env.API_URL,
+    serverURL: '127.0.0.1:81',
     polygonName: 'ООО "Спецэкотранс"',
     clientId:
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
