@@ -1,8 +1,8 @@
 {
-  "D_API_URL": "http://127.0.0.1:81/v1",
-  "D_WEBSOCKET_URL": "ws://127.0.0.1:8877/connection/websocket",
-  "API_URL": "http://62.109.23.190:44/v1",
-  "WEBSOCKET_URL": "ws://62.109.23.190:8877/connection/websocket",
+  "API_URL": "http://127.0.0.1:81/v1",
+  "WEBSOCKET_URL": "ws://127.0.0.1:8877/connection/websocket",
+  "aAPI_URL": "http://62.109.23.190:44/v1",
+  "aWEBSOCKET_URL": "ws://62.109.23.190:8877/connection/websocket",
   "POLYGON_NAME": "ООО \"Спецэкотранс\"",
   "POLYGON_ID": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 }
