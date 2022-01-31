@@ -88,7 +88,7 @@ const ExitModal = () => {
     })
 
     centrifuge.subscribe('channel', function (ctx) {
-      console.log('weight received', ctx)
+      // console.log('weight received', ctx)
       setTerminalWeight(ctx.data.value)
     })
     centrifuge.connect()

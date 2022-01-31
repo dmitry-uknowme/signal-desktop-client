@@ -1,8 +1,8 @@
 {
-  "name": "dev-signal-desktop-client",
+  "name": "signal-desktop-client",
   "author": "ETPP DEV",
   "version": "0.2.4",
-  "description": "Dev Signal Desktop Client",
+  "description": "Signal Desktop Client",
   "main": "./.webpack/main/index.js",
   "scripts": {
     "dev": "concurrently -k \"npm run start\" \"npm run electron\"",
@@ -15,7 +15,8 @@
     "package": "electron-forge package --platform=linux --arch=x64",
     "make-linux": "electron-forge make --platform=linux --arch=x64",
     "make-windows": "cd ./out/\"Signal Desktop Client-win32-x64\"/ && electron-installer-windows --src . --dest ../make/win",
-    "release": "npm version patch && electron-forge publish",
+    "release": "node cross-env NODE_ENV=development change-package-channel.js && electron-forge publish",
+    "prod:release": "node cross-env NODE_ENV=production change-package-channel.js && electron-forge publish",
     "lint": "eslint . --ext js,ts",
     "test": "jest"
   },
@@ -99,8 +100,8 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "name": "Dev Signal Desktop Client",
-        "executableName": "dev-signal-desktop-client",
+        "name": "Signal Desktop Client",
+        "executableName": "signal-desktop-client",
         "icon": "assets/icon",
         "extraResource": [
           "assets"
@@ -150,9 +151,8 @@
               "owner": "dmitry-uknowme",
               "name": "signal-desktop-client"
             },
-            "authToken": "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",
-            "draft": false,
-            "prelease": false
+            "authToken": "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",
+            "draft": true
           }
         }
       ]

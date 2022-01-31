@@ -8,13 +8,11 @@ import SettingsPage from './pages/SettingsPage'
 import StatisticsPage from './pages/StatisticsPage'
 import EnterModal from './components/Modal/EnterModal'
 import ExitModal from './components/Modal/ExitModal'
-import centrifuge from './utils/centrifuge'
 import './styles/rsuite.global.css'
 import './styles/bootstrap.global.css'
 import './styles/App.global.css'
 import useActions from './hooks/useActions'
-import { io } from 'socket.io-client'
-const socket = io('http://localhost:8080')
+// const socket = io('http://localhost:8080')
 // import settings from '../settings.json'
 // console.log('settings', settings)
 const App = () => {
@@ -29,15 +27,15 @@ const App = () => {
   const modal = useSelector(store => store.modal.modalEnter)
   const isModalVisible = modal.opened
   useEffect(() => {
-    window.alert('version 1')
-    socket.on('TRUCK:ENTERED', data => {
-      console.log('entered', data)
-      addCarOnTerritory(data.payload, true)
-    })
-    socket.on('TRUCK:EXITED', data => {
-      console.log('exited', data)
-      removeCarFromTerritory(data.payload, true)
-    })
+    // window.alert('version 1')
+    // socket.on('TRUCK:ENTERED', data => {
+    //   console.log('entered', data)
+    //   addCarOnTerritory(data.payload, true)
+    // })
+    // socket.on('TRUCK:EXITED', data => {
+    //   console.log('exited', data)
+    //   removeCarFromTerritory(data.payload, true)
+    // })
     // centrifuge.on('connect', function (ctx) {
     //   console.log('connected', ctx)
     // })
