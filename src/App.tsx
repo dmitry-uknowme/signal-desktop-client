@@ -29,6 +29,7 @@ const App = () => {
   const modal = useSelector(store => store.modal.modalEnter)
   const isModalVisible = modal.opened
   useEffect(() => {
+    window.alert('version 1')
     socket.on('TRUCK:ENTERED', data => {
       console.log('entered', data)
       addCarOnTerritory(data.payload, true)

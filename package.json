@@ -1,7 +1,7 @@
 {
   "name": "dev-signal-desktop-client",
   "author": "ETPP DEV",
-  "version": "0.2.3",
+  "version": "0.2.2",
   "description": "Dev Signal Desktop Client",
   "main": "./.webpack/main/index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "package": "electron-forge package --platform=linux --arch=x64",
     "make-linux": "electron-forge make --platform=linux --arch=x64",
     "make-windows": "cd ./out/\"Signal Desktop Client-win32-x64\"/ && electron-installer-windows --src . --dest ../make/win",
-    "release": "electron-forge publish",
+    "release": "npm version patch && electron-forge publish",
     "lint": "eslint . --ext js,ts",
     "test": "jest"
   },
