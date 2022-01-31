@@ -1,7 +1,7 @@
 {
   "name": "dev-signal-desktop-client",
   "author": "ETPP DEV",
-  "version": "0.2",
+  "version": "0.2.2",
   "description": "Dev Signal Desktop Client",
   "main": "./.webpack/main/index.js",
   "scripts": {
@@ -74,6 +74,7 @@
     "electron": "13.1.2",
     "electron-installer-windows": "^3.0.0",
     "electron-is-dev": "^2.0.0",
+    "electron-updater": "^4.6.1",
     "eslint": "7.29.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-config-standard": "16.0.3",
@@ -149,8 +150,9 @@
               "owner": "dmitry-uknowme",
               "name": "signal-desktop-client"
             },
-            "authToken": "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",
-            "draft": true
+            "authToken": "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",
+            "draft": false,
+            "prelease": false
           }
         }
       ]
