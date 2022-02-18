@@ -12,6 +12,7 @@ import './styles/rsuite.global.css'
 import './styles/bootstrap.global.css'
 import './styles/App.global.css'
 import useActions from './hooks/useActions'
+import CameraPage from './pages/CameraPage'
 // const socket = io('http://localhost:8080')
 // import settings from '../settings.json'
 // console.log('settings', settings)
@@ -150,6 +151,9 @@ const App = () => {
                   </Route>
                   <Route exact path="/statistics">
                     <StatisticsPage />
+                  </Route>
+                  <Route exact path="/camera">
+                    <CameraPage />
                   </Route>
 
                   <Route path="/">

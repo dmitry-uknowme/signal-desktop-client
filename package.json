@@ -23,6 +23,7 @@
   "keywords": [],
   "license": "MIT",
   "dependencies": {
+    "@flashphoner/websdk": "^2.0.212",
     "centrifuge": "^2.8.4",
     "date-fns": "^2.28.0",
     "framer-motion": "^5.6.0",

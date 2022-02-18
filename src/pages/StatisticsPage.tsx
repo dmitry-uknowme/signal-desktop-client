@@ -26,31 +26,16 @@ const StatisticsPage = () => {
     getTotalPages(countOfCars, PAGE_LIMIT)
   )
   const [currentPage, setCurrentPage] = useState(1)
+  const defaultFilters = {
+    status: '',
+    contractor: '',
+    cargoType: '',
+    cargoCategory: '',
+    truckNumber: '',
+    dateRange: '',
+  }
+  const [filters, setFilters] = useState(defaultFilters)
 
-  // const changeDateHandler = (e) => {
-  //   console.log('calendar', e);
-
-  // };
-  // console.log(
-  //   'storeee',
-  //   useSelector((store) => store.cars.all)
-  // );
-  // const fetchDropdownFields = async () => {
-  //   const contractorResponse = await axios.get(
-  //     'http://localhost:8000/contractors'
-  //   );
-  //   setContractors(contractorResponse.data);
-
-  //   const cargoCategoriesResponse = await axios.get(
-  //     'http://localhost:8000/cargo_categories'
-  //   );
-  //   setCargoCategories(cargoCategoriesResponse.data);
-
-  //   const cargoTypesResponse = await axios.get(
-  //     'http://localhost:8000/cargo_types'
-  //   );
-  //   setCargoTypes(cargoTypesResponse.data);
-  // };
   const fetchDropdownFields = async () => {
     const contractorResponse = await axios.get(
       `${API_URL}/getOrganizations?role=ROLE_TRANSPORTER`
@@ -66,6 +51,17 @@ const StatisticsPage = () => {
     setCargoTypes(cargoTypesResponse.data.items)
   }
 
+  const searchHandler = () => {
+    setCurrentPage(1)
+    const searchFilters = Object.keys(filters)
+      .filter(value => filters[value] !== '')
+      .map(value => `${value}=${filters[value]}`)
+      .join('&')
+    fetchAllCars(1, PAGE_LIMIT, searchFilters)
+  }
+
+  const resetFilters = () => setFilters(defaultFilters)
+
   useEffect(() => {
     fetchAllCars(currentPage, PAGE_LIMIT)
   }, [currentPage])
@@ -73,7 +69,6 @@ const StatisticsPage = () => {
   useEffect(() => {
     setCountOfPages(getTotalPages(countOfCars, PAGE_LIMIT))
   }, [allCars, countOfCars])
-
   useEffect(() => {
     fetchAllCars(currentPage, PAGE_LIMIT)
     setCountOfPages(getTotalPages(countOfCars, PAGE_LIMIT))
@@ -88,30 +83,53 @@ const StatisticsPage = () => {
           <div className="row mt-3 align-items-center">
             <div className="container">
               <div className="stats__filters p-0 d-flex justify-content-between">
-                <select className="stats__filter">
-                  <option value="" disabled>
-                    Категория груза
-                  </option>
+                <select
+                  className="stats__filter"
+                  onChange={e =>
+                    setFilters(state => ({
+                      ...state,
+                      cargoCategory: e.target.value,
+                    }))
+                  }
+                >
+                  <option disabled>Категория груза</option>
+                  <option value="">Все категории</option>
                   {cargoCategories?.map(({ id, title }) => (
                     <option key={id} value={id}>
                       {title}
                     </option>
                   ))}
                 </select>
-                <select className="stats__filter">
-                  <option value="" disabled>
-                    Вид груза
-                  </option>
+                <select
+                  className="stats__filter"
+                  onChange={e =>
+                    setFilters(state => ({
+                      ...state,
+                      cargoType: e.target.value,
+                    }))
+                  }
+                >
+                  <option disabled>Вид груза</option>
+                  <option value="">Все виды</option>
                   {cargoTypes?.map(({ id, title }) => (
                     <option key={id} value={id}>
                       {title}
                     </option>
                   ))}
                 </select>
-                <select className="stats__filter">
+                <select
+                  className="stats__filter"
+                  onChange={e =>
+                    setFilters(state => ({
+                      ...state,
+                      contractor: e.target.value,
+                    }))
+                  }
+                >
                   <option value="" disabled>
                     Контрагент
                   </option>
+                  <option value="">Все контрагенты</option>
                   {contractors?.map(({ id, full_name }) => (
                     <option key={id} value={id}>
                       {full_name}
@@ -121,6 +139,12 @@ const StatisticsPage = () => {
                 <input
                   className="stats__filter d-xl-block"
                   placeholder="Гос. номер"
+                  onChange={e =>
+                    setFilters(state => ({
+                      ...state,
+                      truckNumber: e.target.value,
+                    }))
+                  }
                 />
                 <br />
                 <CustomProvider locale={ruRu}>
@@ -131,28 +155,41 @@ const StatisticsPage = () => {
                     placeholder="дд.мм.гг-дд.мм.гг"
                     showOneCalendar
                     placement="bottomEnd"
-                    onChange={e => console.log('date', e)}
+                    onChange={dates => {
+                      if (dates?.length) {
+                        setFilters(state => ({
+                          ...state,
+                          dateRange: dates
+                            .map(date => date.getTime())
+                            .join(','),
+                        }))
+                      }
+                    }}
                   />
                 </CustomProvider>
                 <Button
                   variant="success"
                   label="Применить"
                   className="stats__filter-btn stats__filter-apply d-xl-block d-lg-none d-1300-none d-md-none d-900-none d-sm-none"
+                  onClick={() => searchHandler()}
                 />
                 <Button
                   variant="success"
                   label="✓"
                   className="stats__filter-btn stats__filter-btn-icon stats__filter-apply d-xl-none d-lg-block d-1300-block d-md-none d-sm-none"
+                  onClick={() => searchHandler()}
                 />
                 <Button
                   variant="danger"
                   label="↻"
                   className="stats__filter-btn stats__filter-btn-icon stats__filter-refresh d-xl-none d-lg-block d-1300-block d-md-none d-sm-none"
+                  onClick={() => resetFilters()}
                 />
                 <Button
                   variant="danger"
                   label="Сбросить"
                   className="stats__filter-btn stats__filter-refresh d-xl-block d-lg-none d-1300-none d-md-none d-900-none d-sm-none"
+                  onClick={() => resetFilters()}
                 />
               </div>
               <div className="row d-xl-none d-lg-flex d-md-flex mt-4">
@@ -176,6 +213,7 @@ const StatisticsPage = () => {
                     variant="success"
                     label="Применить"
                     className="stats__filter-btn stats__filter-apply d-xl-none d-lg-none d-md-none d-900-block w-100"
+                    onClick={() => searchHandler()}
                   />
                 </div>
                 <div className="col-md-2">

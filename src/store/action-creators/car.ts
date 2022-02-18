@@ -10,12 +10,13 @@ import settings from '../../../settings.json'
 
 const API_URL = settings.API_URL
 
-export const fetchAllCars = (page: number, limit: number) => {
+export const fetchAllCars = (page: number, limit: number, filters?: any) => {
+  console.log('fetcher', filters)
   return async (dispatch: React.Dispatch<CarAction>) => {
     const { data } = await axios.get(
-      `${API_URL}/getActs?status=STATUS_COMPLETED${
-        page ? `&page=${page}` : ''
-      } ${limit ? `&limit=${limit}` : ''}`
+      `${API_URL}/getActs?${page ? `page=${page}` : ''} ${
+        limit ? `&limit=${limit}` : ''
+      }${filters || ''}`
     )
     dispatch({ type: AllCarsActionTypes.FETCH, payload: data })
   }
