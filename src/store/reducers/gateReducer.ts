@@ -19,6 +19,15 @@ const gateReducer = (state = defaultState, action: GateAction) => {
             : { outputGateStatus: 'UNLOCKED' }),
         },
       }
+    case GateActionTypes.FREEZE_GATE:
+      return {
+        ...state,
+        ...{
+          ...(action.payload === GatesIds.INPUT
+            ? { inputGateStatus: 'FREEZED' }
+            : { outputGateStatus: 'FREEZED' }),
+        },
+      }
     case GateActionTypes.CLOSE_GATE:
       return {
         ...state,

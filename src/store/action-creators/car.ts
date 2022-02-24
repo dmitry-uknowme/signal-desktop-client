@@ -11,12 +11,11 @@ import settings from '../../../settings.json'
 const API_URL = settings.API_URL
 
 export const fetchAllCars = (page: number, limit: number, filters?: any) => {
-  console.log('fetcher', filters)
   return async (dispatch: React.Dispatch<CarAction>) => {
     const { data } = await axios.get(
       `${API_URL}/getActs?${page ? `page=${page}` : ''} ${
         limit ? `&limit=${limit}` : ''
-      }${filters || ''}`
+      }${filters ? `&${filters}` : ''}`
     )
     dispatch({ type: AllCarsActionTypes.FETCH, payload: data })
   }
@@ -42,12 +41,6 @@ export const fetchCarsOnTerritory = (page: number, limit: number) => {
     dispatch({ type: CarsOnTerritoryActionTypes.FETCH, payload: data })
   }
 }
-// export const fetchCarsOnTerritory = (payload: ICarEntered | any) => {
-//   return async (dispatch: React.Dispatch<CarAction>) => {
-//     const { data } = await axios.get('http://localhost:8000/cars_on_territory');
-//     dispatch({ type: CarsOnTerritoryActionTypes.FETCH, payload: data });
-//   };
-// };
 
 export const addCarOnTerritory = (
   payload: ICarExited | any,

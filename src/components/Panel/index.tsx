@@ -17,13 +17,18 @@ const Panel = () => {
   const gateStore = useSelector(store => store.gate)
   const isManualMode = useSelector(store => store.gate.mode === 'MODE_MANUAL')
 
-  // const gateError = useSelector(store =>
-  //   store.gate?.mode?.error ? store.gate?.mode?.message : null
-  // )
+  const isInputGateFreezed = useSelector(
+    store => store.gate.inputGateStatus === 'FREEZED'
+  )
+  const isManualModeFreezed = useSelector(
+    store => store.gate.mode === 'MODE_FREEZED'
+  )
   const isInputGateOpened = useSelector(
     store => store.gate.inputGateStatus === 'UNLOCKED'
   )
-
+  const isOutputGateFreezed = useSelector(
+    store => store.gate.outputGateStatus === 'FREEZED'
+  )
   const isOutputGateOpened = useSelector(
     store => store.gate.outputGateStatus === 'UNLOCKED'
   )
@@ -100,6 +105,7 @@ const Panel = () => {
               label="Ручное управление"
               className="panel__form-field"
               isChecked={isManualMode}
+              disabled={isManualModeFreezed}
               setChecked={() =>
                 isManualMode
                   ? switchGateMode(IGateModes.MODE_AUTO)
@@ -114,7 +120,7 @@ const Panel = () => {
               name="door1"
               label="Шлагбаум №1"
               className="panel__form-field"
-              disabled={!isManualMode}
+              disabled={isInputGateFreezed || !isManualMode}
               isChecked={!isInputGateOpened}
               setChecked={() =>
                 isInputGateOpened
@@ -130,7 +136,7 @@ const Panel = () => {
               name="door2"
               label="Шлагбаум №2"
               className="panel__form-field"
-              disabled={!isManualMode}
+              disabled={isOutputGateFreezed || !isManualMode}
               isChecked={!isOutputGateOpened}
               setChecked={() =>
                 isOutputGateOpened
