@@ -84,7 +84,7 @@ export const switchGateMode = (mode: IGateModes) => {
       payload: IGateModes.MODE_FREEZED,
     })
     axios
-      .post(`${API_URL}/switchMode  `, { command: mode })
+      .post(`${API_URL}/switchMode`, { command: mode })
       .then(response => {
         const data = response.data
         if (data.status === 'success') {

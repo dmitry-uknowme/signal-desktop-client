@@ -1,16 +1,17 @@
 .checkbox:checked + .switchbox {
   border: 1px solid #bc9cff;
   background: #fff;
+  cursor: inherit;
 }
 
 .checkbox:checked + .switchbox::after {
   left: 62%;
   background: #11a8ab;
+  cursor: inherit;
 }
 
 .checkbox + .switchbox::after {
   background: #e64c65;
-
   border-radius: 20px;
   content: ' ';
   display: block;
@@ -21,6 +22,7 @@
   transform: translate(0, -50%);
   transition: all 0.2s linear;
   width: 0.8rem;
+  cursor: inherit;
 }
 
 .checkbox + .switchbox {
@@ -34,27 +36,33 @@
   overflow: hidden;
   position: relative;
   width: 3rem;
+  cursor: inherit;
 }
 
 .switch {
   pointer-events: all;
   height: 1.4rem;
+  cursor: pointer;
 }
 
 .switchDisabled .checkbox + .switchbox::after {
+  cursor: inherit;
   opacity: 0.5;
 }
 
 .switchDisabled {
+  cursor: not-allowed;
   pointer-events: none;
 }
 
 .switch__body {
   height: 1.4rem;
   height: inherit;
+  cursor: inherit;
 }
 
 .switch__label {
+  cursor: inherit;
   font-size: 0.8rem;
   font-size: inherit;
   color: #fff;

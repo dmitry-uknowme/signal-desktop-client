@@ -228,7 +228,6 @@ const StatisticsPage = () => {
           </div>
           {allCars?.length ? (
             <>
-              {' '}
               <div className="row mt-4">
                 <div className="container">
                   <table className="stats__table">
@@ -317,7 +316,9 @@ const StatisticsPage = () => {
                             <div
                               className="pagination__item"
                               onClick={() => setCurrentPage(1)}
-                            ></div>
+                            >
+                              1
+                            </div>
                           )}
                           {countOfPages > 5 && currentPage >= 4 && (
                             <div

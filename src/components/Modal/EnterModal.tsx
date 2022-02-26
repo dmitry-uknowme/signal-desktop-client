@@ -232,7 +232,11 @@ const EnterModal = () => {
             </svg>
           </div>
 
-          <form className="modal__form mt-5" onSubmit={submitHandler}>
+          <form
+            className="modal__form mt-5"
+            onSubmit={submitHandler}
+            autoComplete="off"
+          >
             <div className="row">
               <div className="form-group row align-items-center">
                 <div className="col-md-4">
@@ -253,6 +257,7 @@ const EnterModal = () => {
                         ? ''
                         : formData.number_plate
                     }
+                    minLength={8}
                     onChange={e =>
                       setFormData(state => ({
                         ...state,
