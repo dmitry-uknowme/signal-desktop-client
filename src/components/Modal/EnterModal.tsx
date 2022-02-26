@@ -97,24 +97,25 @@ const EnterModal = () => {
           console.log('camera response', response)
           setFormData(state => ({
             ...state,
-            ...(response?.data?.response?.truckNumber &&
-            response?.data?.response?.truckNumber !== ''
-              ? {
-                  number_plate: response.data.response.truckNumber,
-                }
-              : { number_plate: 'UNKNOWN' }),
+            number_plate: response.data.response.truckNumber,
+            // ...(response?.data?.response?.truckNumber &&
+            // response?.data?.response?.truckNumber !== ''
+            //   ? {
+            //       number_plate: response.data.response.truckNumber,
+            //     }
+            //   : { number_plate: 'UNKNOWN' }),
             ...(response?.data?.response?.contractor !== null && {
               contractor_company: response.data.response.contractor.id,
             }),
           }))
         } else {
           console.log('camera error', response)
-          setFormData(state => ({ ...state, number_plate: 'UNKNOWN' }))
+          setFormData(state => ({ ...state, number_plate: '' }))
         }
       })
       .catch(e => {
         console.log('camera error catch', e)
-        setFormData(state => ({ ...state, number_plate: 'UNKNOWN' }))
+        setFormData(state => ({ ...state, number_plate: '' }))
       })
   }
 
@@ -246,17 +247,14 @@ const EnterModal = () => {
                   <input
                     className="form-control text-uppercase"
                     name="number_plate"
-                    placeholder={
-                      formData.number_plate === 'UNKNOWN'
-                        ? 'Не определено'
-                        : 'О123ОО123'
-                    }
+                    placeholder="О123ОО123"
+                    // placeholder={
+                    //   formData.number_plate === 'UNKNOWN'
+                    //     ? 'Не определено'
+                    //     : 'О123ОО123'
+                    // }
                     required
-                    value={
-                      formData.number_plate === 'UNKNOWN'
-                        ? ''
-                        : formData.number_plate
-                    }
+                    value={formData.number_plate}
                     minLength={8}
                     onChange={e =>
                       setFormData(state => ({
