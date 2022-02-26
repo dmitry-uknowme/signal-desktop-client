@@ -105,5 +105,15 @@ export const switchGateMode = (mode: IGateModes) => {
           payload: prevMode,
         })
       )
+    // .finally(async () => {
+    //   const { data } = await axios.get(`${API_URL}/getGateStatus`)
+    //   if (data.status === 'success') {
+    //     setTimeout(
+    //       () =>
+    //         dispatch({ type: GateActionTypes.FETCH_GATES, payload: data }),
+    //       500
+    //     )
+    //   }
+    // })
   }
 }
