@@ -104,12 +104,12 @@ table {
 }
 
 @media screen and (max-width: 900px) {
-  .panel__row1 {
+  /* .panel__row1 {
     height: auto;
   }
   .panel__row2 {
     height: auto;
-  }
+  } */
 }
 
 .panel__form-field {
