@@ -27,7 +27,7 @@ const StatisticsPage = () => {
   )
   const [currentPage, setCurrentPage] = useState(1)
   const defaultFilters = {
-    status: '',
+    status: 'STATUS_COMPLETED',
     contractor: '',
     cargoType: '',
     cargoCategory: '',

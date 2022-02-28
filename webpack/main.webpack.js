@@ -9,11 +9,13 @@ module.exports = {
     alias: {
       process: 'process/browser',
     },
+    // fallback: { path: require.resolve('path-browserify') },
   },
   entry: './electron/main.ts',
   module: {
     rules: require('./rules.webpack'),
   },
+  target: 'electron-main',
   plugins: [
     // new DotenvPlugin({
     //   path: '.env',

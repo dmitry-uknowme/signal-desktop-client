@@ -13,9 +13,10 @@ import './styles/bootstrap.global.css'
 import './styles/App.global.css'
 import useActions from './hooks/useActions'
 import CameraPage from './pages/CameraPage'
+import centrifuge from './utils/centrifuge'
+// import io from 'socket.io-client'
 // const socket = io('http://localhost:8080')
-// import settings from '../settings.json'
-// console.log('settings', settings)
+
 const App = () => {
   const { addCarOnTerritory, removeCarFromTerritory } = useActions()
   const animationVariants = {
@@ -26,9 +27,9 @@ const App = () => {
   }
   const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false)
   const modal = useSelector(store => store.modal.modalEnter)
+
   const isModalVisible = modal.opened
   useEffect(() => {
-    // window.alert('version 1')
     // socket.on('TRUCK:ENTERED', data => {
     //   console.log('entered', data)
     //   addCarOnTerritory(data.payload, true)
@@ -37,24 +38,24 @@ const App = () => {
     //   console.log('exited', data)
     //   removeCarFromTerritory(data.payload, true)
     // })
-    // centrifuge.on('connect', function (ctx) {
-    //   console.log('connected', ctx)
-    // })
-    // centrifuge.on('disconnect', function (ctx) {
-    //   console.log('disconnected', ctx)
-    // })
-    // const TRUCK_ENTERED_CHANNEL = centrifuge.subscribe('TRUCK:ENTERED', ctx =>
-    //   addCarOnTerritory(ctx.payload, true)
-    // )
-    // const TRUCK_EXITED_CHANNEL = centrifuge.subscribe('TRUCK:EXITED', ctx =>
-    //   removeCarFromTerritory(ctx.payload, true)
-    // )
-    // centrifuge.connect()
-    // return () => {
-    //   TRUCK_ENTERED_CHANNEL.unsubscribe()
-    //   TRUCK_EXITED_CHANNEL.unsubscribe()
-    //   centrifuge.disconnect()
-    // }
+    centrifuge.on('connect', function (ctx) {
+      console.log('connected', ctx)
+    })
+    centrifuge.on('disconnect', function (ctx) {
+      console.log('disconnected', ctx)
+    })
+    const TRUCK_ENTERED_CHANNEL = centrifuge.subscribe('TRUCK:ENTERED', ctx =>
+      addCarOnTerritory(ctx.payload, true)
+    )
+    const TRUCK_EXITED_CHANNEL = centrifuge.subscribe('TRUCK:EXITED', ctx =>
+      removeCarFromTerritory(ctx.payload, true)
+    )
+    centrifuge.connect()
+    return () => {
+      TRUCK_ENTERED_CHANNEL.unsubscribe()
+      TRUCK_EXITED_CHANNEL.unsubscribe()
+      centrifuge.disconnect()
+    }
   }, [])
   return (
     <div className="app">

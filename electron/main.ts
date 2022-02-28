@@ -1,5 +1,7 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
-const isDev = require('electron-is-dev')
+import { app, BrowserWindow, ipcMain, Notification, dialog } from 'electron'
+import isDev from 'electron-is-dev'
+import log from 'electron-log'
+// let eNotify
 let mainWindow: BrowserWindow | null
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
@@ -41,12 +43,35 @@ function createWindow() {
   if (isDev) {
     mainWindow.webContents.openDevTools({ mode: 'detach' })
   }
+  // import eNotify from 'electron-notify'
 }
 
 async function registerListeners() {
   /**
    * This comes from bridge integration, check bridge.ts
    */
+  ipcMain.on('message', (_, message) => {
+    console.log(message)
+  })
+  ipcMain.on('write-log', (_, message) => {
+    switch (message.level) {
+      case 'info':
+        return log.scope(message.scope).info(message.text)
+      case 'error':
+        dialog.showErrorBox(
+          message.title || 'Ошибка',
+          `Text: ${message.text}\nPayload: ${message.payload}`
+        )
+        // new Notification({
+        //   title: 'Ошибка',
+        //   body: message.text,
+        //   silent: false,
+        // }).show()
+        return log
+          .scope(message.scope)
+          .error(`text: ${message.text}\npayload: ${message.payload}`)
+    }
+  })
   ipcMain.on('message', (_, message) => {
     console.log(message)
   })

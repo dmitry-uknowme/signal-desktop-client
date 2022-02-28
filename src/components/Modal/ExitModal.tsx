@@ -69,12 +69,16 @@ const ExitModal = () => {
 
   const submitHandler = async (e: any) => {
     e.preventDefault()
-    await axios.post(`${API_URL}/createCheckOut`, {
+    // await axios.post(`${API_URL}/createCheckOut`, {
+    //   actId: formData.id,
+    //   weight: terminalWeight,
+    //   commentCheckOut: formData.comment_on_exit,
+    // })
+    removeCarFromTerritory({
       actId: formData.id,
       weight: terminalWeight,
       commentCheckOut: formData.comment_on_exit,
     })
-    removeCarFromTerritory(formData.id)
     closeModal()
   }
 

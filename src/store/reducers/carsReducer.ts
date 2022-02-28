@@ -19,7 +19,10 @@ const carReducer = (state = defaultState, action: CarAction) => {
     case AllCarsActionTypes.ADD_CAR:
       return {
         ...state,
-        all: [...state.all, action.payload],
+        all: {
+          ...state.all,
+          items: [action.payload, ...state.all.items],
+        },
       }
 
     case CarsOnTerritoryActionTypes.FETCH:
