@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export enum IGateModes {
   MODE_MANUAL = 'MODE_MANUAL',
   MODE_AUTO = 'MODE_AUTO',
@@ -7,6 +8,11 @@ export enum IGateModes {
 export enum GatesIds {
   INPUT = 'INPUT',
   OUTPUT = 'OUTPUT',
+}
+
+export enum GatesVectors {
+  ENTRY = 'ENTRY',
+  EXIT = 'EXIT',
 }
 
 export enum GateActionTypes {
@@ -25,12 +31,14 @@ interface FetchGatesAction {
 
 interface OpenGateAction {
   type: GateActionTypes.OPEN_GATE
-  payload: GatesIds | { error: boolean; message: string }
+  payload:
+    | { id: GatesIds; vector: GatesVectors }
+    | { error: boolean; message: string }
 }
 
 interface CloseGateAction {
   type: GateActionTypes.CLOSE_GATE
-  payload: GatesIds | { error: boolean; message: string }
+  payload: { id: GatesIds } | { error: boolean; message: string }
 }
 interface FreezeGateAction {
   type: GateActionTypes.FREEZE_GATE

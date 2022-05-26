@@ -1,4 +1,9 @@
-import { GateAction, GateActionTypes, GatesIds } from '../types/gate'
+import {
+  GateAction,
+  GateActionTypes,
+  GatesIds,
+  GatesVectors,
+} from '../types/gate'
 
 const defaultState = {
   inputGateStatus: 'LOCKED',
@@ -14,9 +19,19 @@ const gateReducer = (state = defaultState, action: GateAction) => {
       return {
         ...state,
         ...{
-          ...(action.payload === GatesIds.INPUT
-            ? { inputGateStatus: 'UNLOCKED' }
-            : { outputGateStatus: 'UNLOCKED' }),
+          ...(action.payload.id === GatesIds.INPUT &&
+          action.payload.vector === GatesVectors.ENTRY
+            ? { inputGateStatus: 'UNLOCKED_ENTRY' }
+            : action.payload.id === GatesIds.INPUT &&
+              action.payload.vector === GatesVectors.EXIT
+            ? { inputGateStatus: 'UNLOCKED_EXIT' }
+            : action.payload.id === GatesIds.OUTPUT &&
+              action.payload.vector === GatesVectors.ENTRY
+            ? { outputGateStatus: 'UNLOCKED_ENTRY' }
+            : action.payload.id === GatesIds.OUTPUT &&
+              action.payload.vector === GatesVectors.EXIT
+            ? { outputGateStatus: 'UNLOCKED_EXIT' }
+            : null),
         },
       }
     case GateActionTypes.FREEZE_GATE:
@@ -32,7 +47,7 @@ const gateReducer = (state = defaultState, action: GateAction) => {
       return {
         ...state,
         ...{
-          ...(action.payload === GatesIds.INPUT
+          ...(action.payload.id === GatesIds.INPUT
             ? { inputGateStatus: 'LOCKED' }
             : { outputGateStatus: 'LOCKED' }),
         },

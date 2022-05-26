@@ -4,6 +4,7 @@ import {
   GateAction,
   GateActionTypes,
   GatesIds,
+  GatesVectors,
   IGateModes,
 } from '../types/gate'
 import settings from '../../../settings.json'
@@ -20,58 +21,58 @@ export const fetchGateStatus = () => {
   }
 }
 
-export const openGate = (id: GatesIds, emmitedBySocket: boolean = false) => {
+export const openGate = (
+  id: GatesIds,
+  vector: GatesVectors,
+  emmitedBySocket: boolean = false
+) => {
   return async (dispatch: React.Dispatch<GateAction>) => {
     if (emmitedBySocket) {
-      dispatch({ type: GateActionTypes.OPEN_GATE, payload: id })
+      dispatch({ type: GateActionTypes.OPEN_GATE, payload: { id, vector } })
     } else {
       dispatch({ type: GateActionTypes.FREEZE_GATE, payload: id })
       axios
         .post(`${API_URL}/unlockedGate`, {
           gate: id,
+          vector,
         })
         .then(response => {
           if (
             response.data.status === 'success' &&
             response.data.allow === true
           ) {
-            dispatch({ type: GateActionTypes.OPEN_GATE, payload: id })
-          } else {
-            dispatch({ type: GateActionTypes.CLOSE_GATE, payload: id })
+            dispatch({
+              type: GateActionTypes.OPEN_GATE,
+              payload: { id, vector },
+            })
+            setTimeout(() => {
+              dispatch({
+                type: GateActionTypes.CLOSE_GATE,
+                payload: { id },
+              })
+            }, 500)
           }
         })
-        .catch(() =>
-          dispatch({ type: GateActionTypes.CLOSE_GATE, payload: id })
-        )
     }
   }
 }
 
-export const closeGate = (id: GatesIds, emmitedBySocket: boolean = false) => {
+export const closeGate = (
+  id: GatesIds,
+  vector: GatesVectors,
+  emmitedBySocket: boolean = false
+) => {
   return async (dispatch: React.Dispatch<GateAction>) => {
     if (emmitedBySocket) {
+      // dispatch({
+      //   type: GateActionTypes.CLOSE_GATE,
+      //   payload: id,
+      // })
+    } else {
       dispatch({
         type: GateActionTypes.CLOSE_GATE,
-        payload: id,
+        payload: { id, vector },
       })
-    } else {
-      dispatch({ type: GateActionTypes.FREEZE_GATE, payload: id })
-      axios
-        .post(`${API_URL}/lockedGate`, {
-          gate: id,
-        })
-        .then(response => {
-          const data = response.data
-          if (data.status === 'success' && data.allow === true) {
-            dispatch({
-              type: GateActionTypes.CLOSE_GATE,
-              payload: id,
-            })
-          } else {
-            dispatch({ type: GateActionTypes.OPEN_GATE, payload: id })
-          }
-        })
-        .catch(() => dispatch({ type: GateActionTypes.OPEN_GATE, payload: id }))
     }
   }
 }
