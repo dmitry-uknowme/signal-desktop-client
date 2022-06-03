@@ -1,6 +1,4 @@
 node_modules
 dist
-packages
-.webpack
-.env
 out
+*.log*

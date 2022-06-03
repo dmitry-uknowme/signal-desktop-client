@@ -13,5 +13,4 @@ content.name = executableName
 content.config.forge.packagerConfig.executableName = executableName
 content.description = packageName
 content.config.forge.packagerConfig.name = packageName
-// isDev && content.version = content.version
 fs.writeFileSync('package.json', JSON.stringify(content, null, 2))

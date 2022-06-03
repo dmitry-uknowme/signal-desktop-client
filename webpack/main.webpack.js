@@ -7,12 +7,15 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js'],
     alias: {
-      process: 'process/browser',
-    },
+      process: 'process/browser'
+    }
+    // fallback: { path: require.resolve('path-browserify') },
+    // fallback: false,
   },
-  entry: './electron/main.ts',
+  entry: './src/main/index.ts',
+  // entry: './electron/main.ts',
   module: {
-    rules: require('./rules.webpack'),
+    rules: { ...require('./rules.webpack') }
   },
   plugins: [
     // new DotenvPlugin({
@@ -22,8 +25,8 @@ module.exports = {
     //   NODE_ENV: 'production',
     // }),
     new webpack.DefinePlugin({
-      'process.env.API_URL': process.env.API_URL,
-    }),
+      'process.env.API_URL': process.env.API_URL
+    })
     // new webpack.DefinePlugin({
     //   'process.env': JSON.stringify(process.env),
     // }),
@@ -33,5 +36,5 @@ module.exports = {
     // new webpack.DefinePlugin({
     //   'process.env.API_URL': JSON.stringify(process.env.API_URL),
     // }),
-  ],
+  ]
 }
