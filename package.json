@@ -1,8 +1,8 @@
 {
-  "name": "dev-signal-desktop-client",
+  "name": "signal-desktop-client",
   "author": "ETPP DEV",
   "version": "0.2.16",
-  "description": "Dev Signal Desktop Client",
+  "description": "Signal Desktop Client",
   "main": "./.webpack/main/index.js",
   "scripts": {
     "dev": "concurrently -k \"npm run start\" \"npm run electron\"",
@@ -102,8 +102,8 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "name": "Dev Signal Desktop Client",
-        "executableName": "dev-signal-desktop-client",
+        "name": "Signal Desktop Client",
+        "executableName": "signal-desktop-client",
         "icon": "assets/icon",
         "extraResource": [
           "assets"
@@ -153,7 +153,7 @@
               "owner": "dmitry-uknowme",
               "name": "signal-desktop-client"
             },
-            "authToken": "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",
+            "authToken": "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",
             "draft": true
           }
         }
