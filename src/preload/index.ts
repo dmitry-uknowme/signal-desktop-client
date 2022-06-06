@@ -22,9 +22,9 @@ const api = {
   changeSettingsByKey: (key: string, value: string): void => {
     const APP_DIR = getAppDir()
     const settings = JSON.parse(fs.readFileSync(`${APP_DIR}/settings.json`, 'utf8'))
-    console.log('beforeeee', settings)
+    // console.log('beforeeee', settings)
     settings[key] = value
-    console.log('afterrrr', settings)
+    // console.log('afterrrr', settings)
     fs.writeFileSync(`${APP_DIR}/settings.json`, JSON.stringify(settings, null, 2))
     // app.relaunch()
     BrowserWindow.getAllWindows()[0].reload()
