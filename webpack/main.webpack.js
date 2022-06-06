@@ -15,7 +15,7 @@ module.exports = {
   entry: './src/main/index.ts',
   // entry: './electron/main.ts',
   module: {
-    rules: { ...require('./rules.webpack') }
+    rules: require('./rules.webpack')
   },
   plugins: [
     // new DotenvPlugin({
