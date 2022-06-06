@@ -1,6 +1,6 @@
 {
   "name": "dev-signal-desktop-client",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Dev Signal Desktop Client",
   "main": "./out/main/index.js",
   "author": {
