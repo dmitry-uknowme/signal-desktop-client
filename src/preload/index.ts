@@ -1,14 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import fs from 'fs'
-import { contextBridge, app, BrowserWindow } from 'electron'
+import electron, { contextBridge, app, BrowserWindow } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { io } from 'socket.io-client'
 
 // Custom APIs for renderer
 
 const getHomeDir = (): string => process.env.HOME as string
 const getAppDir = (): string => `${getHomeDir()}/.signal`
 
+const socket = io('http://localhost:9000', {
+  reconnectionDelayMax: 10000,
+  auth: {
+    token: '123'
+  },
+  query: {
+    'my-key': 'my-value'
+  }
+})
+
+socket.emit('data', 'messageeeee')
+
 const api = {
+  test: (callback: any) => {
+    callback(app)
+    // return { app: app.getAppVersion() }
+  },
   getSettings: (): string => {
     const APP_DIR = getAppDir()
     const settings = JSON.parse(fs.readFileSync(`${APP_DIR}/settings.json`, 'utf8'))
@@ -27,7 +44,12 @@ const api = {
     // console.log('afterrrr', settings)
     fs.writeFileSync(`${APP_DIR}/settings.json`, JSON.stringify(settings, null, 2))
     // app.relaunch()
-    BrowserWindow.getAllWindows()[0].reload()
+
+    electron.BrowserWindow.getAllWindows()[0].reload()
+  },
+
+  restartApp: () => {
+    electron.BrowserWindow.getAllWindows()[0].reload()
   }
 }
 

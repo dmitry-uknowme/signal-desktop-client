@@ -1,6 +1,12 @@
 import { app, shell, BrowserWindow } from 'electron'
 import * as path from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+import { io } from 'socket.io-client'
+
+// socket.connect
+// socket.on('connect', () => {
+//   console.log('connected from client', socket.id)
+// })
 
 function createWindow() {
   // Create the browser window.

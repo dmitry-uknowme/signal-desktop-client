@@ -1,24 +1,24 @@
 module.exports = [
   {
     test: /\.node$/,
-    use: 'node-loader',
+    use: 'node-loader'
   },
-  {
-    test: /\.(m?js|node)$/,
-    parser: { amd: false },
-    use: {
-      loader: '@marshallofsound/webpack-asset-relocator-loader',
-      options: {
-        outputAssetBase: 'native_modules',
-      },
-    },
-  },
+  // {
+  //   test: /\.(m?js|node)$/,
+  //   parser: { amd: false },
+  //   use: {
+  //     loader: '@marshallofsound/webpack-asset-relocator-loader',
+  //     options: {
+  //       outputAssetBase: 'native_modules',
+  //     },
+  //   },
+  // },
   {
     test: /\.(js|ts|tsx)$/,
     exclude: /node_modules/,
     use: {
-      loader: 'babel-loader',
-    },
+      loader: 'babel-loader'
+    }
   },
   // {
   //   test: /\.(png|jpe?g|gif)$/i,
@@ -30,40 +30,40 @@ module.exports = [
   {
     test: /\.m?js/,
     resolve: {
-      fullySpecified: false,
-    },
+      fullySpecified: false
+    }
   },
   {
     test: /\.global\.css$/,
     use: [
       {
-        loader: 'style-loader',
+        loader: 'style-loader'
       },
       {
         loader: 'css-loader',
         options: {
-          sourceMap: true,
-        },
-      },
-    ],
+          sourceMap: true
+        }
+      }
+    ]
   },
   {
     test: /^((?!\.global).)*\.css$/,
     use: [
       {
-        loader: 'style-loader',
+        loader: 'style-loader'
       },
       {
         loader: 'css-loader',
         options: {
           modules: {
-            localIdentName: '[name]__[local]__[hash:base64:5]',
+            localIdentName: '[name]__[local]__[hash:base64:5]'
           },
           sourceMap: true,
-          importLoaders: 1,
-        },
-      },
-    ],
+          importLoaders: 1
+        }
+      }
+    ]
   },
   {
     test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
@@ -71,9 +71,9 @@ module.exports = [
       loader: 'url-loader',
       options: {
         limit: 10000,
-        mimetype: 'application/font-woff',
-      },
-    },
+        mimetype: 'application/font-woff'
+      }
+    }
   },
   // OTF Font
   {
@@ -82,9 +82,9 @@ module.exports = [
       loader: 'url-loader',
       options: {
         limit: 10000,
-        mimetype: 'font/otf',
-      },
-    },
+        mimetype: 'font/otf'
+      }
+    }
   },
   // TTF Font
   {
@@ -93,14 +93,14 @@ module.exports = [
       loader: 'url-loader',
       options: {
         limit: 10000,
-        mimetype: 'application/octet-stream',
-      },
-    },
+        mimetype: 'application/octet-stream'
+      }
+    }
   },
   // EOT Font
   {
     test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-    use: 'file-loader',
+    use: 'file-loader'
   },
   // SVG Font
   {
@@ -109,13 +109,13 @@ module.exports = [
       loader: 'url-loader',
       options: {
         limit: 10000,
-        mimetype: 'image/svg+xml',
-      },
-    },
+        mimetype: 'image/svg+xml'
+      }
+    }
   },
   // Common Image Formats
   {
     test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
-    use: 'url-loader',
-  },
+    use: 'url-loader'
+  }
 ]

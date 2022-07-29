@@ -2,40 +2,36 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '../base/Button'
 import SwitchBox from '../base/Switch'
-import {
-  setIsModalEnterOpened,
-  setIsModalExitOpened,
-} from '../../store/reducers/modalReducer'
+import { setIsModalEnterOpened, setIsModalExitOpened } from '../../store/reducers/modalReducer'
 
 import useActions from '../../hooks/useActions'
 import { GatesIds, GatesVectors, IGateModes } from '../../store/types/gate'
+import CamerasBlock from '../CamerasBlock'
 
 const Panel = () => {
   const dispatch = useDispatch()
   const [error, setError] = useState(null)
   const { fetchGateStatus, openGate, closeGate, switchGateMode } = useActions()
-  const gateStore = useSelector(store => store.gate)
-  const isManualMode = useSelector(store => store.gate.mode === 'MODE_MANUAL')
-  const isManualModeFreezed = useSelector(
-    store => store.gate.mode === 'MODE_FREEZED'
-  )
+  const gateStore = useSelector((store) => store.gate)
+  const isManualMode = useSelector((store) => store.gate.mode === 'MODE_MANUAL')
+  const isManualModeFreezed = useSelector((store) => store.gate.mode === 'MODE_FREEZED')
   const isInputGateEntryOpened = useSelector(
-    store => store.gate.inputGateStatus === 'UNLOCKED_ENTRY'
+    (store) => store.gate.inputGateStatus === 'UNLOCKED_ENTRY'
   )
   const isInputGateExitOpened = useSelector(
-    store => store.gate.inputGateStatus === 'UNLOCKED_EXIT'
+    (store) => store.gate.inputGateStatus === 'UNLOCKED_EXIT'
   )
   const isOutputGateEntryOpened = useSelector(
-    store => store.gate.outputGateStatus === 'UNLOCKED_ENTRY'
+    (store) => store.gate.outputGateStatus === 'UNLOCKED_ENTRY'
   )
   const isOutputGateExitOpened = useSelector(
-    store => store.gate.outputGateStatus === 'UNLOCKED_EXIT'
+    (store) => store.gate.outputGateStatus === 'UNLOCKED_EXIT'
   )
 
   const openModalEnter = () => {
     dispatch(
       setIsModalEnterOpened({
-        weight: (Math.random() * (1000 - 500) + 500).toFixed(0),
+        weight: (Math.random() * (1000 - 500) + 500).toFixed(0)
       })
     )
   }
@@ -43,7 +39,7 @@ const Panel = () => {
   const openModalExit = () => {
     dispatch(
       setIsModalExitOpened({
-        weight: (Math.random() * (200 - 100) + 100).toFixed(0),
+        weight: (Math.random() * (200 - 100) + 100).toFixed(0)
       })
     )
   }
@@ -68,6 +64,7 @@ const Panel = () => {
           <h3 className="panel__alert-title text-center">{error}</h3>
         </div>
       </div>
+
       <h2 className="panel__title">Панель управления</h2>
       <div className="panel__form">
         <div className="row mt-3">

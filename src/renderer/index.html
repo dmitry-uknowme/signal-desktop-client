@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script src="https://unpkg.com/centrifuge@3.0.0/dist/centrifuge.js"></script>
     <meta charset="UTF-8" />
     <title>Signal Desktop Client</title>
     <meta
@@ -8,9 +9,16 @@
       content="default-src * self blob: data: gap:; style-src * self 'unsafe-inline' blob: data: gap:; script-src * 'self' 'unsafe-eval' 'unsafe-inline' blob: data: gap:; object-src * 'self' blob: data: gap:; img-src * self 'unsafe-inline' blob: data: gap:; connect-src self * 'unsafe-inline' blob: data: gap:; frame-src * self blob: data: gap:;"
     />
   </head>
-
   <body>
     <div id="root"></div>
+    <!-- <div class="col-md-4"> -->
+    <!-- <video id="videoElem" autoplay muted controls style="width: 100%; height: 200px"></video> -->
+    <!-- </div> -->
     <script type="module" src="/src/index.tsx"></script>
+
+    <script>
+      window.centrifuge = new window.Centrifuge('ws://127.0.0.1:8877/connection/websocket')
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </body>
 </html>

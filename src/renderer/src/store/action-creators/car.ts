@@ -2,7 +2,6 @@ import axios from 'axios'
 import React from 'react'
 import { CarAction, AllCarsActionTypes, CarsOnTerritoryActionTypes, ICarExited } from '../types/car'
 import settings from '../../../../../settings.json'
-// import { ipcRenderer } from 'electron'
 
 const API_URL = window.api.getSettings().API_URL
 

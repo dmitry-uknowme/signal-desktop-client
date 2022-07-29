@@ -1,5 +1,5 @@
-appId: com.electron.app
-productName: electron-app
+appId: signal.client.app
+productName: signal-desktop-client
 directories:
   buildResources: build
 files:
@@ -11,7 +11,7 @@ asarUnpack:
   - '**/*.{node,dll}'
 afterSign: build/notarize.js
 win:
-  executableName: electron-app
+  executableName: signal-desktop-client
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
@@ -28,13 +28,23 @@ dmg:
   artifactName: ${name}-${version}.${ext}
 linux:
   target:
-    - AppImage
-    - snap
+    # - AppImage
+    # - snap
     - deb
+  publish:
+    provider: 'github'
+    repo: 'signal-desktop-client'
+    owner: 'dmitry-uknowme'
+    vPrefixedTagName: true
+    host: 'github.com'
+    protocol: 'https'
+    channel: 'latest'
+    releaseType: 'draft'
+    private: true
   category: Utility
 appImage:
   artifactName: ${name}-${version}.${ext}
 npmRebuild: false
-publish:
-  provider: generic
-  url: https://example.com/auto-updates
+# publish:
+#   provider: generic
+#   url: https://example.com/auto-updates

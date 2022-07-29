@@ -1,14 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import useActions from '../../hooks/useActions'
 import Button from '../base/Button'
 import { setIsModalExitOpened } from '../../store/reducers/modalReducer'
-import centrifuge from '../../utils/centrifuge'
 import settings from '../../../../../settings.json'
+import CentrifugeContext from '@renderer/context/centrifuge/Context'
 
 const API_URL = window.api.getSettings().API_URL
+const centrifuge = window.centrifuge
 
 const ExitModal = () => {
   const dispatch = useDispatch()
@@ -17,7 +18,7 @@ const ExitModal = () => {
   const carsOnTerritory = useSelector((store) => store.cars.on_territory.items)
   const isModalVisible = modal.opened
   const modalData = modal.data
-  const [terminalWeight, setTerminalWeight] = useState()
+  const { terminalWeight, setTerminalWeight } = useContext(CentrifugeContext)
   const [isUpdating, setIsUpdating] = useState(false)
   const timerRef = useRef(null)
   const closeModal = () => dispatch(setIsModalExitOpened())
@@ -78,25 +79,8 @@ const ExitModal = () => {
     closeModal()
   }
 
-  const updateWeight = async () => {
-    centrifuge.on('connect', function (ctx) {
-      console.log('connected', ctx)
-    })
-
-    centrifuge.on('disconnect', function (ctx) {
-      console.log('disconnected', ctx)
-    })
-
-    centrifuge.subscribe('channel', function (ctx) {
-      // console.log('weight received', ctx)
-      setTerminalWeight(ctx.data.value)
-    })
-    centrifuge.connect()
-  }
-
   useEffect(() => {
     if (isModalVisible && carsOnTerritory?.length) {
-      updateWeight()
       setFormData((state) => ({
         ...state,
         id: modalData.selectedCar || carsOnTerritory[0]?.id

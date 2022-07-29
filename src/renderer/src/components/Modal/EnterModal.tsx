@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import useActions from '../../hooks/useActions'
 import Button from '../base/Button'
 import { setIsModalEnterOpened } from '../../store/reducers/modalReducer'
-import centrifuge from '../../utils/centrifuge'
+// import centrifuge from '../../utils/centrifuge'
 import settings from '../../../../../settings.json'
+import CentrifugeContext from '@renderer/context/centrifuge/Context'
 
 const API_URL = window.api.getSettings().API_URL
+const centrifuge = window.centrifuge
 
 const EnterModal = () => {
   const dispatch = useDispatch()
@@ -23,7 +25,7 @@ const EnterModal = () => {
   const [contractors, setContractors] = useState([])
   const [cargoCategories, setCargoCategories] = useState([])
   const [cargoTypes, setCargoTypes] = useState([])
-  const [terminalWeight, setTerminalWeight] = useState()
+  const { terminalWeight, setTerminalWeight } = useContext(CentrifugeContext)
   const [isUpdating, setIsUpdating] = useState(false)
   const { addCarOnTerritory } = useActions()
   const modal = useSelector((store) => store.modal.modalEnter)
@@ -137,22 +139,6 @@ const EnterModal = () => {
   useEffect(() => {
     fetchDropdownFields()
     fetchCameraDetect()
-
-    // updateWeight()
-    centrifuge.on('connect', function (ctx) {
-      console.log('connected', ctx)
-    })
-
-    centrifuge.on('disconnect', function (ctx) {
-      console.log('disconnected', ctx)
-    })
-
-    const channel = centrifuge.subscribe('channel', function (ctx) {
-      // console.log('weight received', ctx)
-      setTerminalWeight(ctx.data.value)
-    })
-    centrifuge.connect()
-    return () => channel.unsubscribe()
   }, [])
 
   useEffect(() => {
@@ -242,6 +228,8 @@ const EnterModal = () => {
                         number_plate: e.target.value.toUpperCase()
                       }))
                     }
+                    minLength={8}
+                    maxLength={10}
                   />
                 </div>
               </div>
