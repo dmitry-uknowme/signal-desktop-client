@@ -10,9 +10,9 @@ import settings from '../../../../../settings.json'
 import CentrifugeContext from '@renderer/context/centrifuge/Context'
 
 const API_URL = window.api.getSettings().API_URL
-const centrifuge = window.centrifuge
 
 const EnterModal = () => {
+  const { detectedAutoNumbers } = useContext(CentrifugeContext)
   const dispatch = useDispatch()
   const [formData, setFormData] = useState({
     number_plate: '',
@@ -25,7 +25,7 @@ const EnterModal = () => {
   const [contractors, setContractors] = useState([])
   const [cargoCategories, setCargoCategories] = useState([])
   const [cargoTypes, setCargoTypes] = useState([])
-  const { terminalWeight, setTerminalWeight } = useContext(CentrifugeContext)
+  const { terminalWeight } = useContext(CentrifugeContext)
   const [isUpdating, setIsUpdating] = useState(false)
   const { addCarOnTerritory } = useActions()
   const modal = useSelector((store) => store.modal.modalEnter)
@@ -73,43 +73,43 @@ const EnterModal = () => {
   }
   // console.log('contractdwadwada', contractors)
 
-  const fetchCameraDetect = async () => {
-    axios
-      .get(`${API_URL}/getDetectState`)
-      .then((response) => {
-        if (response.data.status === 'success') {
-          if (response?.data?.response?.contractor !== null) {
-            // setContractors(state => [
-            //   ...state,
-            //   {
-            //     id: response.data.response.contractor.id,
-            //     full_name: response.data.response.contractor.title,
-            //   },
-            // ])
-          }
-          console.log('camera response', response)
-          setFormData((state) => ({
-            ...state,
-            ...(response?.data?.response?.truckNumber &&
-            response?.data?.response?.truckNumber !== ''
-              ? {
-                  number_plate: response.data.response.truckNumber
-                }
-              : { number_plate: 'UNKNOWN' }),
-            ...(response?.data?.response?.contractor !== null && {
-              contractor_company: response.data.response.contractor.id
-            })
-          }))
-        } else {
-          console.log('camera error', response)
-          setFormData((state) => ({ ...state, number_plate: 'UNKNOWN' }))
-        }
-      })
-      .catch((e) => {
-        console.log('camera error catch', e)
-        setFormData((state) => ({ ...state, number_plate: 'UNKNOWN' }))
-      })
-  }
+  // const fetchCameraDetect = async () => {
+  //   axios
+  //     .get(`${API_URL}/getDetectState`)
+  //     .then((response) => {
+  //       if (response.data.status === 'success') {
+  //         if (response?.data?.response?.contractor !== null) {
+  //           // setContractors(state => [
+  //           //   ...state,
+  //           //   {
+  //           //     id: response.data.response.contractor.id,
+  //           //     full_name: response.data.response.contractor.title,
+  //           //   },
+  //           // ])
+  //         }
+  //         console.log('camera response', response)
+  //         setFormData((state) => ({
+  //           ...state,
+  //           ...(response?.data?.response?.truckNumber &&
+  //           response?.data?.response?.truckNumber !== ''
+  //             ? {
+  //                 number_plate: response.data.response.truckNumber
+  //               }
+  //             : { number_plate: 'UNKNOWN' }),
+  //           ...(response?.data?.response?.contractor !== null && {
+  //             contractor_company: response.data.response.contractor.id
+  //           })
+  //         }))
+  //       } else {
+  //         console.log('camera error', response)
+  //         setFormData((state) => ({ ...state, number_plate: 'UNKNOWN' }))
+  //       }
+  //     })
+  //     .catch((e) => {
+  //       console.log('camera error catch', e)
+  //       setFormData((state) => ({ ...state, number_plate: 'UNKNOWN' }))
+  //     })
+  // }
 
   const submitHandler = (e: any) => {
     // console.log('submit', formData)
@@ -138,8 +138,16 @@ const EnterModal = () => {
 
   useEffect(() => {
     fetchDropdownFields()
-    fetchCameraDetect()
+    // fetchCameraDetect()
   }, [])
+
+  useEffect(() => {
+    if (detectedAutoNumbers?.IN) {
+      setFormData((state) => ({ ...state, number_plate: detectedAutoNumbers.IN }))
+    } else {
+      setFormData((state) => ({ ...state, number_plate: 'UNKNOWN' }))
+    }
+  }, [detectedAutoNumbers])
 
   useEffect(() => {
     if (contractors?.length) {

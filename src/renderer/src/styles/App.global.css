@@ -41,6 +41,7 @@ table {
 .sidebar {
   background: #394264;
   transition: all 0.5s;
+  position: relative;
 }
 
 .sidebar__menu {
@@ -96,11 +97,13 @@ table {
 }
 
 .panel__row1 {
-  height: 45%;
+  /* height: 45%; */
+  height: 50%;
 }
 
 .panel__row2 {
-  height: 51%;
+  /* height: 51%; */
+  height: 47%;
 }
 
 @media screen and (max-width: 900px) {
@@ -605,6 +608,7 @@ tbody {
     position: absolute;
     z-index: 1000;
     top: 0;
+    position: relative;
   }
 
   .panel__btn {

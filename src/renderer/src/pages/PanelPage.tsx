@@ -99,7 +99,7 @@ const PanelPage = () => {
               </div>
               <CamerasBlock />
             </div>
-            <div className="mt-5">
+            <div className="mt-3">
               <h3>Весовой терминал : {terminalWeight ? terminalWeight : 0} кг</h3>
             </div>
             {/* <StateTable

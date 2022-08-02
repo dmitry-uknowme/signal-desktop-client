@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react'
 import CentrifugeContext from './Context'
 const centrifuge = window.centrifuge
 
-const CentrifugeProvider = ({ children }) => {
+const CentrifugeProvider: React.FC = ({ children }) => {
   const [terminalWeight, setTerminalWeight] = useState<string | number>(0)
+  const [detectedAutoNumbers, setDetectedAutoNumbers] = useState({ IN: '', OUT: '' })
   useEffect(() => {
-    // updateWeight()
     centrifuge.on('connected', function (ctx) {
       console.log('connected', ctx)
     })
@@ -15,21 +15,29 @@ const CentrifugeProvider = ({ children }) => {
       console.log('disconnected', ctx)
     })
 
-    const channel = centrifuge.newSubscription('channel')
-    channel.on('publication', (ctx) => {
+    const weightChannel = centrifuge.newSubscription('channel')
+    weightChannel.on('publication', (ctx) => {
       setTerminalWeight(ctx.data.value)
     })
-    channel.subscribe()
+    weightChannel.subscribe()
+
+    const autoNumberChannel = centrifuge.newSubscription('autoNumber')
+    autoNumberChannel.on('publication', (ctx) => {
+      const data = ctx.data
+      const value = ctx.data.value
+      setDetectedAutoNumbers((state) => ({ ...state, [data.direction]: value }))
+    })
+    autoNumberChannel.subscribe()
 
     centrifuge.connect()
     return () => {
-      channel.unsubscribe()
+      weightChannel.unsubscribe()
       centrifuge.disconnect()
     }
   }, [])
 
   return (
-    <CentrifugeContext.Provider value={{ terminalWeight, setTerminalWeight }}>
+    <CentrifugeContext.Provider value={{ terminalWeight, setTerminalWeight, detectedAutoNumbers }}>
       {children}
     </CentrifugeContext.Provider>
   )
