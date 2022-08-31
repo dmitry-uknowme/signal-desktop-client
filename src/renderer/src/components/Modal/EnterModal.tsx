@@ -12,7 +12,7 @@ import CentrifugeContext from '@renderer/context/centrifuge/Context'
 const API_URL = window.api.getSettings().API_URL
 
 const EnterModal = () => {
-  const { detectedAutoNumbers } = useContext(CentrifugeContext)
+  const { detectedAutoNumbers, setDetectedAutoNumbers } = useContext(CentrifugeContext)
   const dispatch = useDispatch()
   const [formData, setFormData] = useState({
     number_plate: '',
@@ -43,6 +43,7 @@ const EnterModal = () => {
         comment_on_enter: ''
       })
     }, 5000)
+    setDetectedAutoNumbers((state) => ({ ...state, IN: '' }))
   }
 
   const animationVariants = {
@@ -228,7 +229,6 @@ const EnterModal = () => {
                     placeholder={
                       formData.number_plate === 'UNKNOWN' ? 'Не определено' : 'О123ОО123'
                     }
-                    required
                     value={formData.number_plate === 'UNKNOWN' ? '' : formData.number_plate}
                     onChange={(e) =>
                       setFormData((state) => ({

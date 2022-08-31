@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { formatISO, formatDistanceToNow } from 'date-fns'
+import { toast, ToastContainer } from 'react-toastify'
 // import CamerasBlock from '../components/CamerasBlock/index'
 import CamerasBlock from '../components/CamerasBlock/new'
 import { ru } from 'date-fns/locale'
@@ -72,6 +73,23 @@ const PanelPage = () => {
 
   return (
     <>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={7000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        // closeOnClick
+        onClick={() => {
+          toast.dismiss()
+          // setTimeout(() => {
+          //   setIsCheckoutModalVisible(true)
+          // }, 300)
+        }}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="row panel__row1">
         <div className="col-xl-5 col-lg-5 col-md-4">
           <Panel />

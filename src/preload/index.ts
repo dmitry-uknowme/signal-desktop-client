@@ -2,24 +2,24 @@
 import fs from 'fs'
 import electron, { contextBridge, app, BrowserWindow } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-import { io } from 'socket.io-client'
+// import { io } from 'socket.io-client'
 
 // Custom APIs for renderer
 
 const getHomeDir = (): string => process.env.HOME as string
 const getAppDir = (): string => `${getHomeDir()}/.signal`
 
-const socket = io('http://localhost:9000', {
-  reconnectionDelayMax: 10000,
-  auth: {
-    token: '123'
-  },
-  query: {
-    'my-key': 'my-value'
-  }
-})
+// const socket = io('http://localhost:9000', {
+//   reconnectionDelayMax: 10000,
+//   auth: {
+//     token: '123'
+//   },
+//   query: {
+//     'my-key': 'my-value'
+//   }
+// })
 
-socket.emit('data', 'messageeeee')
+// socket.emit('data', 'messageeeee')
 
 const api = {
   test: (callback: any) => {

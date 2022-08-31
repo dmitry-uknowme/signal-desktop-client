@@ -7,8 +7,10 @@ import { setIsModalEnterOpened, setIsModalExitOpened } from '../../store/reducer
 import useActions from '../../hooks/useActions'
 import { GatesIds, GatesVectors, IGateModes } from '../../store/types/gate'
 import CamerasBlock from '../CamerasBlock'
+import { toast } from 'react-toastify'
 
 const Panel = () => {
+  const notify = () => toast('Wow so easy!')
   const dispatch = useDispatch()
   const [error, setError] = useState(null)
   const { fetchGateStatus, openGate, closeGate, switchGateMode } = useActions()

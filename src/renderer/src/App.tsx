@@ -8,27 +8,25 @@ import SettingsPage from './pages/SettingsPage'
 import StatisticsPage from './pages/StatisticsPage'
 import EnterModal from './components/Modal/EnterModal'
 import ExitModal from './components/Modal/ExitModal'
-import './styles/rsuite.global.css'
-import './styles/bootstrap.global.css'
-import './styles/App.global.css'
 import useActions from './hooks/useActions'
 import CameraPage from './pages/CameraPage'
 import CentrifugeProvider from './context/centrifuge/ContextProvider'
-import CentrifugeContext from './context/centrifuge/Context'
 import Sidebar from './components/Sidebar'
+import 'react-toastify/dist/ReactToastify.css'
+import './styles/rsuite.global.css'
+import './styles/bootstrap.global.css'
+import './styles/App.global.css'
+
 // import centrifuge, { Centrifuge } from 'centrifuge'
 // const socket = io('http://localhost:8080')
 // import settings from '../settings.json'
 // console.log('settings', settings)
-
-const App = () => {
-  const { addCarOnTerritory, removeCarFromTerritory } = useActions()
-
-  // console.log('deddd', detectedAutoNumbers)
-
+const App: React.FC = () => {
   const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false)
-  const modal = useSelector((store) => store.modal.modalEnter)
-  const isModalVisible = modal.opened
+  const enterModal = useSelector((store) => store.modal.modalEnter)
+  const exitModal = useSelector((store) => store.modal.modalExit)
+  const isModalEnterVisible = enterModal.opened
+  const isModalExitVisible = exitModal.opened
   useEffect(() => {
     // window.alert('version 1')
     // socket.on('TRUCK:ENTERED', data => {
@@ -58,16 +56,13 @@ const App = () => {
     //   return centrifuge.disconnect()
     // }
     // console.log('ccc', new centrifuge('ws://192.168.31.244:8877/connection/websocket'))
-    console.log('ccc', window.centrifuge)
   }, [])
   return (
     <div className="app">
       <CentrifugeProvider>
-        {/*  <AnimatePresence> */}
-        {isModalVisible && <EnterModal />}
-        {/* </AnimatePresence> */}
+        {isModalEnterVisible && <EnterModal />}
+        {isModalExitVisible && <ExitModal />}
 
-        <ExitModal />
         <BrowserRouter>
           <div className="container-fluid h-100">
             <div className="row h-100">
