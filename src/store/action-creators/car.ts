@@ -8,9 +8,11 @@ import {
 } from "../types/car";
 import { toast } from "react-toastify";
 import api from "../../api";
+import store from "..";
 
 export const fetchAllCars = (page: number, limit: number, filters?: any) => {
-  const API_URL = api.tauri.getSettings().API_URL;
+  const API_URL = store.getState().settings.API_URL;
+  // const API_URL = api.tauri.getSettings().API_URL;
   return async (dispatch: React.Dispatch<CarAction>) => {
     const { data } = await axios.get(
       `${API_URL}/getActs?${page ? `page=${page}` : ""} ${
@@ -32,8 +34,7 @@ export const fetchAllCars = (page: number, limit: number, filters?: any) => {
 // };
 
 export const fetchCarsOnTerritory = (page: number, limit: number) => {
-  const API_URL = api.tauri.getSettings().API_URL;
-  console.log("api", api.tauri.getSettings());
+  const API_URL = store.getState().settings.API_URL;
   return async (dispatch: React.Dispatch<CarAction>) => {
     const { data } = await axios.get(
       `${API_URL}/getActs?status=STATUS_ON_TERRITORY${
@@ -48,7 +49,7 @@ export const addCarOnTerritory = (
   payload: ICarExited | any,
   emmitedBySocket: boolean = false
 ) => {
-  const API_URL = api.tauri.getSettings().API_URL;
+  const API_URL = store.getState().settings.API_URL;
   return async (dispatch: React.Dispatch<CarAction>) => {
     if (emmitedBySocket) {
       dispatch({
@@ -92,7 +93,7 @@ export const removeCarFromTerritory = (
   payload: any,
   emmitedBySocket: boolean = false
 ) => {
-  const API_URL = api.tauri.getSettings().API_URL;
+  const API_URL = store.getState().settings.API_URL;
   return async (dispatch: React.Dispatch<CarAction>) => {
     let errorText = "";
     toast.promise(

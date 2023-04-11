@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { motion } from "framer-motion";
-import CentrifugeContext from "../../context/centrifuge/Context";
 import { Link } from "react-router-dom";
+import CentrifugeContext from "../../../context/centrifuge/Context";
 
 interface SidebarProps {
   isMobileMenuVisible: boolean;

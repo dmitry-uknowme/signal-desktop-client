@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Provider, useSelector } from "react-redux";
 import EnterModal from "../Modal/EnterModal";
 import ExitModal from "../Modal/ExitModal";
-import Sidebar from "../Sidebar";
+import useActions from "../../hooks/useActions";
+import { Loader, Placeholder } from "rsuite";
+import Sidebar from "./Sidebar";
 
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false);
@@ -10,6 +12,20 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const exitModal = useSelector((store) => store.modal.modalExit);
   const isModalEnterVisible = enterModal.opened;
   const isModalExitVisible = exitModal.opened;
+
+  const [isSettingsInited, setSettingInited] = useState(false);
+  const { fetchSettings } = useActions();
+  const settingsStore = useSelector((store) => store.settings);
+  useEffect(() => {
+    if (settingsStore !== null) {
+      setSettingInited(true);
+    }
+  }, [settingsStore]);
+
+  useLayoutEffect(() => {
+    fetchSettings();
+  }, []);
+
   return (
     <div className="app">
       {isModalEnterVisible && <EnterModal />}
@@ -46,7 +62,21 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             />
           </div>
           <div className="col-xl-10 col-lg-10 col-md-11">
-            <div className="content h-100">{children}</div>
+            <div className="content h-100">
+              {!isSettingsInited ? (
+                <div>
+                  {/* <Placeholder.Paragraph rows={8} /> */}
+                  <Loader
+                    backdrop
+                    content="Загрузка..."
+                    vertical
+                    style={{ background: "transparent" }}
+                  />
+                </div>
+              ) : (
+                children
+              )}
+            </div>
           </div>
         </div>
       </div>

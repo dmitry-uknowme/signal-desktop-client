@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 import api from "../../api";
 
 export const fetchGateStatus = () => {
-  const API_URL = api.tauri.getSettings().API_URL;
+  const API_URL = store.getState().settings.API_URL;
   return async (dispatch: React.Dispatch<GateAction>) => {
     const { data } = await axios.get(`${API_URL}/getGateStatus`);
     if (data.status === "success") {
@@ -28,7 +28,7 @@ export const openGate = (
   vector: GatesVectors,
   emmitedBySocket: boolean = false
 ) => {
-  const API_URL = api.tauri.getSettings().API_URL;
+  const API_URL = store.getState().settings.API_URL;
   return async (dispatch: React.Dispatch<GateAction>) => {
     if (emmitedBySocket) {
       dispatch({ type: GateActionTypes.OPEN_GATE, payload: { id, vector } });
@@ -83,7 +83,7 @@ export const closeGate = (
   vector: GatesVectors,
   emmitedBySocket: boolean = false
 ) => {
-  const API_URL = api.tauri.getSettings().API_URL;
+  const API_URL = store.getState().settings.API_URL;
   return async (dispatch: React.Dispatch<GateAction>) => {
     if (emmitedBySocket) {
       // dispatch({
@@ -100,7 +100,7 @@ export const closeGate = (
 };
 
 export const switchGateMode = (mode: IGateModes) => {
-  const API_URL = api.tauri.getSettings().API_URL;
+  const API_URL = store.getState().settings.API_URL;
   return async (dispatch: React.Dispatch<GateAction>) => {
     const prevMode = store.getState().gate.mode;
     dispatch({

@@ -11,8 +11,8 @@ import "./styles/App.global.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Provider store={store}>
-    <SettingsContextProvider>
-      <App />
-    </SettingsContextProvider>
+    {/* <SettingsContextProvider> */}
+    <App />
+    {/* </SettingsContextProvider> */}
   </Provider>
 );

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
-import styles from './index.module.css';
+import React from "react";
+import styles from "./index.module.css";
 
 export interface ButtonProps {
   label: string;
@@ -29,11 +29,11 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
-      className={`${styles.btn} ${disabled ? styles.btnDisabled : ''} ${
+      className={`${styles.btn} ${disabled ? styles.btnDisabled : ""} ${
         ButtonClassNames[variant]
       } ${className}`}
       type={type}
-      onClick={onClick}
+      onClick={() => onClick}
       // disabled={disabled}
       // {...attrs}
     >

@@ -12,7 +12,7 @@ export interface ISettings {
   }[];
 }
 
-const defaultState: ISettings = {} as ISettings;
+const defaultState: ISettings = null as unknown as ISettings;
 
 const settingsReducer = (state = defaultState, action: SettingsAction) => {
   switch (action.type) {

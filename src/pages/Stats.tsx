@@ -6,9 +6,10 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import api from "../api";
 import { CustomProvider, DateRangePicker } from "rsuite";
-import { Button } from "../theme/Button";
 import { ruRU } from "rsuite/esm/locales";
 import SettingsContext from "../context/settings/SettingsContext";
+import Button from "../theme/base/Button";
+import MainLayout from "../theme/layout/MainLayout";
 
 const PAGE_LIMIT = 20;
 
@@ -77,127 +78,128 @@ const StatsPage = () => {
   }, []);
   return (
     // <div className="stats-page">
-    <div className="row h-100">
-      <div className="col-md-12 h-100">
-        <div className="stats h-100">
-          <h2 className="stats__title p-0">Статистика</h2>
-          <div className="row mt-3 align-items-center">
-            <div className="container">
-              <div className="stats__filters p-0 d-flex justify-content-between">
-                <select
-                  className="stats__filter"
-                  onChange={(e) =>
-                    setFilters((state) => ({
-                      ...state,
-                      cargoCategory: e.target.value,
-                    }))
-                  }
-                >
-                  <option disabled>Категория груза</option>
-                  <option value="">Все категории</option>
-                  {cargoCategories?.map(({ id, title }) => (
-                    <option key={id} value={id}>
-                      {title}
+    <MainLayout>
+      <div className="row h-100">
+        <div className="col-md-12 h-100">
+          <div className="stats h-100">
+            <h2 className="stats__title p-0">Статистика</h2>
+            <div className="row mt-3 align-items-center">
+              <div className="container">
+                <div className="stats__filters p-0 d-flex justify-content-between">
+                  <select
+                    className="stats__filter"
+                    onChange={(e) =>
+                      setFilters((state) => ({
+                        ...state,
+                        cargoCategory: e.target.value,
+                      }))
+                    }
+                  >
+                    <option disabled>Категория груза</option>
+                    <option value="">Все категории</option>
+                    {cargoCategories?.map(({ id, title }) => (
+                      <option key={id} value={id}>
+                        {title}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    className="stats__filter"
+                    onChange={(e) =>
+                      setFilters((state) => ({
+                        ...state,
+                        cargoType: e.target.value,
+                      }))
+                    }
+                  >
+                    <option disabled>Вид груза</option>
+                    <option value="">Все виды</option>
+                    {cargoTypes?.map(({ id, title }) => (
+                      <option key={id} value={id}>
+                        {title}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    className="stats__filter"
+                    onChange={(e) =>
+                      setFilters((state) => ({
+                        ...state,
+                        contractor: e.target.value,
+                      }))
+                    }
+                  >
+                    <option value="" disabled>
+                      Контрагент
                     </option>
-                  ))}
-                </select>
-                <select
-                  className="stats__filter"
-                  onChange={(e) =>
-                    setFilters((state) => ({
-                      ...state,
-                      cargoType: e.target.value,
-                    }))
-                  }
-                >
-                  <option disabled>Вид груза</option>
-                  <option value="">Все виды</option>
-                  {cargoTypes?.map(({ id, title }) => (
-                    <option key={id} value={id}>
-                      {title}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  className="stats__filter"
-                  onChange={(e) =>
-                    setFilters((state) => ({
-                      ...state,
-                      contractor: e.target.value,
-                    }))
-                  }
-                >
-                  <option value="" disabled>
-                    Контрагент
-                  </option>
-                  <option value="">Все контрагенты</option>
-                  {contractors?.map(({ id, full_name }) => (
-                    <option key={id} value={id}>
-                      {full_name}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  className="stats__filter d-xl-block"
-                  placeholder="Гос. номер"
-                  onChange={(e) =>
-                    setFilters((state) => ({
-                      ...state,
-                      truckNumber: e.target.value,
-                    }))
-                  }
-                />
-                <br />
-                <CustomProvider locale={ruRU}>
-                  <DateRangePicker
-                    className="stats__filter stats__date-picker d-xl-block"
-                    size="sm"
-                    format="dd.MM.yy"
-                    placeholder="дд.мм.гг-дд.мм.гг"
-                    showOneCalendar
-                    placement="bottomEnd"
-                    onChange={(dates) => {
-                      if (dates?.length) {
-                        setFilters((state) => ({
-                          ...state,
-                          dateRange: dates
-                            .map((date) => date.getTime())
-                            .join(","),
-                        }));
-                      }
-                    }}
+                    <option value="">Все контрагенты</option>
+                    {contractors?.map(({ id, full_name }) => (
+                      <option key={id} value={id}>
+                        {full_name}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    className="stats__filter d-xl-block"
+                    placeholder="Гос. номер"
+                    onChange={(e) =>
+                      setFilters((state) => ({
+                        ...state,
+                        truckNumber: e.target.value,
+                      }))
+                    }
                   />
-                </CustomProvider>
-                <Button
-                  variant="success"
-                  label="Применить"
-                  className="stats__filter-btn stats__filter-apply d-xl-block d-lg-none d-1300-none d-md-none d-900-none d-sm-none"
-                  onClick={() => searchHandler()}
-                />
-                <Button
-                  variant="success"
-                  label="✓"
-                  className="stats__filter-btn stats__filter-btn-icon stats__filter-apply d-xl-none d-lg-block d-1300-block d-md-none d-sm-none"
-                  onClick={() => searchHandler()}
-                />
-                <Button
-                  variant="danger"
-                  label="↻"
-                  className="stats__filter-btn stats__filter-btn-icon stats__filter-refresh d-xl-none d-lg-block d-1300-block d-md-none d-sm-none"
-                  onClick={() => resetFilters()}
-                />
-                <Button
-                  variant="danger"
-                  label="Сбросить"
-                  className="stats__filter-btn stats__filter-refresh d-xl-block d-lg-none d-1300-none d-md-none d-900-none d-sm-none"
-                  onClick={() => resetFilters()}
-                />
-              </div>
-              <div className="row d-xl-none d-lg-flex d-md-flex mt-4">
-                {/* <div className="col-md-2">
+                  <br />
+                  <CustomProvider locale={ruRU}>
+                    <DateRangePicker
+                      className="stats__filter stats__date-picker d-xl-block"
+                      size="sm"
+                      format="dd.MM.yy"
+                      placeholder="дд.мм.гг-дд.мм.гг"
+                      showOneCalendar
+                      placement="bottomEnd"
+                      onChange={(dates) => {
+                        if (dates?.length) {
+                          setFilters((state) => ({
+                            ...state,
+                            dateRange: dates
+                              .map((date) => date.getTime())
+                              .join(","),
+                          }));
+                        }
+                      }}
+                    />
+                  </CustomProvider>
+                  <Button
+                    variant="success"
+                    label="Применить"
+                    className="stats__filter-btn stats__filter-apply d-xl-block d-lg-none d-1300-none d-md-none d-900-none d-sm-none"
+                    onClick={() => searchHandler()}
+                  />
+                  <Button
+                    variant="success"
+                    label="✓"
+                    className="stats__filter-btn stats__filter-btn-icon stats__filter-apply d-xl-none d-lg-block d-1300-block d-md-none d-sm-none"
+                    onClick={() => searchHandler()}
+                  />
+                  <Button
+                    variant="danger"
+                    label="↻"
+                    className="stats__filter-btn stats__filter-btn-icon stats__filter-refresh d-xl-none d-lg-block d-1300-block d-md-none d-sm-none"
+                    onClick={() => resetFilters()}
+                  />
+                  <Button
+                    variant="danger"
+                    label="Сбросить"
+                    className="stats__filter-btn stats__filter-refresh d-xl-block d-lg-none d-1300-none d-md-none d-900-none d-sm-none"
+                    onClick={() => resetFilters()}
+                  />
+                </div>
+                <div className="row d-xl-none d-lg-flex d-md-flex mt-4">
+                  {/* <div className="col-md-2">
                   <input className="stats__filter" placeholder="Гос. номер" />
                 </div> */}
-                {/* <div className="col-md-4">
+                  {/* <div className="col-md-4">
                   <CustomProvider locale={ruRu}>
                     <DateRangePicker
                       className="stats__filter stats__date-picker"
@@ -209,167 +211,120 @@ const StatsPage = () => {
                     />
                   </CustomProvider>
                 </div> */}
-                <div className="col-md-2">
-                  <Button
-                    variant="success"
-                    label="Применить"
-                    className="stats__filter-btn stats__filter-apply d-xl-none d-lg-none d-md-none d-900-block w-100"
-                    onClick={() => searchHandler()}
-                  />
-                </div>
-                <div className="col-md-2">
-                  <Button
-                    variant="danger"
-                    label="Сбросить"
-                    className="stats__filter-btn stats__filter-refresh d-xl-none d-lg-none d-md-none d-900-block w-100"
-                  />
+                  <div className="col-md-2">
+                    <Button
+                      variant="success"
+                      label="Применить"
+                      className="stats__filter-btn stats__filter-apply d-xl-none d-lg-none d-md-none d-900-block w-100"
+                      onClick={() => searchHandler()}
+                    />
+                  </div>
+                  <div className="col-md-2">
+                    <Button
+                      variant="danger"
+                      label="Сбросить"
+                      className="stats__filter-btn stats__filter-refresh d-xl-none d-lg-none d-md-none d-900-block w-100"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          {allCars?.length ? (
-            <>
-              {" "}
-              <div className="row mt-4">
-                <div className="container">
-                  <table className="stats__table">
-                    <thead>
-                      <tr>
-                        <th>Гос. номер</th>
-                        <th>Перевозчик</th>
-                        <th>Брутто (кг)</th>
-                        <th>Тара (кг)</th>
-                        <th>Нетто (кг)</th>
-                        <th>Категория</th>
-                        <th>Вид груза</th>
-                        <th>Дата и время въезда</th>
-                        <th>Дата и время выезда</th>
-                        <th>Статус</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {allCars?.map(
-                        ({
-                          // id,
-                          // number_plate,
-                          // transporter_company,
-                          // weight_brutto,
-                          // result_weight,
-                          // weight_netto,
-                          // cargo_category,
-                          // cargo_type,
-                          // date_of_enter,
-                          // date_of_exit,
-                          // status,
-                          id,
-                          truck_number,
-                          contractor_full_name,
-                          weight_gross,
-                          weight_container,
-                          weight_net,
-                          category_title,
-                          type_title,
-                          entry_date_time,
-                          check_out_date_time,
-                          status,
-                        }) => (
-                          <tr key={id}>
-                            <td>{truck_number}</td>
-                            <td>{contractor_full_name || "Не определено"}</td>
-                            <td>{weight_gross}</td>
-                            <td>{weight_container}</td>
-                            <td>{weight_net}</td>
-                            <td>{category_title || "Не определено"}</td>
-                            <td>{type_title || "Не определено"}</td>
-                            <td>{entry_date_time || "Не определено"}</td>
-                            <td>{check_out_date_time || "Не определено"}</td>
-                            <td>
-                              {status === "STATUS_ANNULLED"
-                                ? "Аннулирован"
-                                : status === "STATUS_ON_PLATFORM"
-                                ? "На платформе"
-                                : status === "STATUS_ON_TERRITORY"
-                                ? "На территории"
-                                : status === "STATUS_COMPLETED"
-                                ? "Завершен"
-                                : ""}
-                            </td>
-                          </tr>
-                        )
-                      )}
-                    </tbody>
-                  </table>
-                  {countOfPages > 1 && (
-                    <div className="pagination mt-4">
-                      <div className="col-md-6 offset-md-3">
-                        <div className="pagination__items d-flex justify-content-center w-100">
-                          {currentPage > 1 && (
-                            <div
-                              className="pagination__item"
-                              style={{
-                                fontSize: "1.4rem",
-                              }}
-                              onClick={() =>
-                                setCurrentPage((state) => state - 1)
-                              }
-                            >
-                              ‹
-                            </div>
-                          )}
-                          {countOfPages > 5 && currentPage > 2 && (
-                            <div
-                              className="pagination__item"
-                              onClick={() => setCurrentPage(1)}
-                            ></div>
-                          )}
-                          {countOfPages > 5 && currentPage >= 4 && (
-                            <div
-                              className="pagination__item"
-                              style={{ cursor: "default", background: "coral" }}
-                            >
-                              ...
-                            </div>
-                          )}
-                          {currentPage > 1 && (
-                            <div
-                              className="pagination__item"
-                              onClick={() =>
-                                setCurrentPage((state) => state - 1)
-                              }
-                            >
-                              {currentPage - 1}
-                            </div>
-                          )}
-                          <div className="pagination__item _active">
-                            {currentPage}
-                          </div>
-                          {currentPage + 1 < countOfPages && (
-                            <div
-                              className="pagination__item"
-                              onClick={() => setCurrentPage(currentPage + 1)}
-                            >
-                              {currentPage + 1}
-                            </div>
-                          )}
-                          {currentPage + 2 < countOfPages && (
-                            <div
-                              className="pagination__item"
-                              onClick={() => setCurrentPage(currentPage + 2)}
-                            >
-                              {currentPage + 2}
-                            </div>
-                          )}
-                          {currentPage + 3 < countOfPages && (
-                            <div
-                              className="pagination__item"
-                              onClick={() => setCurrentPage(currentPage + 3)}
-                            >
-                              {currentPage + 3}
-                            </div>
-                          )}
-                          {countOfPages > 5 &&
-                            currentPage < countOfPages - 1 &&
-                            currentPage < countOfPages - 4 && (
+            {allCars?.length ? (
+              <>
+                {" "}
+                <div className="row mt-4">
+                  <div className="container">
+                    <table className="stats__table">
+                      <thead>
+                        <tr>
+                          <th>Гос. номер</th>
+                          <th>Перевозчик</th>
+                          <th>Брутто (кг)</th>
+                          <th>Тара (кг)</th>
+                          <th>Нетто (кг)</th>
+                          <th>Категория</th>
+                          <th>Вид груза</th>
+                          <th>Дата и время въезда</th>
+                          <th>Дата и время выезда</th>
+                          <th>Статус</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {allCars?.map(
+                          ({
+                            // id,
+                            // number_plate,
+                            // transporter_company,
+                            // weight_brutto,
+                            // result_weight,
+                            // weight_netto,
+                            // cargo_category,
+                            // cargo_type,
+                            // date_of_enter,
+                            // date_of_exit,
+                            // status,
+                            id,
+                            truck_number,
+                            contractor_full_name,
+                            weight_gross,
+                            weight_container,
+                            weight_net,
+                            category_title,
+                            type_title,
+                            entry_date_time,
+                            check_out_date_time,
+                            status,
+                          }) => (
+                            <tr key={id}>
+                              <td>{truck_number}</td>
+                              <td>{contractor_full_name || "Не определено"}</td>
+                              <td>{weight_gross}</td>
+                              <td>{weight_container}</td>
+                              <td>{weight_net}</td>
+                              <td>{category_title || "Не определено"}</td>
+                              <td>{type_title || "Не определено"}</td>
+                              <td>{entry_date_time || "Не определено"}</td>
+                              <td>{check_out_date_time || "Не определено"}</td>
+                              <td>
+                                {status === "STATUS_ANNULLED"
+                                  ? "Аннулирован"
+                                  : status === "STATUS_ON_PLATFORM"
+                                  ? "На платформе"
+                                  : status === "STATUS_ON_TERRITORY"
+                                  ? "На территории"
+                                  : status === "STATUS_COMPLETED"
+                                  ? "Завершен"
+                                  : ""}
+                              </td>
+                            </tr>
+                          )
+                        )}
+                      </tbody>
+                    </table>
+                    {countOfPages > 1 && (
+                      <div className="pagination mt-4">
+                        <div className="col-md-6 offset-md-3">
+                          <div className="pagination__items d-flex justify-content-center w-100">
+                            {currentPage > 1 && (
+                              <div
+                                className="pagination__item"
+                                style={{
+                                  fontSize: "1.4rem",
+                                }}
+                                onClick={() =>
+                                  setCurrentPage((state) => state - 1)
+                                }
+                              >
+                                ‹
+                              </div>
+                            )}
+                            {countOfPages > 5 && currentPage > 2 && (
+                              <div
+                                className="pagination__item"
+                                onClick={() => setCurrentPage(1)}
+                              ></div>
+                            )}
+                            {countOfPages > 5 && currentPage >= 4 && (
                               <div
                                 className="pagination__item"
                                 style={{
@@ -380,49 +335,105 @@ const StatsPage = () => {
                                 ...
                               </div>
                             )}
-                          {currentPage < countOfPages && (
-                            <div
-                              className="pagination__item"
-                              onClick={() => setCurrentPage(countOfPages)}
-                            >
-                              {countOfPages}
+                            {currentPage > 1 && (
+                              <div
+                                className="pagination__item"
+                                onClick={() =>
+                                  setCurrentPage((state) => state - 1)
+                                }
+                              >
+                                {currentPage - 1}
+                              </div>
+                            )}
+                            <div className="pagination__item _active">
+                              {currentPage}
                             </div>
-                          )}
-                          {currentPage < countOfPages && (
-                            <div
-                              className="pagination__item"
-                              style={{
-                                fontSize: "1.4rem",
-                                transform: "rotate(-180deg)",
-                              }}
-                              onClick={() =>
-                                setCurrentPage((state) =>
-                                  state < countOfPages ? state + 1 : state
-                                )
-                              }
-                            >
-                              ‹
-                            </div>
-                          )}
+                            {currentPage + 1 < countOfPages && (
+                              <div
+                                className="pagination__item"
+                                onClick={() => setCurrentPage(currentPage + 1)}
+                              >
+                                {currentPage + 1}
+                              </div>
+                            )}
+                            {currentPage + 2 < countOfPages && (
+                              <div
+                                className="pagination__item"
+                                onClick={() => setCurrentPage(currentPage + 2)}
+                              >
+                                {currentPage + 2}
+                              </div>
+                            )}
+                            {currentPage + 3 < countOfPages && (
+                              <div
+                                className="pagination__item"
+                                onClick={() => setCurrentPage(currentPage + 3)}
+                              >
+                                {currentPage + 3}
+                              </div>
+                            )}
+                            {countOfPages > 5 &&
+                              currentPage < countOfPages - 1 &&
+                              currentPage < countOfPages - 4 && (
+                                <div
+                                  className="pagination__item"
+                                  style={{
+                                    cursor: "default",
+                                    background: "coral",
+                                  }}
+                                >
+                                  ...
+                                </div>
+                              )}
+                            {currentPage < countOfPages && (
+                              <div
+                                className="pagination__item"
+                                onClick={() => setCurrentPage(countOfPages)}
+                              >
+                                {countOfPages}
+                              </div>
+                            )}
+                            {currentPage < countOfPages && (
+                              <div
+                                className="pagination__item"
+                                style={{
+                                  fontSize: "1.4rem",
+                                  transform: "rotate(-180deg)",
+                                }}
+                                onClick={() =>
+                                  setCurrentPage((state) =>
+                                    state < countOfPages ? state + 1 : state
+                                  )
+                                }
+                              >
+                                ‹
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="row mt-5">
-                <div className="stats__summary text-uppercase font-bold">
-                  Итого: {totalWeight} кг ({countOfCars}{" "}
-                  {localizeCount("взвешиван", countOfCars, ["ие", "ия", "ий"])})
+                <div className="row mt-5">
+                  <div className="stats__summary text-uppercase font-bold">
+                    Итого: {totalWeight} кг ({countOfCars}{" "}
+                    {localizeCount("взвешиван", countOfCars, [
+                      "ие",
+                      "ия",
+                      "ий",
+                    ])}
+                    )
+                  </div>
                 </div>
-              </div>
-            </>
-          ) : (
-            ""
-          )}
+              </>
+            ) : (
+              ""
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </MainLayout>
   );
 };
 

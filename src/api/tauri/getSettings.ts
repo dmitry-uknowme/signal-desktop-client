@@ -1,8 +1,10 @@
 import { invoke } from "@tauri-apps/api/tauri";
 
 const getSettings = async (reloadCache = false) => {
-  if (window._SETTINGS_) {
-    return window._SETTINGS_;
+  if (!reloadCache) {
+    if (window._SETTINGS_) {
+      return window._SETTINGS_;
+    }
   }
   // const result: string = new Promise((resolve, reject) =>
   //   // invoke("get_settings").then((r) => resolve((r1) => console.log("rrr", r)))
