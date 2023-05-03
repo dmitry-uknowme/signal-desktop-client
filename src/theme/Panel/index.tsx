@@ -1,68 +1,75 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import Button from '../base/Button'
-import SwitchBox from '../base/Switch'
-import { setIsModalEnterOpened, setIsModalExitOpened } from '../../store/reducers/modalReducer'
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Button from "../base/Button";
+import SwitchBox from "../base/Switch";
+import {
+  setIsModalEnterOpened,
+  setIsModalExitOpened,
+} from "../../store/reducers/modalReducer";
 
-import useActions from '../../hooks/useActions'
-import { GatesIds, GatesVectors, IGateModes } from '../../store/types/gate'
-import CamerasBlock from '../CamerasBlock'
-import { toast } from 'react-toastify'
+import useActions from "../../hooks/useActions";
+import { GatesIds, GatesVectors, IGateModes } from "../../store/types/gate";
+import CamerasBlock from "../CamerasBlock";
+import { toast } from "react-toastify";
 
 const Panel = () => {
-  const notify = () => toast('Wow so easy!')
-  const dispatch = useDispatch()
-  const [error, setError] = useState(null)
-  const { fetchGateStatus, openGate, closeGate, switchGateMode } = useActions()
-  const gateStore = useSelector((store) => store.gate)
-  const isManualMode = useSelector((store) => store.gate.mode === 'MODE_MANUAL')
-  const isManualModeFreezed = useSelector((store) => store.gate.mode === 'MODE_FREEZED')
+  const notify = () => toast("Wow so easy!");
+  const dispatch = useDispatch();
+  const [error, setError] = useState(null);
+  const { fetchGateStatus, openGate, closeGate, switchGateMode } = useActions();
+  const gateStore = useSelector((store) => store.gate);
+  const isManualMode = useSelector(
+    (store) => store.gate.mode === "MODE_MANUAL"
+  );
+  const isManualModeFreezed = useSelector(
+    (store) => store.gate.mode === "MODE_FREEZED"
+  );
   const isInputGateEntryOpened = useSelector(
-    (store) => store.gate.inputGateStatus === 'UNLOCKED_ENTRY'
-  )
+    (store) => store.gate.inputGateStatus === "UNLOCKED_ENTRY"
+  );
   const isInputGateExitOpened = useSelector(
-    (store) => store.gate.inputGateStatus === 'UNLOCKED_EXIT'
-  )
+    (store) => store.gate.inputGateStatus === "UNLOCKED_EXIT"
+  );
   const isOutputGateEntryOpened = useSelector(
-    (store) => store.gate.outputGateStatus === 'UNLOCKED_ENTRY'
-  )
+    (store) => store.gate.outputGateStatus === "UNLOCKED_ENTRY"
+  );
   const isOutputGateExitOpened = useSelector(
-    (store) => store.gate.outputGateStatus === 'UNLOCKED_EXIT'
-  )
+    (store) => store.gate.outputGateStatus === "UNLOCKED_EXIT"
+  );
 
   const openModalEnter = () => {
     dispatch(
       setIsModalEnterOpened({
-        weight: (Math.random() * (1000 - 500) + 500).toFixed(0)
+        weight: (Math.random() * (1000 - 500) + 500).toFixed(0),
       })
-    )
-  }
+    );
+  };
 
   const openModalExit = () => {
     dispatch(
       setIsModalExitOpened({
-        weight: (Math.random() * (200 - 100) + 100).toFixed(0)
+        weight: (Math.random() * (200 - 100) + 100).toFixed(0),
       })
-    )
-  }
+    );
+  };
 
   useEffect(() => {
     if (error) {
       setTimeout(() => {
-        setError(null)
-      }, 3000)
+        setError(null);
+      }, 3000);
     }
-  }, [error])
+  }, [error]);
 
   useEffect(() => {
-    fetchGateStatus()
-  }, [])
+    fetchGateStatus();
+  }, []);
 
   return (
     <div className="panel h-100">
       <div className="panel__alert">
-        <div className={`panel__alert-overlay ${error && '_active'}`}></div>
-        <div className={`panel__alert-window bg-danger ${error && '_active'}`}>
+        <div className={`panel__alert-overlay ${error && "_active"}`}></div>
+        <div className={`panel__alert-window bg-danger ${error && "_active"}`}>
           <h3 className="panel__alert-title text-center">{error}</h3>
         </div>
       </div>
@@ -90,13 +97,13 @@ const Panel = () => {
           <div className="col-md-12 d-flex justify-content-between panel__joystick align-items-center">
             <div
               className={`d-flex align-items-center panel__joystick-close ${
-                isInputGateEntryOpened ? '_active' : ''
+                isInputGateEntryOpened ? "_active" : ""
               }`}
               onClick={() => openGate(GatesIds.INPUT, GatesVectors.ENTRY)}
             >
               <span
                 className="panel__joystick-close-text"
-                style={{ fontWeight: 700, fontSize: '0.85rem' }}
+                style={{ fontWeight: 700, fontSize: "0.85rem" }}
               >
                 {/* {isInputGateOpened ? 'Закрыть' : 'Закрыт'} */}
                 Въезд
@@ -106,14 +113,14 @@ const Panel = () => {
             <span style={{ fontWeight: 700 }}>Шлагбаум №1</span>
             <div
               className={`d-flex align-items-center panel__joystick-open ${
-                isInputGateExitOpened ? '_active' : ''
+                isInputGateExitOpened ? "_active" : ""
               }`}
               onClick={() => openGate(GatesIds.INPUT, GatesVectors.EXIT)}
             >
               <div className="triangle panel__joystick-open-btn"></div>
               <span
                 className="panel__joystick-open-text"
-                style={{ fontWeight: 700, fontSize: '0.85rem' }}
+                style={{ fontWeight: 700, fontSize: "0.85rem" }}
               >
                 Выезд
                 {/* {isInputGateOpened ? 'Открыт' : 'Открыть'} */}
@@ -125,13 +132,13 @@ const Panel = () => {
           <div className="col-md-12 d-flex justify-content-between panel__joystick align-items-center">
             <div
               className={`d-flex align-items-center panel__joystick-close ${
-                isOutputGateEntryOpened ? '_active' : ''
+                isOutputGateEntryOpened ? "_active" : ""
               }`}
               onClick={() => openGate(GatesIds.OUTPUT, GatesVectors.ENTRY)}
             >
               <span
                 className="panel__joystick-close-text"
-                style={{ fontWeight: 700, fontSize: '0.85rem' }}
+                style={{ fontWeight: 700, fontSize: "0.85rem" }}
               >
                 Въезд
                 {/* {isOutputGateOpened ? 'Закрыть' : 'Закрыт'} */}
@@ -141,14 +148,14 @@ const Panel = () => {
             <span style={{ fontWeight: 700 }}>Шлагбаум №2</span>
             <div
               className={`d-flex align-items-center panel__joystick-open ${
-                isOutputGateExitOpened ? '_active' : ''
+                isOutputGateExitOpened ? "_active" : ""
               }`}
               onClick={() => openGate(GatesIds.OUTPUT, GatesVectors.EXIT)}
             >
               <div className="triangle panel__joystick-open-btn"></div>
               <span
                 className="panel__joystick-open-text"
-                style={{ fontWeight: 700, fontSize: '0.85rem' }}
+                style={{ fontWeight: 700, fontSize: "0.85rem" }}
               >
                 Выезд
               </span>
@@ -190,6 +197,7 @@ const Panel = () => {
         </div> */}
         <div className="row mt-4">
           <div className="col-md-12">
+            {/* <div onClick={openModalEnter}> */}
             <Button
               label="Создать запись на въезд"
               variant="success"
@@ -197,6 +205,7 @@ const Panel = () => {
               disabled={!isManualMode}
               onClick={openModalEnter}
             />
+            {/* </div> */}
           </div>
         </div>
         <div className="row mt-3">
@@ -212,7 +221,7 @@ const Panel = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Panel
+export default Panel;

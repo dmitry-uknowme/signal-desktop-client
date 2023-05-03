@@ -33,7 +33,7 @@ const Button: React.FC<ButtonProps> = ({
         ButtonClassNames[variant]
       } ${className}`}
       type={type}
-      onClick={() => onClick}
+      onClick={() => onClick()}
       // disabled={disabled}
       // {...attrs}
     >

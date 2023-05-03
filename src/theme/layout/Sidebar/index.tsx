@@ -73,9 +73,9 @@ const Sidebar: React.FC<SidebarProps> = ({
           <Link to="/settings" style={{ textDecoration: "none" }}>
             <div className="sidebar__item">Настройки</div>
           </Link>
-          <Link to="/camera" style={{ textDecoration: "none" }}>
+          {/* <Link to="/camera" style={{ textDecoration: "none" }}>
             <div className="sidebar__item">Камера</div>
-          </Link>
+          </Link> */}
         </div>
         <div
           className="row mt-4"

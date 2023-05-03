@@ -7,6 +7,11 @@ import Button from "../base/Button";
 import { setIsModalEnterOpened } from "../../store/reducers/modalReducer";
 // import centrifuge from '../../utils/centrifuge'
 import CentrifugeContext from "../../context/centrifuge/Context";
+import { useQuery } from "react-query";
+import getOrganizations from "../../api/getOrganizations";
+import getCargoTypes from "../../api/getCargoTypes";
+import getAutoRelations from "../../api/getAutoRelations";
+import getCargoCategories from "../../api/getCargoCategories";
 
 const EnterModal = () => {
   const { detectedAutoNumbers, setDetectedAutoNumbers } =
@@ -14,15 +19,18 @@ const EnterModal = () => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     number_plate: "",
-    contractor_company: "",
+    payer_company: "",
     transporter_company: "Неизвестно",
     cargo_category: "",
     cargo_type: "",
     comment_on_enter: "",
   });
-  const [contractors, setContractors] = useState([]);
-  const [cargoCategories, setCargoCategories] = useState([]);
-  const [cargoTypes, setCargoTypes] = useState([]);
+  const [relatedTransporters, setRelatedTransporters] = useState([]);
+  const [relatedPayers, setRelatedPayers] = useState([]);
+  const [isUseAutoRelations, setUseAutoRelations] = useState<boolean>(false);
+  // const [contractors, setContractors] = useState([]);
+  // const [cargoCategories, setCargoCategories] = useState([]);
+  // const [cargoTypes, setCargoTypes] = useState([]);
   const { terminalWeight } = useContext(CentrifugeContext);
   const [isUpdating, setIsUpdating] = useState(false);
   const { addCarOnTerritory } = useActions();
@@ -57,65 +65,47 @@ const EnterModal = () => {
       hide: { pointerEvents: "none", opacity: "0" },
     },
   };
-  // console.log('contr', contractors)
-  const fetchDropdownFields = async () => {
-    const contractorResponse = await axios.get(
-      `${API_URL}/getOrganizations?role=ROLE_TRANSPORTER`
-    );
-    // console.log()
-    setContractors((state) => [...state, ...contractorResponse.data.items]);
 
-    const cargoCategoriesResponse = await axios.get(
-      `${API_URL}/getCargoCategories`
-    );
-    // console.log('car', JSON.stringify(cargoCategoriesResponse.data.items))
-    setCargoCategories((state) => [
-      ...state,
-      ...cargoCategoriesResponse.data.items,
-    ]);
+  const autoRelationsQuery = useQuery(
+    ["autoRelations", detectedAutoNumbers.IN],
+    async () => await getAutoRelations(detectedAutoNumbers.IN),
+    {
+      onSuccess: (data) => {
+        const transporters = data?.data?.transporters;
+        if (transporters?.length) {
+          setRelatedTransporters(transporters);
+        }
+        const payers = data?.data?.payers;
+        if (payers?.length) {
+          setRelatedTransporters(payers);
+        }
+        setUseAutoRelations(true);
+      },
+      onError: (data) => setUseAutoRelations(false),
+      enabled: !!detectedAutoNumbers.IN,
+    }
+  );
 
-    const cargoTypesResponse = await axios.get(`${API_URL}/getCargoTypes`);
-    setCargoTypes((state) => [...state, ...cargoTypesResponse.data.items]);
-  };
-  // console.log('contractdwadwada', contractors)
+  const transportersQuery = useQuery(
+    ["organizationTransporters"],
+    async () => await getOrganizations({ role: "ROLE_TRANSPORTER" }),
+    { enabled: !isUseAutoRelations }
+  );
 
-  // const fetchCameraDetect = async () => {
-  //   axios
-  //     .get(`${API_URL}/getDetectState`)
-  //     .then((response) => {
-  //       if (response.data.status === 'success') {
-  //         if (response?.data?.response?.contractor !== null) {
-  //           // setContractors(state => [
-  //           //   ...state,
-  //           //   {
-  //           //     id: response.data.response.contractor.id,
-  //           //     full_name: response.data.response.contractor.title,
-  //           //   },
-  //           // ])
-  //         }
-  //         console.log('camera response', response)
-  //         setFormData((state) => ({
-  //           ...state,
-  //           ...(response?.data?.response?.truckNumber &&
-  //           response?.data?.response?.truckNumber !== ''
-  //             ? {
-  //                 number_plate: response.data.response.truckNumber
-  //               }
-  //             : { number_plate: 'UNKNOWN' }),
-  //           ...(response?.data?.response?.contractor !== null && {
-  //             contractor_company: response.data.response.contractor.id
-  //           })
-  //         }))
-  //       } else {
-  //         console.log('camera error', response)
-  //         setFormData((state) => ({ ...state, number_plate: 'UNKNOWN' }))
-  //       }
-  //     })
-  //     .catch((e) => {
-  //       console.log('camera error catch', e)
-  //       setFormData((state) => ({ ...state, number_plate: 'UNKNOWN' }))
-  //     })
-  // }
+  const payersQuery = useQuery(
+    ["organizationPayers"],
+    async () => await getOrganizations({ role: "ROLE_PAYER" }),
+    { enabled: !isUseAutoRelations }
+  );
+
+  const cargoTypesQuery = useQuery(
+    ["cargoTypes"],
+    async () => await getCargoTypes()
+  );
+  const cargoCategoriesQuery = useQuery(
+    ["cargoCategories"],
+    async () => await getCargoCategories()
+  );
 
   const submitHandler = (e: any) => {
     // console.log('submit', formData)
@@ -131,21 +121,7 @@ const EnterModal = () => {
     closeModal();
   };
 
-  // const socketEvents = [
-  //   // 'WEIGHT:RECIEVE',
-  //   'WEIGHT:RECIEVED',
-  //   // 'CAMERA:NUMBER_IDENTIFY',
-  //   'CAMERA:NUMBER_IDENTIFIED',
-  //   // 'TRUCK:ENTER',
-  //   'TRUCK:ENTERED',
-  //   // 'TRUCK:EXIT',
-  //   'TRUCK:EXITED',
-  // ]
-
-  useEffect(() => {
-    fetchDropdownFields();
-    // fetchCameraDetect()
-  }, []);
+  console.log("relateddd", { relatedPayers, relatedTransporters });
 
   useEffect(() => {
     if (detectedAutoNumbers?.IN) {
@@ -158,31 +134,6 @@ const EnterModal = () => {
     }
   }, [detectedAutoNumbers]);
 
-  useEffect(() => {
-    if (contractors?.length) {
-      setFormData((state) => ({
-        ...state,
-        contractor_company: contractors[0].id,
-      }));
-    }
-    if (cargoCategories?.length) {
-      setFormData((state) => ({
-        ...state,
-        cargo_category: cargoCategories[0].id,
-      }));
-    }
-    if (cargoTypes?.length) {
-      setFormData((state) => ({
-        ...state,
-        cargo_type: cargoTypes[0].id,
-      }));
-    }
-  }, [contractors, cargoCategories, cargoTypes, isModalVisible]);
-  // console.log('form state', formData)
-  // console.log('modal', isModalVisible)
-  useEffect(() => {
-    console.log("form data", formData);
-  }, [formData]);
   return (
     <motion.div
       className="modal__wrapper"
@@ -261,7 +212,7 @@ const EnterModal = () => {
             <div className="row mt-4">
               <div className="form-group row align-items-center">
                 <div className="col-md-4">
-                  <label htmlFor="contractor_company">Контрагент</label>
+                  <label htmlFor="contractor_company">Перевозчик</label>
                 </div>
                 <div className="col-md-6">
                   <select
@@ -276,14 +227,62 @@ const EnterModal = () => {
                       }))
                     }
                   >
-                    {/* <option value="" selected disabled>
-                      Название контрагента
-                    </option> */}
-                    {contractors?.map(({ id, full_name }) => (
-                      <option key={id} value={id}>
-                        {full_name}
-                      </option>
-                    ))}
+                    <option value="" selected disabled>
+                      Выбор перевозчика
+                    </option>
+                    {relatedTransporters?.length
+                      ? relatedTransporters.map((transporter) => (
+                          <option
+                            key={transporter.publicId}
+                            value={transporter.publicId}
+                          >
+                            {transporter.title}
+                          </option>
+                        ))
+                      : transportersQuery?.data?.data?.map((transporter) => (
+                          <option
+                            key={transporter.public_id}
+                            value={transporter.public_id}
+                          >
+                            {transporter.title}
+                          </option>
+                        ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="row mt-4">
+              <div className="form-group row align-items-center">
+                <div className="col-md-4">
+                  <label htmlFor="contractor_company">Оператор</label>
+                </div>
+                <div className="col-md-6">
+                  <select
+                    className="form-control"
+                    name="contractor_company"
+                    required
+                    value={formData.contractor_company}
+                    onChange={(e) =>
+                      setFormData((state) => ({
+                        ...state,
+                        contractor_company: e.target.value,
+                      }))
+                    }
+                  >
+                    <option value="" selected disabled>
+                      Выбор оператора
+                    </option>
+                    {relatedPayers?.length
+                      ? relatedPayers.map((payer) => (
+                          <option key={payer.publicId} value={payer.publicId}>
+                            {payer.title}
+                          </option>
+                        ))
+                      : payersQuery?.data?.data?.map((payer) => (
+                          <option key={payer.public_id} value={payer.public_id}>
+                            {payer.title}
+                          </option>
+                        ))}
                   </select>
                 </div>
               </div>
@@ -308,7 +307,7 @@ const EnterModal = () => {
                     {/* <option value="" selected disabled>
                       Название категории груза
                     </option> */}
-                    {cargoCategories?.map(({ id, title }) => (
+                    {cargoCategoriesQuery?.data?.data?.map(({ id, title }) => (
                       <option key={id} value={id}>
                         {title}
                       </option>
@@ -355,10 +354,7 @@ const EnterModal = () => {
                       }))
                     }
                   >
-                    {/* <option value="" selected disabled>
-                      Название вида груза
-                    </option> */}
-                    {cargoTypes?.map(({ id, title }) => (
+                    {cargoTypesQuery?.data?.data?.map(({ id, title }) => (
                       <option key={id} value={id}>
                         {title}
                       </option>

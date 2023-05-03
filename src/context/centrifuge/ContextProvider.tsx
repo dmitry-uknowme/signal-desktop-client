@@ -2,7 +2,10 @@
 import React, { useEffect, useState } from "react";
 import { Centrifuge } from "centrifuge";
 import CentrifugeContext from "./Context";
-const centrifuge = new Centrifuge("ws://127.0.0.1:8877/connection/websocket");
+const centrifuge = new Centrifuge(
+  "ws://192.168.88.67:8877/connection/websocket"
+);
+// const centrifuge = new Centrifuge("ws://127.0.0.1:8877/connection/websocket");
 
 const CentrifugeProvider: React.FC = ({ children }) => {
   // const[centrifuge,setCentrifuge] = useState()
@@ -29,11 +32,13 @@ const CentrifugeProvider: React.FC = ({ children }) => {
 
     const autoNumberChannel = centrifuge.newSubscription("autoNumber");
     autoNumberChannel.on("publication", (ctx) => {
+      console.log("number sub", ctx.data);
       const data = ctx.data;
       const value = ctx.data.value;
+      const direction = ctx.data.direction;
       setDetectedAutoNumbers((state) => ({
         ...state,
-        [data.direction]: value,
+        [direction]: value,
       }));
     });
     autoNumberChannel.subscribe();
